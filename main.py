@@ -79,15 +79,15 @@ def main(page: ft.Page):
 
     def handle_add_mahjongker_select(e):
         global all_mahjongker_text
-        # print(e.control.image_src)
-        jonker_name = e.control.image_src.split("/")[2].split(".")[0]
+        # print(e.control.image.src)
+        jonker_name = e.control.image.src.split("/")[2].split(".")[0]
         all_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
         page.update()
 
     def handle_remove_mahjongker_select(e):
         global my_mahjongker_text
-        print(e.control.image_src)
-        jonker_name = e.control.image_src.split("/")[2].split(".")[0]
+        print(e.control.image.src)
+        jonker_name = e.control.image.src.split("/")[2].split(".")[0]
         my_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
         page.update()
 
@@ -128,33 +128,31 @@ def main(page: ft.Page):
         my_mahjongkers_containers = []
         for mahjongker in my_mahjongkers:
             my_mahjongkers_containers.append(
-                ft.Tooltip(
-                    message=mahjongker.description,
-                    content=ft.Container(
-                        image_src=mahjongker.img_src,
-                        image_fit=ft.ImageFit.FILL,
-                        image_repeat=ft.ImageRepeat.NO_REPEAT,
-                        border_radius=ft.border_radius.all(5),
-                        ink=True,
-                        on_click=handle_remove_mahjongker_select,
-                    ),
-                    padding=20,
-                    border_radius=10,
-                    text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
-                    gradient=ft.LinearGradient(
-                        begin=ft.alignment.top_left,
-                        end=ft.alignment.Alignment(0.8, 1),
-                        colors=[
-                            "0xff1f005c",
-                            "0xff5b0060",
-                            "0xff870160",
-                            "0xffac255e",
-                            "0xffca485c",
-                            "0xffe16b5c",
-                            "0xfff39060",
-                            "0xffffb56b",
-                        ],
-                        tile_mode=ft.GradientTileMode.MIRROR,
+                ft.Container(
+                    image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                    border_radius=ft.border_radius.all(5),
+                    ink=True,
+                    on_click=handle_remove_mahjongker_select,
+                    tooltip=ft.Tooltip(
+                        message=mahjongker.description,
+                        padding=20,
+                        border_radius=10,
+                        text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                        gradient=ft.LinearGradient(
+                            begin=ft.alignment.top_left,
+                            end=ft.alignment.Alignment(0.8, 1),
+                            colors=[
+                                "0xff1f005c",
+                                "0xff5b0060",
+                                "0xff870160",
+                                "0xffac255e",
+                                "0xffca485c",
+                                "0xffe16b5c",
+                                "0xfff39060",
+                                "0xffffb56b",
+                            ],
+                            tile_mode=ft.GradientTileMode.MIRROR,
+                        )
                     )
                 )
             )
@@ -170,33 +168,31 @@ def main(page: ft.Page):
         print(len(filtered_mahjongkers_list))
         for mahjongker in filtered_mahjongkers_list:
             all_mahjongkers_containers.append(
-                ft.Tooltip(
-                    message=mahjongker.description,
-                    content=ft.Container(
-                        image_src=mahjongker.img_src,
-                        image_fit=ft.ImageFit.FILL,
-                        image_repeat=ft.ImageRepeat.NO_REPEAT,
-                        border_radius=ft.border_radius.all(5),
-                        ink=True,
-                        on_click=handle_add_mahjongker_select,
-                    ),
-                    padding=20,
-                    border_radius=10,
-                    text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
-                    gradient=ft.LinearGradient(
-                        begin=ft.alignment.top_left,
-                        end=ft.alignment.Alignment(0.8, 1),
-                        colors=[
-                            "0xff1f005c",
-                            "0xff5b0060",
-                            "0xff870160",
-                            "0xffac255e",
-                            "0xffca485c",
-                            "0xffe16b5c",
-                            "0xfff39060",
-                            "0xffffb56b",
-                        ],
-                        tile_mode=ft.GradientTileMode.MIRROR,
+                ft.Container(
+                    image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                    border_radius=ft.border_radius.all(5),
+                    ink=True,
+                    on_click=handle_add_mahjongker_select,
+                    tooltip=ft.Tooltip(
+                        message=mahjongker.description,
+                        padding=20,
+                        border_radius=10,
+                        text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                        gradient=ft.LinearGradient(
+                            begin=ft.alignment.top_left,
+                            end=ft.alignment.Alignment(0.8, 1),
+                            colors=[
+                                "0xff1f005c",
+                                "0xff5b0060",
+                                "0xff870160",
+                                "0xffac255e",
+                                "0xffca485c",
+                                "0xffe16b5c",
+                                "0xfff39060",
+                                "0xffffb56b",
+                            ],
+                            tile_mode=ft.GradientTileMode.MIRROR,
+                        )
                     )
                 )
             )
@@ -216,9 +212,7 @@ def main(page: ft.Page):
         for tile in selected_tiles:
             selected_tiles_row.controls.append(
                 ft.Container(
-                    image_src=tile.img_src,
-                    image_fit=ft.ImageFit.FILL,
-                    image_repeat=ft.ImageRepeat.NO_REPEAT,
+                    image=ft.DecorationImage(src=tile.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                     border_radius=ft.border_radius.all(5),
                     ink=True,
                     on_click=handle_remove_tile
@@ -227,9 +221,7 @@ def main(page: ft.Page):
         for i in range(4 - len(selected_tiles)):
             selected_tiles_row.controls.append(
                 ft.Container(
-                    image_src="img/tiles/empty.png",
-                    image_fit=ft.ImageFit.FILL,
-                    image_repeat=ft.ImageRepeat.NO_REPEAT,
+                    image=ft.DecorationImage(src="/tiles/empty.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                     border_radius=ft.border_radius.all(5),
                     ink=True,
                     on_click=handle_remove_tile
@@ -238,8 +230,8 @@ def main(page: ft.Page):
         page.update()
 
     def handle_add_tile_select(e):
-        tile_suit = e.control.image_src.split("/")[2].split(".")[0].split("-")[0]
-        tile_rank = e.control.image_src.split("/")[2].split(".")[0].split("-")[1]
+        tile_suit = e.control.image.src.split("/")[2].split(".")[0].split("-")[0]
+        tile_rank = e.control.image.src.split("/")[2].split(".")[0].split("-")[1]
         tile = all_tiles[tile_suit][tile_rank]
         if len(selected_tiles) < 4:
             selected_tiles.append(tile)
@@ -248,8 +240,8 @@ def main(page: ft.Page):
 
     def handle_remove_tile(e):
         global selected_tiles
-        tile_suit = e.control.image_src.split("/")[2].split(".")[0].split("-")[0]
-        tile_rank = e.control.image_src.split("/")[2].split(".")[0].split("-")[1]
+        tile_suit = e.control.image.src.split("/")[2].split(".")[0].split("-")[0]
+        tile_rank = e.control.image.src.split("/")[2].split(".")[0].split("-")[1]
         tile = all_tiles[tile_suit][tile_rank]
         selected_tiles.remove(tile)    
         refresh_selected_tiles()
@@ -264,9 +256,7 @@ def main(page: ft.Page):
                 tile = all_tiles["dragon"][rank]
                 all_tile_containers.append(
                     ft.Container(
-                        image_src=tile.img_src,
-                        image_fit=ft.ImageFit.FILL,
-                        image_repeat=ft.ImageRepeat.NO_REPEAT,
+                        image=ft.DecorationImage(src=tile.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                         border_radius=ft.border_radius.all(5),
                         ink=True,
                         on_click=handle_add_tile_select,
@@ -276,9 +266,7 @@ def main(page: ft.Page):
                 tile = all_tiles["wind"][rank]
                 all_tile_containers.append(
                     ft.Container(
-                        image_src=tile.img_src,
-                        image_fit=ft.ImageFit.FILL,
-                        image_repeat=ft.ImageRepeat.NO_REPEAT,
+                        image=ft.DecorationImage(src=tile.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                         border_radius=ft.border_radius.all(5),
                         ink=True,
                         on_click=handle_add_tile_select,
@@ -289,9 +277,7 @@ def main(page: ft.Page):
                 tile = all_tiles[tile_radio.value][rank]
                 all_tile_containers.append(
                     ft.Container(
-                        image_src=tile.img_src,
-                        image_fit=ft.ImageFit.FILL,
-                        image_repeat=ft.ImageRepeat.NO_REPEAT,
+                        image=ft.DecorationImage(src=tile.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                         border_radius=ft.border_radius.all(5),
                         ink=True,
                         on_click=handle_add_tile_select,
@@ -348,9 +334,7 @@ def main(page: ft.Page):
             for tile in meld.tiles:
                 meld_grid.controls.append(
                     ft.Container(
-                        image_src=tile.img_src,
-                        image_fit=ft.ImageFit.FILL,
-                        image_repeat=ft.ImageRepeat.NO_REPEAT,
+                        image=ft.DecorationImage(src=tile.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                         border_radius=ft.border_radius.all(5),
                         ink=True,
                         on_click=handle_add_tile_select
@@ -374,9 +358,7 @@ def main(page: ft.Page):
             for tile in current_hand.eyes[0].tiles:
                 eye_grid.controls.append(
                     ft.Container(
-                        image_src=tile.img_src,
-                        image_fit=ft.ImageFit.FILL,
-                        image_repeat=ft.ImageRepeat.NO_REPEAT,
+                        image=ft.DecorationImage(src=tile.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                         border_radius=ft.border_radius.all(5),
                         ink=True,
                         on_click=handle_add_tile_select
@@ -419,9 +401,7 @@ def main(page: ft.Page):
             tile = all_tiles["wind"][rank]
             wind_select_grid.controls.append(
                 ft.Container(
-                    image_src=tile.img_src,
-                    image_fit=ft.ImageFit.FILL,
-                    image_repeat=ft.ImageRepeat.NO_REPEAT,
+                    image=ft.DecorationImage(src=tile.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                     border_radius=ft.border_radius.all(5),
                     ink=True,
                     on_click=handle_select_table_wind,
@@ -431,8 +411,8 @@ def main(page: ft.Page):
 
     def handle_select_table_wind(e):
         global table_wind
-        tile_suit = e.control.image_src.split("/")[2].split(".")[0].split("-")[0]
-        tile_rank = e.control.image_src.split("/")[2].split(".")[0].split("-")[1]
+        tile_suit = e.control.image.src.split("/")[2].split(".")[0].split("-")[0]
+        tile_rank = e.control.image.src.split("/")[2].split(".")[0].split("-")[1]
         table_wind = all_tiles[tile_suit][tile_rank]
         refresh_other_scoring()
 
@@ -460,9 +440,7 @@ def main(page: ft.Page):
             tile = all_tiles["wind"][rank]
             wind_select_grid.controls.append(
                 ft.Container(
-                    image_src=tile.img_src,
-                    image_fit=ft.ImageFit.FILL,
-                    image_repeat=ft.ImageRepeat.NO_REPEAT,
+                    image=ft.DecorationImage(src=tile.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                     border_radius=ft.border_radius.all(5),
                     ink=True,
                     on_click=handle_select_seat_wind,
@@ -472,8 +450,8 @@ def main(page: ft.Page):
 
     def handle_select_seat_wind(e):
         global seat_wind
-        tile_suit = e.control.image_src.split("/")[2].split(".")[0].split("-")[0]
-        tile_rank = e.control.image_src.split("/")[2].split(".")[0].split("-")[1]
+        tile_suit = e.control.image.src.split("/")[2].split(".")[0].split("-")[0]
+        tile_rank = e.control.image.src.split("/")[2].split(".")[0].split("-")[1]
         seat_wind = all_tiles[tile_suit][tile_rank]
         refresh_other_scoring()
 
@@ -482,9 +460,7 @@ def main(page: ft.Page):
         scoring_tiles_row.controls.append(
         ft.Container(
             content=ft.Text("Table Wind", bgcolor="#000000", color=ft.colors.WHITE),
-            image_src=table_wind.img_src,
-            image_fit=ft.ImageFit.FILL,
-            image_repeat=ft.ImageRepeat.NO_REPEAT,
+            image=ft.DecorationImage(src=table_wind.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
             border_radius=ft.border_radius.all(5),
             ink=True,
             on_click=show_select_table_wind
@@ -493,9 +469,7 @@ def main(page: ft.Page):
         scoring_tiles_row.controls.append(
             ft.Container(
                 content=ft.Text("Seat Wind", bgcolor="#000000",color=ft.colors.WHITE),
-                image_src=seat_wind.img_src,
-                image_fit=ft.ImageFit.FILL,
-                image_repeat=ft.ImageRepeat.NO_REPEAT,
+                image=ft.DecorationImage(src=seat_wind.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                 border_radius=ft.border_radius.all(5),
                 ink=True,
                 on_click=show_select_seat_wind
@@ -666,33 +640,31 @@ def main(page: ft.Page):
 
             for mahjongker in all_mahjongkers_list:
                 all_mahjongkers_containers.append(
-                    ft.Tooltip(
-                        message=mahjongker.description,
-                        content=ft.Container(
-                            image_src=mahjongker.img_src,
-                            image_fit=ft.ImageFit.FILL,
-                            image_repeat=ft.ImageRepeat.NO_REPEAT,
-                            border_radius=ft.border_radius.all(5),
-                            ink=True,
-                            on_click=handle_add_mahjongker_select,
-                        ),
-                        padding=20,
-                        border_radius=10,
-                        text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
-                        gradient=ft.LinearGradient(
-                            begin=ft.alignment.top_left,
-                            end=ft.alignment.Alignment(0.8, 1),
-                            colors=[
-                                "0xff1f005c",
-                                "0xff5b0060",
-                                "0xff870160",
-                                "0xffac255e",
-                                "0xffca485c",
-                                "0xffe16b5c",
-                                "0xfff39060",
-                                "0xffffb56b",
-                            ],
-                            tile_mode=ft.GradientTileMode.MIRROR,
+                    ft.Container(
+                        image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_add_mahjongker_select,
+                        tooltip=ft.Tooltip(
+                            message=mahjongker.description,
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
                         )
                     )
                 )
@@ -784,9 +756,7 @@ def main(page: ft.Page):
                 tile = all_tiles["bamboo"][rank]
                 all_tile_containers.append(
                     ft.Container(
-                        image_src=tile.img_src,
-                        image_fit=ft.ImageFit.FILL,
-                        image_repeat=ft.ImageRepeat.NO_REPEAT,
+                        image=ft.DecorationImage(src=tile.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                         border_radius=ft.border_radius.all(5),
                         ink=True,
                         on_click=handle_add_tile_select
@@ -880,4 +850,4 @@ def main(page: ft.Page):
 
     page.go("/stats")
 
-ft.app(target=main)
+ft.app(target=main, assets_dir="assets")
