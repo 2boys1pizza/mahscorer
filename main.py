@@ -423,6 +423,7 @@ def main(page: ft.Page):
             tile = all_tiles["wind"][rank]
             wind_select_grid.controls.append(
                 ft.Container(
+                    content=ft.Text(f"wind-{tile.rank}", bgcolor="#000000",color=ft.colors.WHITE),
                     image=ft.DecorationImage(src=tile.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                     border_radius=ft.border_radius.all(5),
                     ink=True,
@@ -462,6 +463,7 @@ def main(page: ft.Page):
             tile = all_tiles["wind"][rank]
             wind_select_grid.controls.append(
                 ft.Container(
+                    content=ft.Text(f"wind-{tile.rank}", bgcolor="#000000",color=ft.colors.WHITE),
                     image=ft.DecorationImage(src=tile.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                     border_radius=ft.border_radius.all(5),
                     ink=True,
