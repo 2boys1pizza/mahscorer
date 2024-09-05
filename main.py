@@ -16,9 +16,20 @@ score_text = ft.Text(total_score, size=80)
 my_mahjongkers = []
 filtered_mahjongkers_list = []
 all_mahjongker_text = []
+all_mahjongkers_containers = []
 my_mahjongker_text = []
 mahjongker_filter = ""
 my_mahjongker_grid = ft.GridView(
+    # expand=1,
+    height=100,
+    width=400,
+    runs_count=5,
+    max_extent=150,
+    child_aspect_ratio=1.0,
+    spacing=15,
+    run_spacing=15,
+)
+all_mahjongker_grid = ft.GridView(
     # expand=1,
     height=100,
     width=400,
@@ -94,6 +105,7 @@ def main(page: ft.Page):
     def apply_mahjongker_filter(e):
         global filtered_mahjongkers_list
         global mahjongker_filter
+        global all_mahjongkers_list
         filtered_mahjongkers_list.clear()
         if mahjongker_filter.value == "":
             filtered_mahjongkers_list = all_mahjongkers_list.copy()
@@ -130,6 +142,7 @@ def main(page: ft.Page):
             my_mahjongkers_containers.append(
                 ft.Container(
                     image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                    content=ft.Text(mahjongker.name, bgcolor="#000000", color=ft.colors.WHITE),
                     border_radius=ft.border_radius.all(5),
                     ink=True,
                     on_click=handle_remove_mahjongker_select,
@@ -161,15 +174,19 @@ def main(page: ft.Page):
 
         my_jongkers_panel.header = ft.ListTile(title=ft.Text(f"My Jongkers ({len(my_mahjongkers)}/7)"))
         page.update()
+        print("lol")
 
     def refresh_all_mahjongkers():
+        global all_mahjongker_grid
+        global filtered_mahjongkers_list
         all_mahjongker_grid.controls.clear()
-        all_mahjongkers_containers.clear()
-        print(len(filtered_mahjongkers_list))
+        all_mahjongkers_containers = []
+        # print(len(filtered_mahjongkers_list))
         for mahjongker in filtered_mahjongkers_list:
             all_mahjongkers_containers.append(
                 ft.Container(
                     image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                    content=ft.Text(mahjongker.name, bgcolor="#000000", color=ft.colors.WHITE),
                     border_radius=ft.border_radius.all(5),
                     ink=True,
                     on_click=handle_add_mahjongker_select,
@@ -212,6 +229,7 @@ def main(page: ft.Page):
         for tile in selected_tiles:
             selected_tiles_row.controls.append(
                 ft.Container(
+                    content=ft.Text(f"{tile.suit}-{tile.rank}", bgcolor="#000000",color=ft.colors.WHITE),
                     image=ft.DecorationImage(src=tile.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                     border_radius=ft.border_radius.all(5),
                     ink=True,
@@ -221,6 +239,7 @@ def main(page: ft.Page):
         for i in range(4 - len(selected_tiles)):
             selected_tiles_row.controls.append(
                 ft.Container(
+                    content=ft.Text("Empty", bgcolor="#000000",color=ft.colors.WHITE),
                     image=ft.DecorationImage(src="/tiles/empty.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                     border_radius=ft.border_radius.all(5),
                     ink=True,
@@ -256,6 +275,7 @@ def main(page: ft.Page):
                 tile = all_tiles["dragon"][rank]
                 all_tile_containers.append(
                     ft.Container(
+                        content=ft.Text(f"dragon-{tile.rank}", bgcolor="#000000",color=ft.colors.WHITE),
                         image=ft.DecorationImage(src=tile.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                         border_radius=ft.border_radius.all(5),
                         ink=True,
@@ -266,6 +286,7 @@ def main(page: ft.Page):
                 tile = all_tiles["wind"][rank]
                 all_tile_containers.append(
                     ft.Container(
+                        content=ft.Text(f"wind-{tile.rank}", bgcolor="#000000",color=ft.colors.WHITE),
                         image=ft.DecorationImage(src=tile.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                         border_radius=ft.border_radius.all(5),
                         ink=True,
@@ -277,6 +298,7 @@ def main(page: ft.Page):
                 tile = all_tiles[tile_radio.value][rank]
                 all_tile_containers.append(
                     ft.Container(
+                        content=ft.Text(f"{tile.suit}-{tile.rank}", bgcolor="#000000",color=ft.colors.WHITE),
                         image=ft.DecorationImage(src=tile.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                         border_radius=ft.border_radius.all(5),
                         ink=True,
@@ -642,6 +664,7 @@ def main(page: ft.Page):
                 all_mahjongkers_containers.append(
                     ft.Container(
                         image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(mahjongker.name, bgcolor="#000000",color=ft.colors.WHITE),
                         border_radius=ft.border_radius.all(5),
                         ink=True,
                         on_click=handle_add_mahjongker_select,
@@ -756,6 +779,7 @@ def main(page: ft.Page):
                 tile = all_tiles["bamboo"][rank]
                 all_tile_containers.append(
                     ft.Container(
+                        content=ft.Text(f"bamboo-{rank}", bgcolor="#000000",color=ft.colors.WHITE),
                         image=ft.DecorationImage(src=tile.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                         border_radius=ft.border_radius.all(5),
                         ink=True,
