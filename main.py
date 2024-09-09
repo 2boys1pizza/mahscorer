@@ -181,6 +181,7 @@ def main(page: ft.Page):
         global filtered_mahjongkers_list
         all_mahjongker_grid.controls.clear()
         all_mahjongkers_containers = []
+        print("lol2")
         # print(len(filtered_mahjongkers_list))
         for mahjongker in filtered_mahjongkers_list:
             all_mahjongkers_containers.append(
@@ -216,6 +217,8 @@ def main(page: ft.Page):
 
         for mahjongker_container in all_mahjongkers_containers:
             all_mahjongker_grid.controls.append(mahjongker_container)
+
+
 
         page.update()
 
@@ -528,6 +531,7 @@ def main(page: ft.Page):
         global my_mahjongker_text
         global mahjongker_filter
         global my_mahjongker_grid
+        global all_mahjongker_grid
         global my_jongkers_panel
         global selected_tiles
         global current_hand
