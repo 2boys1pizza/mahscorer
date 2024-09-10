@@ -1,5 +1,6 @@
 import flet as ft
 import time
+import random
 from mahscorer import *
 
 # -------------------------------------------------------------
@@ -56,6 +57,10 @@ other_scoring_panel = []
 scoring_tiles_row = []
 current_hand_panel = []
 
+# other
+initial_mahjongkers_row = []
+initial_mahjongkers_text = ""
+
 def main(page: ft.Page):
     # -------------------------------------------------------------
     # NAVBAR FUNC
@@ -65,8 +70,10 @@ def main(page: ft.Page):
             page.go("/stats")
         elif e.control.selected_index == 1:
             page.go("/mahjongkers")
-        else:
+        elif e.control.selected_index == 2:
             page.go("/scorer")
+        else:
+            page.go("/other")
 
     # -------------------------------------------------------------
     # STATS FUNC
@@ -518,6 +525,86 @@ def main(page: ft.Page):
         refresh_current_hand()
 
     # -------------------------------------------------------------
+    # OTHER FUNC
+    # -------------------------------------------------------------
+    def refresh_initial_mahjongkers(e):
+        global initial_mahjongkers_row
+        initial_mahjongkers_row.controls.clear()
+        i = 0
+        selected_i = []
+        while i < 3:
+            index = random.randint(0,len(common_mahjongkers_list)-1)
+            print(index)
+            if index not in selected_i: 
+                selected_i.append(index)
+                i = i+1
+
+        for i in selected_i:
+            mahjongker = common_mahjongkers_list[i]
+            initial_mahjongkers_row.controls.append(
+                ft.Container(
+                        image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(mahjongker.name, bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_add_initial_mahjongker_select,
+                        tooltip=ft.Tooltip(
+                            message=mahjongker.description,
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        )
+                    )
+            )
+        initial_mahjongkers_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_initial_mahjongkers))
+        page.update()
+
+    def refresh_initial_mahjongkers_empty():
+        global initial_mahjongkers_row
+        initial_mahjongkers_row.controls.clear()
+        for i in range(3):
+            initial_mahjongkers_row.controls.append(
+                ft.Container(
+                    content=ft.Text("Empty", bgcolor="#000000",color=ft.colors.WHITE),
+                    image=ft.DecorationImage(src="/tiles/empty.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                    border_radius=ft.border_radius.all(5),
+                    ink=True,
+                    )
+                )
+        initial_mahjongkers_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_initial_mahjongkers))
+        page.update()
+
+    def handle_add_initial_mahjongker_select(e):
+        global initial_mahjongker_text
+        jonker_name = e.control.image.src.split("/")[2].split(".")[0]
+        initial_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
+        page.update()
+
+    def add_initial_mahjongker(e):
+        global my_mahjongkers
+        global initial_mahjongker_text
+        if initial_mahjongker_text.value != "":
+            my_mahjongkers.append(all_mahjongkers_dict[initial_mahjongker_text.value.lower()])
+        initial_mahjongker_text.value = ""
+        refresh_my_mahjongkers()
+        refresh_initial_mahjongkers_empty()
+
+    # -------------------------------------------------------------
     # PAGES - ROUTES HERE
     # -------------------------------------------------------------
     def route_change(e):
@@ -542,6 +629,8 @@ def main(page: ft.Page):
         global other_scoring_panel
         global scoring_tiles_row
         global current_hand_panel
+        global initial_mahjongkers_row
+        global initial_mahjongker_text
 
         page.views.clear() 
         page.views.append(
@@ -578,9 +667,10 @@ def main(page: ft.Page):
                         ft.NavigationBarDestination(icon=ft.icons.QUERY_STATS, label="Stats"),
                         ft.NavigationBarDestination(icon=ft.icons.ADD_TO_PHOTOS, label="Mahjongkers"),
                         ft.NavigationBarDestination(icon=ft.icons.CALCULATE, label="Scorer"),
+                        ft.NavigationBarDestination(icon=ft.icons.CHECKLIST, label="Other"),
                         ],
                         on_change=go_to_page,
-                        selected_index=0)
+                        selected_index=3)
                 ],
             )
         )
@@ -708,9 +798,10 @@ def main(page: ft.Page):
                             ft.NavigationBarDestination(icon=ft.icons.QUERY_STATS, label="Stats"),
                             ft.NavigationBarDestination(icon=ft.icons.ADD_TO_PHOTOS, label="Mahjongkers"),
                             ft.NavigationBarDestination(icon=ft.icons.CALCULATE, label="Scorer"),
+                            ft.NavigationBarDestination(icon=ft.icons.CHECKLIST, label="Other"),
                             ],
                             on_change=go_to_page,
-                            selected_index=1)
+                            selected_index=3)
                     ],
                 )
             )
@@ -853,15 +944,124 @@ def main(page: ft.Page):
                             ft.NavigationBarDestination(icon=ft.icons.QUERY_STATS, label="Stats"),
                             ft.NavigationBarDestination(icon=ft.icons.ADD_TO_PHOTOS, label="Mahjongkers"),
                             ft.NavigationBarDestination(icon=ft.icons.CALCULATE, label="Scorer"),
+                            ft.NavigationBarDestination(icon=ft.icons.CHECKLIST, label="Other"),
                             ],
                             on_change=go_to_page,
-                            selected_index=2)
+                            selected_index=3)
                     ],
                 )
             )
 
         
         page.update()
+
+        # -------------------------------------------------------------
+        # OTHER Page
+        # -------------------------------------------------------------
+        if page.route == "/other":
+            # expansion panel list
+            panel = ft.ExpansionPanelList(
+                expand_icon_color=ft.colors.AMBER,
+                elevation=1,
+                divider_color=ft.colors.AMBER,
+                expanded_header_padding=ft.padding.symmetric(0.0, 0.0)
+            )
+
+            # -------------------------------------------------------------
+            # shop tab 
+            # -------------------------------------------------------------
+
+            shop_panel = ft.ExpansionPanel(
+                bgcolor=ft.colors.GREEN_500,
+                header=ft.ListTile(title=ft.Text(f"Shop")),
+            )
+
+            shop_row = ft.GridView(
+                # expand=1,
+                height=100,
+                width=400,
+                runs_count=1,
+                max_extent=95,
+                child_aspect_ratio=1.0,
+                spacing=5,
+                run_spacing=5,
+            )
+
+            shop_panel.content = ft.Column([
+                ft.Text(f"Money: {money}", size=30),
+                # initial_mahjongkers_row,
+                ft.Row([
+                    ft.ElevatedButton(text="Select", on_click=add_initial_mahjongker),
+                    # initial_mahjongker_text
+                ])
+            ])
+
+            panel.controls.append(shop_panel)
+
+            # -------------------------------------------------------------
+            # first mahjongker tab 
+            # -------------------------------------------------------------
+
+            first_mahjongker_panel = ft.ExpansionPanel(
+                bgcolor=ft.colors.GREEN_500,
+                header=ft.ListTile(title=ft.Text(f"First Mahjongker Roll")),
+            )
+
+            initial_mahjongkers_row = ft.GridView(
+                # expand=1,
+                height=100,
+                width=400,
+                runs_count=1,
+                max_extent=95,
+                child_aspect_ratio=1.0,
+                spacing=5,
+                run_spacing=5,
+            )
+
+            # set up base row
+            for i in range(3):
+                initial_mahjongkers_row.controls.append(
+                    ft.Container(
+                        content=ft.Text("Empty", bgcolor="#000000",color=ft.colors.WHITE),
+                        image=ft.DecorationImage(src="/tiles/empty.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        )
+                    )
+            initial_mahjongkers_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_initial_mahjongkers))
+            initial_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
+            first_mahjongker_panel.content = ft.Column([
+                    initial_mahjongkers_row,
+                    ft.Row([
+                        ft.ElevatedButton(text="Select", on_click=add_initial_mahjongker),
+                        initial_mahjongker_text
+                    ])
+                ])
+
+            panel.controls.append(first_mahjongker_panel)
+
+            page.views.append(
+                ft.View(
+                    "/other",
+                    [
+                        panel,
+                        ft.NavigationBar(destinations=[
+                            ft.NavigationBarDestination(icon=ft.icons.QUERY_STATS, label="Stats"),
+                            ft.NavigationBarDestination(icon=ft.icons.ADD_TO_PHOTOS, label="Mahjongkers"),
+                            ft.NavigationBarDestination(icon=ft.icons.CALCULATE, label="Scorer"),
+                            ft.NavigationBarDestination(icon=ft.icons.CHECKLIST, label="Other"),
+                            ],
+                            on_change=go_to_page,
+                            selected_index=3)
+                    ],
+                )
+            )
+            page.update()
+
+
+    #------------------------
+    # Other settings
+    #------------------------       
 
     def view_pop(e):
         print("View pop:", e.view)
