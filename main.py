@@ -59,7 +59,11 @@ current_hand_panel = []
 
 # other
 initial_mahjongkers_row = []
-initial_mahjongkers_text = ""
+initial_mahjongker_text = ""
+shop_row = []
+shop_mahjongker_text = ""
+reroll_cost = 1
+shop_money_text = ""
 
 def main(page: ft.Page):
     # -------------------------------------------------------------
@@ -604,6 +608,141 @@ def main(page: ft.Page):
         refresh_my_mahjongkers()
         refresh_initial_mahjongkers_empty()
 
+    def refresh_shop(e):
+        global shop_row
+        global reroll_cost
+        shop_row.controls.clear()
+        i = 0
+        selected_i = []
+        while i < 3:
+            index = random.randint(0,len(all_mahjongkers_list)-1)
+            if index not in selected_i: 
+                selected_i.append(index)
+                i = i+1
+
+        for i in selected_i:
+            mahjongker = all_mahjongkers_list[i]
+            shop_row.controls.append(
+                ft.Container(
+                        image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(f"{mahjongker.name} - ${mahjongker.cost}", bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_add_shop_mahjongker_select,
+                        tooltip=ft.Tooltip(
+                            message=f"${mahjongker.cost} - {mahjongker.description}",
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        )
+                    )
+            )
+        reroll_cost = 1
+        shop_row.controls.append(ft.FloatingActionButton(text=f"${reroll_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_mahjongkers))
+        page.update()
+
+    def reroll_shop_mahjongkers(e):
+        global reroll_cost
+        global shop_row
+        reroll_cost += 1
+        shop_row.controls.clear()
+        i = 0
+        selected_i = []
+        while i < 3:
+            index = random.randint(0,len(all_mahjongkers_list)-1)
+            if index not in selected_i: 
+                selected_i.append(index)
+                i = i+1
+
+        for i in selected_i:
+            mahjongker = all_mahjongkers_list[i]
+            shop_row.controls.append(
+                ft.Container(
+                        image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(f"{mahjongker.name} - ${mahjongker.cost}", bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_add_shop_mahjongker_select,
+                        tooltip=ft.Tooltip(
+                            message=f"${mahjongker.cost} - {mahjongker.description}",
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        )
+                    )
+            )
+        shop_row.controls.append(ft.FloatingActionButton(text=f"${reroll_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_mahjongkers))
+        page.update()
+
+    def handle_add_shop_mahjongker_select(e):
+        global shop_mahjongker_text
+        jonker_name = e.control.image.src.split("/")[2].split(".")[0]
+        shop_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
+        page.update()
+
+    def buy_mahjongker(e):
+        global my_mahjongkers
+        global shop_mahjongker_text
+        global money
+        global shop_row
+        selected_container = []
+        if shop_mahjongker_text.value != "" and shop_mahjongker_text.value != "TOO POOR":
+            mahjongker = all_mahjongkers_dict[shop_mahjongker_text.value.lower()]
+            if money >= mahjongker.cost:
+                my_mahjongkers.append(mahjongker)
+                money = money - mahjongker.cost
+                # then replace this slot in the grid view
+                for container in shop_row.controls:
+                    # print(container.content.value)
+                    if mahjongker.name in container.content.value:
+                        selected_container = container
+                        break
+                refresh_money_text()
+                shop_mahjongker_text.value = ""
+                selected_container.image="/jongker/sold.png"
+                selected_container.content.value= "SOLD"
+            else:
+                shop_mahjongker_text.value = "TOO POOR"
+        page.update()
+
+    def refresh_money_text():
+        global shop_money_text
+        global money_text
+        global money
+        shop_money_text.value = f"Money: {money}"
+        money_text.value = f"{money}"
+        page.update()
+
     # -------------------------------------------------------------
     # PAGES - ROUTES HERE
     # -------------------------------------------------------------
@@ -631,6 +770,10 @@ def main(page: ft.Page):
         global current_hand_panel
         global initial_mahjongkers_row
         global initial_mahjongker_text
+        global shop_row
+        global shop_mahjongker_text
+        global reroll_cost
+        global shop_money_text
 
         page.views.clear() 
         page.views.append(
@@ -670,7 +813,7 @@ def main(page: ft.Page):
                         ft.NavigationBarDestination(icon=ft.icons.CHECKLIST, label="Other"),
                         ],
                         on_change=go_to_page,
-                        selected_index=3)
+                        selected_index=0)
                 ],
             )
         )
@@ -968,7 +1111,7 @@ def main(page: ft.Page):
             )
 
             # -------------------------------------------------------------
-            # shop tab 
+            # shop tab NEEDS TO KEEP STATE
             # -------------------------------------------------------------
 
             shop_panel = ft.ExpansionPanel(
@@ -986,13 +1129,17 @@ def main(page: ft.Page):
                 spacing=5,
                 run_spacing=5,
             )
-
+            shop_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
+            shop_money_text = ft.Text(f"Money: {money}", size=30)
             shop_panel.content = ft.Column([
-                ft.Text(f"Money: {money}", size=30),
-                # initial_mahjongkers_row,
                 ft.Row([
-                    ft.ElevatedButton(text="Select", on_click=add_initial_mahjongker),
-                    # initial_mahjongker_text
+                    shop_money_text,
+                    ft.ElevatedButton(text="Refresh Shop", on_click=refresh_shop)
+                ]),
+                shop_row,
+                ft.Row([
+                    ft.ElevatedButton(text="Buy", on_click=buy_mahjongker),
+                    shop_mahjongker_text
                 ])
             ])
 
@@ -1038,6 +1185,7 @@ def main(page: ft.Page):
                     ])
                 ])
 
+            refresh_shop("")
             panel.controls.append(first_mahjongker_panel)
 
             page.views.append(
