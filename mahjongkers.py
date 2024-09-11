@@ -173,6 +173,9 @@ class Mahjongker:
     def __repr__(self):
         return repr((self.name, self.description, self.priority))
 
+    def __eq__(self, other):
+        return self.name == other.name
+
     def eval_score(self):
         print("I'm a dumb parent score func")
         return 0

@@ -64,6 +64,7 @@ shop_row = []
 shop_mahjongker_text = ""
 reroll_cost = 1
 shop_money_text = ""
+shop_selected_i = []
 
 def main(page: ft.Page):
     # -------------------------------------------------------------
@@ -659,17 +660,20 @@ def main(page: ft.Page):
     def reroll_shop_mahjongkers(e):
         global reroll_cost
         global shop_row
+        global shop_selected_i
         reroll_cost += 1
         shop_row.controls.clear()
         i = 0
-        selected_i = []
+        shop_selected_i = []
         while i < 3:
             index = random.randint(0,len(all_mahjongkers_list)-1)
-            if index not in selected_i: 
-                selected_i.append(index)
-                i = i+1
+            if index not in shop_selected_i: 
+                mahjongker = all_mahjongkers_list[i]
+                if mahjongker not in my_mahjongkers:
+                    shop_selected_i.append(index)
+                    i = i+1
 
-        for i in selected_i:
+        for i in shop_selected_i:
             mahjongker = all_mahjongkers_list[i]
             shop_row.controls.append(
                 ft.Container(
@@ -774,6 +778,7 @@ def main(page: ft.Page):
         global shop_mahjongker_text
         global reroll_cost
         global shop_money_text
+        global shop_selected_i
 
         page.views.clear() 
         page.views.append(
@@ -1143,6 +1148,49 @@ def main(page: ft.Page):
                 ])
             ])
 
+            if shop_selected_i:
+                for i in shop_selected_i:
+                    mahjongker = all_mahjongkers_list[i]
+                    shop_row.controls.append(
+                        ft.Container(
+                                image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                                content=ft.Text(f"{mahjongker.name} - ${mahjongker.cost}", bgcolor="#000000", color=ft.colors.WHITE),
+                                border_radius=ft.border_radius.all(5),
+                                ink=True,
+                                on_click=handle_add_shop_mahjongker_select,
+                                tooltip=ft.Tooltip(
+                                    message=f"${mahjongker.cost} - {mahjongker.description}",
+                                    padding=20,
+                                    border_radius=10,
+                                    text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                                    gradient=ft.LinearGradient(
+                                        begin=ft.alignment.top_left,
+                                        end=ft.alignment.Alignment(0.8, 1),
+                                        colors=[
+                                            "0xff1f005c",
+                                            "0xff5b0060",
+                                            "0xff870160",
+                                            "0xffac255e",
+                                            "0xffca485c",
+                                            "0xffe16b5c",
+                                            "0xfff39060",
+                                            "0xffffb56b",
+                                        ],
+                                        tile_mode=ft.GradientTileMode.MIRROR,
+                                    )
+                                )
+                            )
+                        )
+            else:
+                for i in range(3):
+                    shop_row.controls.append(
+                        ft.Container(
+                            image=ft.DecorationImage(src="/jongker/sold.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                            border_radius=ft.border_radius.all(5),
+                            ink=True,
+                        )
+                    )
+            shop_row.controls.append(ft.FloatingActionButton(text=f"${reroll_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_mahjongkers))
             panel.controls.append(shop_panel)
 
             # -------------------------------------------------------------
@@ -1185,7 +1233,6 @@ def main(page: ft.Page):
                     ])
                 ])
 
-            refresh_shop("")
             panel.controls.append(first_mahjongker_panel)
 
             page.views.append(
