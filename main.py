@@ -7,6 +7,28 @@ from mahscorer import *
 # GLOBAL VARS
 # -------------------------------------------------------------
 
+# global scoring
+HAND_TYPE_UPGRADE_MULT = 1.5
+HAND_SIZE_COSTS = [4,8,16,26]
+SEQUENCE_UPGRADE_COST = 2
+TRIPLET_UPGRADE_COST = 2
+HALF_FLUSH_UPGRADE_COST = 2
+FLUSH_UPGRADE_COST = 2
+AVATAR_UPGRADE_COST = 7
+ITEM_COST = 2
+
+# hands
+sequence_hand_level = 0
+sequence_hand_mult = 1.5
+triplet_hand_level = 0
+triplet_hand_mult = 2.0
+half_flush_hand_level = 0
+half_flush_hand_mult = 2.0
+flush_hand_level = 0
+flush_hand_mult = 3.0
+hand_size_level = 0
+
+
 # stats
 money = 0
 total_score = 0
@@ -747,6 +769,57 @@ def main(page: ft.Page):
         money_text.value = f"{money}"
         page.update()
 
+    def upgrade_sequence(e):
+        global money
+        global sequence_hand_mult
+        if money >= SEQUENCE_UPGRADE_COST:
+            money = money - SEQUENCE_UPGRADE_COST
+            sequence_hand_mult = sequence_hand_mult * HAND_TYPE_UPGRADE_MULT
+            refresh_money_text()
+
+    def upgrade_triplet(e):
+        global money
+        global triplet_hand_mult
+        if money >= TRIPLET_UPGRADE_COST:
+            money = money - TRIPLET_UPGRADE_COST
+            triplet_hand_mult = triplet_hand_mult * HAND_TYPE_UPGRADE_MULT
+            refresh_money_text()
+
+    def upgrade_half_flush(e):
+        global money
+        global half_flush_hand_mult
+        if money >= HALF_FLUSH_UPGRADE_COST:
+            money = money - HALF_FLUSH_UPGRADE_COST
+            half_flush_hand_mult = half_flush_hand_mult * HAND_TYPE_UPGRADE_MULT
+            refresh_money_text()
+
+    def upgrade_flush(e):
+        global money
+        global flush_hand_mult
+        if money >= FLUSH_UPGRADE_COST:
+            money = money - FLUSH_UPGRADE_COST
+            flush_hand_mult = flush_hand_mult * HAND_TYPE_UPGRADE_MULT
+            refresh_money_text()
+
+    def upgrade_avatar(e):
+        global money
+        if money >= AVATAR_UPGRADE_COST:
+            money = money - AVATAR_UPGRADE_COST
+            sequence_hand_mult = sequence_hand_mult * HAND_TYPE_UPGRADE_MULT
+            triplet_hand_mult = triplet_hand_mult * HAND_TYPE_UPGRADE_MULT
+            half_flush_hand_mult = half_flush_hand_mult * HAND_TYPE_UPGRADE_MULT
+            flush_hand_mult = flush_hand_mult * HAND_TYPE_UPGRADE_MULT
+            refresh_money_text()
+
+    def disable_hand_upgrade_buy():
+        print("hello i disable upgrade buy")
+
+    def buy_item(e):
+        global money
+        if money >= ITEM_COST:
+            money = money - ITEM_COST
+            refresh_money_text()
+
     # -------------------------------------------------------------
     # PAGES - ROUTES HERE
     # -------------------------------------------------------------
@@ -810,6 +883,40 @@ def main(page: ft.Page):
                                 horizontal_alignment=ft.CrossAxisAlignment.CENTER
                             ))
                         ],
+                        alignment=ft.MainAxisAlignment.CENTER),
+                    ft.Row(
+                        [(ft.DataTable(
+                            columns=[
+                                ft.DataColumn(ft.Text("Hand")),
+                                ft.DataColumn(ft.Text("Mult Bonus")),
+                            ],
+                            rows=[
+                                ft.DataRow(
+                                    cells=[
+                                        ft.DataCell(ft.Text("Sequence")),
+                                        ft.DataCell(ft.Text(f"{sequence_hand_mult}"))
+                                    ]
+                                ),
+                                ft.DataRow(
+                                    cells=[
+                                        ft.DataCell(ft.Text("Triplet")),
+                                        ft.DataCell(ft.Text(f"{triplet_hand_mult}"))
+                                    ]
+                                ),
+                                ft.DataRow(
+                                    cells=[
+                                        ft.DataCell(ft.Text("Half Flush")),
+                                        ft.DataCell(ft.Text(f"{half_flush_hand_mult}"))
+                                    ]
+                                ),
+                                ft.DataRow(
+                                    cells=[
+                                        ft.DataCell(ft.Text("Flush")),
+                                        ft.DataCell(ft.Text(f"{flush_hand_mult}"))
+                                    ]
+                                ),
+                            ]
+                        ))],
                         alignment=ft.MainAxisAlignment.CENTER),
                     ft.NavigationBar(destinations=[
                         ft.NavigationBarDestination(icon=ft.icons.QUERY_STATS, label="Stats"),
@@ -1145,6 +1252,47 @@ def main(page: ft.Page):
                 ft.Row([
                     ft.ElevatedButton(text="Buy", on_click=buy_mahjongker),
                     shop_mahjongker_text
+                ]),
+                ft.Text("Hand Upgrades", color=ft.colors.WHITE),
+                ft.Row(
+                    [ft.DataTable(
+                    columns=[
+                        ft.DataColumn(ft.Text("Hand")),
+                        ft.DataColumn(ft.Text("Cost")),
+                    ],
+                    rows=[
+                        ft.DataRow(
+                            cells=[
+                                ft.DataCell(ft.Text("Sequence")),
+                                ft.DataCell(ft.ElevatedButton(text="$2", on_click=upgrade_sequence))
+                            ]
+                        ),
+                        ft.DataRow(
+                            cells=[
+                                ft.DataCell(ft.Text("Triplet")),
+                                ft.DataCell(ft.ElevatedButton(text="$2", on_click=upgrade_triplet))
+                            ]
+                        ),
+                        ft.DataRow(
+                            cells=[
+                                ft.DataCell(ft.Text("Half Flush")),
+                                ft.DataCell(ft.ElevatedButton(text="$2", on_click=upgrade_half_flush))
+                            ]
+                        ),
+                        ft.DataRow(
+                            cells=[
+                                ft.DataCell(ft.Text("Flush")),
+                                ft.DataCell(ft.ElevatedButton(text="$2", on_click=upgrade_flush))
+                            ]
+                        ),
+                        ft.DataRow(
+                            cells=[
+                                ft.DataCell(ft.Text("Avatar")),
+                                ft.DataCell(ft.ElevatedButton(text="$7", on_click=upgrade_avatar))
+                            ]
+                        ),
+                    ]),
+                    ft.ElevatedButton(text=f"Buy Item - ${ITEM_COST}", on_click=buy_item)
                 ])
             ])
 
