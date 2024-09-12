@@ -19,13 +19,9 @@ ITEM_COST = 2
 
 # hands
 sequence_hand_level = 0
-sequence_hand_mult = 1.5
 triplet_hand_level = 0
-triplet_hand_mult = 2.0
 half_flush_hand_level = 0
-half_flush_hand_mult = 2.0
 flush_hand_level = 0
-flush_hand_mult = 3.0
 hand_size_level = 0
 
 
@@ -87,6 +83,11 @@ shop_mahjongker_text = ""
 reroll_cost = 1
 shop_money_text = ""
 shop_selected_i = []
+sequence_button = []
+triplet_button = []
+half_flush_button = []
+flush_button = []
+avatar_button = []
 
 def main(page: ft.Page):
     # -------------------------------------------------------------
@@ -678,6 +679,7 @@ def main(page: ft.Page):
         reroll_cost = 1
         shop_row.controls.append(ft.FloatingActionButton(text=f"${reroll_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_mahjongkers))
         page.update()
+        enable_hand_upgrade_buy()
 
     def reroll_shop_mahjongkers(e):
         global reroll_cost
@@ -776,6 +778,7 @@ def main(page: ft.Page):
             money = money - SEQUENCE_UPGRADE_COST
             sequence_hand_mult = sequence_hand_mult * HAND_TYPE_UPGRADE_MULT
             refresh_money_text()
+            disable_hand_upgrade_buy()
 
     def upgrade_triplet(e):
         global money
@@ -784,6 +787,7 @@ def main(page: ft.Page):
             money = money - TRIPLET_UPGRADE_COST
             triplet_hand_mult = triplet_hand_mult * HAND_TYPE_UPGRADE_MULT
             refresh_money_text()
+            disable_hand_upgrade_buy()
 
     def upgrade_half_flush(e):
         global money
@@ -792,6 +796,7 @@ def main(page: ft.Page):
             money = money - HALF_FLUSH_UPGRADE_COST
             half_flush_hand_mult = half_flush_hand_mult * HAND_TYPE_UPGRADE_MULT
             refresh_money_text()
+            disable_hand_upgrade_buy()
 
     def upgrade_flush(e):
         global money
@@ -800,6 +805,7 @@ def main(page: ft.Page):
             money = money - FLUSH_UPGRADE_COST
             flush_hand_mult = flush_hand_mult * HAND_TYPE_UPGRADE_MULT
             refresh_money_text()
+            disable_hand_upgrade_buy()
 
     def upgrade_avatar(e):
         global money
@@ -810,9 +816,46 @@ def main(page: ft.Page):
             half_flush_hand_mult = half_flush_hand_mult * HAND_TYPE_UPGRADE_MULT
             flush_hand_mult = flush_hand_mult * HAND_TYPE_UPGRADE_MULT
             refresh_money_text()
+            disable_hand_upgrade_buy()
 
     def disable_hand_upgrade_buy():
+        global sequence_button
+        global triplet_button
+        global half_flush_button
+        global flush_button
+        global avatar_button
+        sequence_button.text = "x"
+        sequence_button.on_click = do_nothing
+        triplet_button.text = "x"
+        triplet_button.on_click = do_nothing
+        half_flush_button.text = "x"
+        half_flush_button.on_click = do_nothing
+        flush_button.text = "x"
+        flush_button.on_click = do_nothing
+        avatar_button.text = "x"
+        avatar_button.on_click = do_nothing
+        page.update()
         print("hello i disable upgrade buy")
+
+    def enable_hand_upgrade_buy():
+        global sequence_button
+        global triplet_button
+        global half_flush_button
+        global flush_button
+        global avatar_button
+        sequence_button.text = "$2"
+        sequence_button.on_click = upgrade_sequence
+        triplet_button.text = "$2"
+        triplet_button.on_click = upgrade_triplet
+        half_flush_button.text = "$2"
+        half_flush_button.on_click = upgrade_half_flush
+        flush_button.text = "$2"
+        flush_button.on_click = upgrade_flush
+        avatar_button.text = "$7"
+        avatar_button.on_click = upgrade_avatar
+        page.update()
+
+        print("hello i enable upgrade buy")
 
     def buy_item(e):
         global money
@@ -820,11 +863,18 @@ def main(page: ft.Page):
             money = money - ITEM_COST
             refresh_money_text()
 
+    def do_nothing(e):
+        print("I do nothing!")
+
     # -------------------------------------------------------------
     # PAGES - ROUTES HERE
     # -------------------------------------------------------------
     def route_change(e):
         global money
+        global sequence_hand_mult
+        global triplet_hand_mult
+        global half_flush_hand_mult
+        global flush_hand_mult
         global my_mahjongkers
         global filtered_mahjongkers_list
         global all_mahjongker_text
@@ -852,6 +902,12 @@ def main(page: ft.Page):
         global reroll_cost
         global shop_money_text
         global shop_selected_i
+        global sequence_button
+        global triplet_button
+        global half_flush_button
+        global flush_button
+        global avatar_button
+
 
         page.views.clear() 
         page.views.append(
@@ -1243,6 +1299,11 @@ def main(page: ft.Page):
             )
             shop_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
             shop_money_text = ft.Text(f"Money: {money}", size=30)
+            sequence_button = ft.ElevatedButton(text="x", on_click=do_nothing)
+            triplet_button = ft.ElevatedButton(text="x", on_click=do_nothing)
+            half_flush_button = ft.ElevatedButton(text="x", on_click=do_nothing)
+            flush_button = ft.ElevatedButton(text="x", on_click=do_nothing)
+            avatar_button = ft.ElevatedButton(text="x", on_click=do_nothing)
             shop_panel.content = ft.Column([
                 ft.Row([
                     shop_money_text,
@@ -1264,31 +1325,31 @@ def main(page: ft.Page):
                         ft.DataRow(
                             cells=[
                                 ft.DataCell(ft.Text("Sequence")),
-                                ft.DataCell(ft.ElevatedButton(text="$2", on_click=upgrade_sequence))
+                                ft.DataCell(sequence_button)
                             ]
                         ),
                         ft.DataRow(
                             cells=[
                                 ft.DataCell(ft.Text("Triplet")),
-                                ft.DataCell(ft.ElevatedButton(text="$2", on_click=upgrade_triplet))
+                                ft.DataCell(triplet_button)
                             ]
                         ),
                         ft.DataRow(
                             cells=[
                                 ft.DataCell(ft.Text("Half Flush")),
-                                ft.DataCell(ft.ElevatedButton(text="$2", on_click=upgrade_half_flush))
+                                ft.DataCell(half_flush_button)
                             ]
                         ),
                         ft.DataRow(
                             cells=[
                                 ft.DataCell(ft.Text("Flush")),
-                                ft.DataCell(ft.ElevatedButton(text="$2", on_click=upgrade_flush))
+                                ft.DataCell(flush_button)
                             ]
                         ),
                         ft.DataRow(
                             cells=[
                                 ft.DataCell(ft.Text("Avatar")),
-                                ft.DataCell(ft.ElevatedButton(text="$7", on_click=upgrade_avatar))
+                                ft.DataCell(avatar_button)
                             ]
                         ),
                     ]),
