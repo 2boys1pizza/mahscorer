@@ -75,7 +75,7 @@ other_scoring_panel = []
 scoring_tiles_row = []
 current_hand_panel = []
 
-# other
+# shop
 initial_mahjongkers_row = []
 initial_mahjongker_text = ""
 shop_row = []
@@ -102,7 +102,7 @@ def main(page: ft.Page):
         elif e.control.selected_index == 2:
             page.go("/scorer")
         else:
-            page.go("/other")
+            page.go("/shop")
 
     # -------------------------------------------------------------
     # STATS FUNC
@@ -285,8 +285,8 @@ def main(page: ft.Page):
         page.update()
 
     def handle_add_tile_select(e):
-        tile_suit = e.control.image.src.split("/")[2].split(".")[0].split("-")[0]
-        tile_rank = e.control.image.src.split("/")[2].split(".")[0].split("-")[1]
+        tile_suit = e.control.image.src.split(".")[0].split("-")[0]
+        tile_rank = e.control.image.src.split(".")[0].split("-")[1]
         tile = all_tiles[tile_suit][tile_rank]
         if len(selected_tiles) < 4:
             selected_tiles.append(tile)
@@ -295,8 +295,8 @@ def main(page: ft.Page):
 
     def handle_remove_tile(e):
         global selected_tiles
-        tile_suit = e.control.image.src.split("/")[2].split(".")[0].split("-")[0]
-        tile_rank = e.control.image.src.split("/")[2].split(".")[0].split("-")[1]
+        tile_suit = e.control.image.src.split(".")[0].split("-")[0]
+        tile_rank = e.control.image.src.split(".")[0].split("-")[1]
         tile = all_tiles[tile_suit][tile_rank]
         selected_tiles.remove(tile)    
         refresh_selected_tiles()
@@ -419,7 +419,6 @@ def main(page: ft.Page):
                         image=ft.DecorationImage(src=tile.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                         border_radius=ft.border_radius.all(5),
                         ink=True,
-                        on_click=handle_add_tile_select
                 ))
             current_hand_panel.content.controls.append(ft.Row([
                 ft.ElevatedButton(text=f"Remove Eyes", on_click=remove_from_hand),
@@ -470,8 +469,8 @@ def main(page: ft.Page):
 
     def handle_select_table_wind(e):
         global table_wind
-        tile_suit = e.control.image.src.split("/")[2].split(".")[0].split("-")[0]
-        tile_rank = e.control.image.src.split("/")[2].split(".")[0].split("-")[1]
+        tile_suit = e.control.image.src.split(".")[0].split("-")[0]
+        tile_rank = e.control.image.src.split(".")[0].split("-")[1]
         table_wind = all_tiles[tile_suit][tile_rank]
         refresh_other_scoring()
 
@@ -510,8 +509,8 @@ def main(page: ft.Page):
 
     def handle_select_seat_wind(e):
         global seat_wind
-        tile_suit = e.control.image.src.split("/")[2].split(".")[0].split("-")[0]
-        tile_rank = e.control.image.src.split("/")[2].split(".")[0].split("-")[1]
+        tile_suit = e.control.image.src.split(".")[0].split("-")[0]
+        tile_rank = e.control.image.src.split(".")[0].split("-")[1]
         seat_wind = all_tiles[tile_suit][tile_rank]
         refresh_other_scoring()
 
@@ -982,7 +981,7 @@ def main(page: ft.Page):
                         ft.NavigationBarDestination(icon=ft.icons.QUERY_STATS, label="Stats"),
                         ft.NavigationBarDestination(icon=ft.icons.ADD_TO_PHOTOS, label="Mahjongkers"),
                         ft.NavigationBarDestination(icon=ft.icons.CALCULATE, label="Scorer"),
-                        ft.NavigationBarDestination(icon=ft.icons.CHECKLIST, label="Other"),
+                        ft.NavigationBarDestination(icon=ft.icons.ADD_SHOPPING_CART, label="Shop"),
                         ],
                         on_change=go_to_page,
                         selected_index=0)
@@ -1113,10 +1112,10 @@ def main(page: ft.Page):
                             ft.NavigationBarDestination(icon=ft.icons.QUERY_STATS, label="Stats"),
                             ft.NavigationBarDestination(icon=ft.icons.ADD_TO_PHOTOS, label="Mahjongkers"),
                             ft.NavigationBarDestination(icon=ft.icons.CALCULATE, label="Scorer"),
-                            ft.NavigationBarDestination(icon=ft.icons.CHECKLIST, label="Other"),
+                            ft.NavigationBarDestination(icon=ft.icons.ADD_SHOPPING_CART, label="Shop"),
                             ],
                             on_change=go_to_page,
-                            selected_index=3)
+                            selected_index=1)
                     ],
                 )
             )
@@ -1241,14 +1240,6 @@ def main(page: ft.Page):
             current_hand_panel.content = ft.Column([])
             refresh_current_hand()
             panel.controls.append(current_hand_panel)
-
-            
-            current_hand_panel.content.controls.append(ft.Row(controls=[
-                ft.ElevatedButton(text="Score Hand", on_click=score_hand),
-                hand_score_text,
-                ft.ElevatedButton(text="Add to Total Score", on_click=add_to_total_score)],
-                spacing=15)
-            )
             
             page.views.append(
                 ft.View(
@@ -1259,7 +1250,7 @@ def main(page: ft.Page):
                             ft.NavigationBarDestination(icon=ft.icons.QUERY_STATS, label="Stats"),
                             ft.NavigationBarDestination(icon=ft.icons.ADD_TO_PHOTOS, label="Mahjongkers"),
                             ft.NavigationBarDestination(icon=ft.icons.CALCULATE, label="Scorer"),
-                            ft.NavigationBarDestination(icon=ft.icons.CHECKLIST, label="Other"),
+                            ft.NavigationBarDestination(icon=ft.icons.ADD_SHOPPING_CART, label="Shop"),
                             ],
                             on_change=go_to_page,
                             selected_index=2)
@@ -1273,7 +1264,7 @@ def main(page: ft.Page):
         # -------------------------------------------------------------
         # OTHER Page
         # -------------------------------------------------------------
-        if page.route == "/other":
+        if page.route == "/shop":
             # expansion panel list
             panel = ft.ExpansionPanelList(
                 expand_icon_color=ft.colors.AMBER,
@@ -1455,14 +1446,14 @@ def main(page: ft.Page):
 
             page.views.append(
                 ft.View(
-                    "/other",
+                    "/shop",
                     [
                         panel,
                         ft.NavigationBar(destinations=[
                             ft.NavigationBarDestination(icon=ft.icons.QUERY_STATS, label="Stats"),
                             ft.NavigationBarDestination(icon=ft.icons.ADD_TO_PHOTOS, label="Mahjongkers"),
                             ft.NavigationBarDestination(icon=ft.icons.CALCULATE, label="Scorer"),
-                            ft.NavigationBarDestination(icon=ft.icons.CHECKLIST, label="Other"),
+                            ft.NavigationBarDestination(icon=ft.icons.ADD_SHOPPING_CART, label="Shop"),
                             ],
                             on_change=go_to_page,
                             selected_index=3)
