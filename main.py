@@ -285,8 +285,8 @@ def main(page: ft.Page):
         page.update()
 
     def handle_add_tile_select(e):
-        tile_suit = e.control.image.src.split(".")[0].split("-")[0]
-        tile_rank = e.control.image.src.split(".")[0].split("-")[1]
+        tile_suit = e.control.image.src.split("/")[2].split(".")[0].split("-")[0]
+        tile_rank = e.control.image.src.split("/")[2].split(".")[0].split("-")[1]
         tile = all_tiles[tile_suit][tile_rank]
         if len(selected_tiles) < 4:
             selected_tiles.append(tile)
@@ -295,8 +295,8 @@ def main(page: ft.Page):
 
     def handle_remove_tile(e):
         global selected_tiles
-        tile_suit = e.control.image.src.split(".")[0].split("-")[0]
-        tile_rank = e.control.image.src.split(".")[0].split("-")[1]
+        tile_suit = e.control.image.src.split("/")[2].split(".")[0].split("-")[0]
+        tile_rank = e.control.image.src.split("/")[2].split(".")[0].split("-")[1]
         tile = all_tiles[tile_suit][tile_rank]
         selected_tiles.remove(tile)    
         refresh_selected_tiles()
@@ -469,8 +469,8 @@ def main(page: ft.Page):
 
     def handle_select_table_wind(e):
         global table_wind
-        tile_suit = e.control.image.src.split(".")[0].split("-")[0]
-        tile_rank = e.control.image.src.split(".")[0].split("-")[1]
+        tile_suit = e.control.image.src.split("/")[2].split(".")[0].split("-")[0]
+        tile_rank = e.control.image.src.split("/")[2].split(".")[0].split("-")[1]
         table_wind = all_tiles[tile_suit][tile_rank]
         refresh_other_scoring()
 
@@ -509,8 +509,8 @@ def main(page: ft.Page):
 
     def handle_select_seat_wind(e):
         global seat_wind
-        tile_suit = e.control.image.src.split(".")[0].split("-")[0]
-        tile_rank = e.control.image.src.split(".")[0].split("-")[1]
+        tile_suit = e.control.image.src.split("/")[2].split(".")[0].split("-")[0]
+        tile_rank = e.control.image.src.split("/")[2].split(".")[0].split("-")[1]
         seat_wind = all_tiles[tile_suit][tile_rank]
         refresh_other_scoring()
 

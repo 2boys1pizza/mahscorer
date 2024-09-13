@@ -20,10 +20,10 @@ all_tiles = {"dot":{}, "bamboo":{}, "character":{}, "dragon":{}, "wind":{}}
 
 for suit in ["dot", "bamboo", "character"]:
     for rank in range(1, 10):
-        all_tiles[suit][str(rank)] = Tile(str(rank), suit, 5, suit + "-" + str(rank) + ".jpg")
+        all_tiles[suit][str(rank)] = Tile(str(rank), suit, 5, "/tiles/" + suit + "-" + str(rank) + ".jpg")
 
 for rank in ["red", "white", "green"]:
-    all_tiles["dragon"][rank] = Tile(rank, "dragon", 15, "dragon" + "-" + rank + ".jpg")
+    all_tiles["dragon"][rank] = Tile(rank, "dragon", 15, "/tiles/" + "dragon" + "-" + rank + ".jpg")
 
 for rank in ["east", "south", "west", "north"]:
-    all_tiles["wind"][rank] = Tile(rank, "wind", 20, "wind" + "-" + rank + ".jpg")
+    all_tiles["wind"][rank] = Tile(rank, "wind", 20, "/tiles/" + "wind" + "-" + rank + ".jpg")
