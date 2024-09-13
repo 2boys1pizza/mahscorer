@@ -88,6 +88,7 @@ triplet_button = []
 half_flush_button = []
 flush_button = []
 avatar_button = []
+hand_upgrade_enabled = False
 
 def main(page: ft.Page):
     # -------------------------------------------------------------
@@ -635,16 +636,17 @@ def main(page: ft.Page):
     def refresh_shop(e):
         global shop_row
         global reroll_cost
+        global shop_selected_i
         shop_row.controls.clear()
         i = 0
-        selected_i = []
+        shop_selected_i = []
         while i < 3:
             index = random.randint(0,len(all_mahjongkers_list)-1)
-            if index not in selected_i: 
-                selected_i.append(index)
+            if index not in shop_selected_i: 
+                shop_selected_i.append(index)
                 i = i+1
 
-        for i in selected_i:
+        for i in shop_selected_i:
             mahjongker = all_mahjongkers_list[i]
             shop_row.controls.append(
                 ft.Container(
@@ -824,6 +826,7 @@ def main(page: ft.Page):
         global half_flush_button
         global flush_button
         global avatar_button
+        global hand_upgrade_enabled
         sequence_button.text = "x"
         sequence_button.on_click = do_nothing
         triplet_button.text = "x"
@@ -834,8 +837,8 @@ def main(page: ft.Page):
         flush_button.on_click = do_nothing
         avatar_button.text = "x"
         avatar_button.on_click = do_nothing
+        hand_upgrade_enabled = False
         page.update()
-        print("hello i disable upgrade buy")
 
     def enable_hand_upgrade_buy():
         global sequence_button
@@ -843,6 +846,7 @@ def main(page: ft.Page):
         global half_flush_button
         global flush_button
         global avatar_button
+        global hand_upgrade_enabled
         sequence_button.text = "$2"
         sequence_button.on_click = upgrade_sequence
         triplet_button.text = "$2"
@@ -853,9 +857,9 @@ def main(page: ft.Page):
         flush_button.on_click = upgrade_flush
         avatar_button.text = "$7"
         avatar_button.on_click = upgrade_avatar
+        hand_upgrade_enabled = True
         page.update()
 
-        print("hello i enable upgrade buy")
 
     def buy_item(e):
         global money
@@ -907,7 +911,7 @@ def main(page: ft.Page):
         global half_flush_button
         global flush_button
         global avatar_button
-
+        global hand_upgrade_enabled
 
         page.views.clear() 
         page.views.append(
@@ -1258,7 +1262,7 @@ def main(page: ft.Page):
                             ft.NavigationBarDestination(icon=ft.icons.CHECKLIST, label="Other"),
                             ],
                             on_change=go_to_page,
-                            selected_index=3)
+                            selected_index=2)
                     ],
                 )
             )
@@ -1356,6 +1360,11 @@ def main(page: ft.Page):
                     ft.ElevatedButton(text=f"Buy Item - ${ITEM_COST}", on_click=buy_item)
                 ])
             ])
+
+            if hand_upgrade_enabled:
+                enable_hand_upgrade_buy()
+            else:
+                disable_hand_upgrade_buy()
 
             if shop_selected_i:
                 for i in shop_selected_i:
