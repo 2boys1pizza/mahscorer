@@ -79,7 +79,7 @@ def score(hand, table_wind, seat_wind, my_mahjongkers):
             points += evaluated_score[0]
             mult += evaluated_score[1]
 
-    return (points * mult)
+    return (points, mult)
 
 # my_hand = Hand()
 # meld1 = Meld()

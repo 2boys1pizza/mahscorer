@@ -539,7 +539,8 @@ def main(page: ft.Page):
     def score_hand(e):
         # global hand_score_text
         i = score(current_hand, table_wind, seat_wind, my_mahjongkers)
-        hand_score_text.value =  f"Score: {i}"
+        tot_score = i[0] * i[1]
+        hand_score_text.value =  f"Score: {i[0]} x {i[1]} = {tot_score}"
         page.update()
 
     def add_to_total_score(e):
@@ -686,52 +687,56 @@ def main(page: ft.Page):
         global reroll_cost
         global shop_row
         global shop_selected_i
-        reroll_cost += 1
-        shop_row.controls.clear()
-        i = 0
-        shop_selected_i = []
-        while i < 3:
-            index = random.randint(0,len(all_mahjongkers_list)-1)
-            if index not in shop_selected_i: 
-                mahjongker = all_mahjongkers_list[i]
-                if mahjongker not in my_mahjongkers:
-                    shop_selected_i.append(index)
-                    i = i+1
+        global money
+        if money >= reroll_cost:
+            money = money - reroll_cost
+            refresh_money_text()
+            reroll_cost += 1
+            shop_row.controls.clear()
+            i = 0
+            shop_selected_i = []
+            while i < 3:
+                index = random.randint(0,len(all_mahjongkers_list)-1)
+                if index not in shop_selected_i: 
+                    mahjongker = all_mahjongkers_list[i]
+                    if mahjongker not in my_mahjongkers:
+                        shop_selected_i.append(index)
+                        i = i+1
 
-        for i in shop_selected_i:
-            mahjongker = all_mahjongkers_list[i]
-            shop_row.controls.append(
-                ft.Container(
-                        image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
-                        content=ft.Text(f"{mahjongker.name} - ${mahjongker.cost}", bgcolor="#000000", color=ft.colors.WHITE),
-                        border_radius=ft.border_radius.all(5),
-                        ink=True,
-                        on_click=handle_add_shop_mahjongker_select,
-                        tooltip=ft.Tooltip(
-                            message=f"${mahjongker.cost} - {mahjongker.description}",
-                            padding=20,
-                            border_radius=10,
-                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
-                            gradient=ft.LinearGradient(
-                                begin=ft.alignment.top_left,
-                                end=ft.alignment.Alignment(0.8, 1),
-                                colors=[
-                                    "0xff1f005c",
-                                    "0xff5b0060",
-                                    "0xff870160",
-                                    "0xffac255e",
-                                    "0xffca485c",
-                                    "0xffe16b5c",
-                                    "0xfff39060",
-                                    "0xffffb56b",
-                                ],
-                                tile_mode=ft.GradientTileMode.MIRROR,
+            for i in shop_selected_i:
+                mahjongker = all_mahjongkers_list[i]
+                shop_row.controls.append(
+                    ft.Container(
+                            image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                            content=ft.Text(f"{mahjongker.name} - ${mahjongker.cost}", bgcolor="#000000", color=ft.colors.WHITE),
+                            border_radius=ft.border_radius.all(5),
+                            ink=True,
+                            on_click=handle_add_shop_mahjongker_select,
+                            tooltip=ft.Tooltip(
+                                message=f"${mahjongker.cost} - {mahjongker.description}",
+                                padding=20,
+                                border_radius=10,
+                                text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                                gradient=ft.LinearGradient(
+                                    begin=ft.alignment.top_left,
+                                    end=ft.alignment.Alignment(0.8, 1),
+                                    colors=[
+                                        "0xff1f005c",
+                                        "0xff5b0060",
+                                        "0xff870160",
+                                        "0xffac255e",
+                                        "0xffca485c",
+                                        "0xffe16b5c",
+                                        "0xfff39060",
+                                        "0xffffb56b",
+                                    ],
+                                    tile_mode=ft.GradientTileMode.MIRROR,
+                                )
                             )
                         )
-                    )
-            )
-        shop_row.controls.append(ft.FloatingActionButton(text=f"${reroll_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_mahjongkers))
-        page.update()
+                )
+            shop_row.controls.append(ft.FloatingActionButton(text=f"${reroll_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_mahjongkers))
+            page.update()
 
     def handle_add_shop_mahjongker_select(e):
         global shop_mahjongker_text
