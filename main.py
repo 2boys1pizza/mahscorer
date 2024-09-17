@@ -9,7 +9,7 @@ from mahscorer import *
 
 # global scoring
 HAND_TYPE_UPGRADE_MULT = 1.5
-HAND_SIZE_COSTS = [4,8,16,26]
+HAND_SIZE_COSTS = [4,9,16,26]
 SEQUENCE_UPGRADE_COST = 2
 TRIPLET_UPGRADE_COST = 2
 HALF_FLUSH_UPGRADE_COST = 2
@@ -24,12 +24,13 @@ half_flush_hand_level = 0
 flush_hand_level = 0
 hand_size_level = 0
 
-
 # stats
 money = 0
 total_score = 0
+hand_size = 10
 money_text = ft.Text(money, size=80)
 score_text = ft.Text(total_score, size=80)
+hand_size_text = ft.Text(hand_size, size=80)
 
 # mahjongkers
 my_mahjongkers = []
@@ -871,6 +872,19 @@ def main(page: ft.Page):
             money = money - ITEM_COST
             refresh_money_text()
 
+    def upgrade_hand_size(e):
+        global money
+        global hand_size_level
+        global hand_size_text
+        global hand_size
+        if money >= HAND_SIZE_COSTS[hand_size_level]:
+            money = money - HAND_SIZE_COSTS[hand_size_level]
+            hand_size = hand_size + 1
+            hand_size_level = hand_size_level + 1
+            hand_size_text.value = str(hand_size)
+            refresh_money_text()
+            page.update()
+
     def do_nothing(e):
         print("I do nothing!")
 
@@ -879,6 +893,9 @@ def main(page: ft.Page):
     # -------------------------------------------------------------
     def route_change(e):
         global money
+        global hand_size_text
+        global hand_size
+        global hand_size_level
         global sequence_hand_mult
         global triplet_hand_mult
         global half_flush_hand_mult
@@ -949,39 +966,48 @@ def main(page: ft.Page):
                         ],
                         alignment=ft.MainAxisAlignment.CENTER),
                     ft.Row(
-                        [(ft.DataTable(
-                            columns=[
-                                ft.DataColumn(ft.Text("Hand")),
-                                ft.DataColumn(ft.Text("Mult Bonus")),
-                            ],
-                            rows=[
-                                ft.DataRow(
-                                    cells=[
-                                        ft.DataCell(ft.Text("Sequence")),
-                                        ft.DataCell(ft.Text(f"{sequence_hand_mult}"))
-                                    ]
-                                ),
-                                ft.DataRow(
-                                    cells=[
-                                        ft.DataCell(ft.Text("Triplet")),
-                                        ft.DataCell(ft.Text(f"{triplet_hand_mult}"))
-                                    ]
-                                ),
-                                ft.DataRow(
-                                    cells=[
-                                        ft.DataCell(ft.Text("Half Flush")),
-                                        ft.DataCell(ft.Text(f"{half_flush_hand_mult}"))
-                                    ]
-                                ),
-                                ft.DataRow(
-                                    cells=[
-                                        ft.DataCell(ft.Text("Flush")),
-                                        ft.DataCell(ft.Text(f"{flush_hand_mult}"))
-                                    ]
-                                ),
-                            ]
-                        ))],
-                        alignment=ft.MainAxisAlignment.CENTER),
+                        [
+                            ft.DataTable(
+                                columns=[
+                                    ft.DataColumn(ft.Text("Hand")),
+                                    ft.DataColumn(ft.Text("Mult Bonus")),
+                                ],
+                                rows=[
+                                    ft.DataRow(
+                                        cells=[
+                                            ft.DataCell(ft.Text("Sequence")),
+                                            ft.DataCell(ft.Text(f"{sequence_hand_mult}"))
+                                        ]
+                                    ),
+                                    ft.DataRow(
+                                        cells=[
+                                            ft.DataCell(ft.Text("Triplet")),
+                                            ft.DataCell(ft.Text(f"{triplet_hand_mult}"))
+                                        ]
+                                    ),
+                                    ft.DataRow(
+                                        cells=[
+                                            ft.DataCell(ft.Text("Half Flush")),
+                                            ft.DataCell(ft.Text(f"{half_flush_hand_mult}"))
+                                        ]
+                                    ),
+                                    ft.DataRow(
+                                        cells=[
+                                            ft.DataCell(ft.Text("Flush")),
+                                            ft.DataCell(ft.Text(f"{flush_hand_mult}"))
+                                        ]
+                                    ),
+                                ]
+                            ), 
+                            # ft.Text("hi")],
+                            ft.Column([
+                                ft.Text("Hand Size", size=40),
+                                hand_size_text],
+                                horizontal_alignment=ft.CrossAxisAlignment.CENTER
+                            )],
+                        # hand_size_text]
+                        alignment=ft.MainAxisAlignment.CENTER,
+                        spacing=30),
                     ft.NavigationBar(destinations=[
                         ft.NavigationBarDestination(icon=ft.icons.QUERY_STATS, label="Stats"),
                         ft.NavigationBarDestination(icon=ft.icons.ADD_TO_PHOTOS, label="Mahjongkers"),
@@ -1353,7 +1379,11 @@ def main(page: ft.Page):
                             ]
                         ),
                     ]),
-                    ft.ElevatedButton(text=f"Buy Item - ${ITEM_COST}", on_click=buy_item)
+                    ft.Column([
+                        ft.ElevatedButton(text=f"Buy Item - ${ITEM_COST}", on_click=buy_item),
+                        ft.ElevatedButton(text=f"Upgrade Hand Size - ${HAND_SIZE_COSTS[hand_size_level]}", on_click=upgrade_hand_size)
+                        ],
+                        spacing=50)
                 ])
             ])
 
