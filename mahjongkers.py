@@ -385,7 +385,7 @@ class AYCker(Mahjongker):
     point_value = 0
 
     def eval_score(self):
-        return (point_value, 0)
+        return (self.point_value, 0)
 
 # Pingker
 class Pingker(Mahjongker):
@@ -397,7 +397,7 @@ class Pingker(Mahjongker):
     point_value = 0
 
     def eval_score(self):
-        return (point_value, 0)
+        return (self.point_value, 0)
 
 # KingKongker
 class KingKongker(Mahjongker):
@@ -409,7 +409,7 @@ class KingKongker(Mahjongker):
     point_value = 0
 
     def eval_score(self):
-        return (point_value, 0)
+        return (self.point_value, 0)
 
 # Gapker
 class Gapker(Mahjongker):
@@ -630,7 +630,7 @@ class Meldker(Mahjongker):
     point_value = 0
 
     def eval_score(self):
-        return (point_value, 0)
+        return (self.point_value, 0)
 
 # Snakeker
 class Snakeker(Mahjongker):
