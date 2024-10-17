@@ -831,7 +831,7 @@ class DOWker(Mahjongker):
     description = "At the start of the next shop, you may give this to another player.  They must give you back $2"
     priority = 5 
     cost = COMMON_MAHJONGKER_COST
-    img_src = "/jongker/dowker.jpg"
+    img_src = "/jongker/DOWker.jpg"
 
     def eval_score(self):
         return (0, 0)

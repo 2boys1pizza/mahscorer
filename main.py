@@ -1327,7 +1327,7 @@ def main(page: ft.Page):
                             ft.DataTable(
                                 columns=[
                                     ft.DataColumn(ft.Text("Hand")),
-                                    ft.DataColumn(ft.Text("Mult Bonus")),
+                                    ft.DataColumn(ft.Text("Mult")),
                                 ],
                                 rows=[
                                     ft.DataRow(
@@ -1364,7 +1364,7 @@ def main(page: ft.Page):
                             )],
                         # hand_size_text]
                         alignment=ft.MainAxisAlignment.CENTER,
-                        spacing=30),
+                        spacing=15),
                     ft.NavigationBar(destinations=[
                         ft.NavigationBarDestination(icon=ft.icons.QUERY_STATS, label="Stats"),
                         ft.NavigationBarDestination(icon=ft.icons.ADD_TO_PHOTOS, label="Mahjongkers"),
