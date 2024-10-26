@@ -79,6 +79,7 @@ all_tile_containers = []
 other_scoring_panel = []
 scoring_tiles_row = []
 current_hand_panel = []
+tot_score = 0
 
 # shop
 initial_mahjongkers_row = []
@@ -895,6 +896,7 @@ def main(page: ft.Page):
 
     def score_hand(e):
         # global hand_score_text
+        global tot_score
         i = score(current_hand, table_wind, seat_wind, my_mahjongkers)
         tot_score = i[0] * i[1]
         hand_score_text.value =  f"Score: {i[0]} x {i[1]} = {tot_score}"
@@ -902,8 +904,9 @@ def main(page: ft.Page):
 
     def add_to_total_score(e):
         global total_score
-        score_num = int(hand_score_text.value.split(" ")[1])
-        total_score += score_num
+        global tot_score
+        total_score += tot_score
+        tot_score = 0
         hand_score_text.value =  f"Score: 0"
         score_text.value = str(total_score)
         current_hand.melds = []
