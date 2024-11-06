@@ -1,12 +1,7 @@
 from tiles import *
 from mahjongkers import *
 
-sequence_hand_mult = 1.5
-triplet_hand_mult = 2.0
-half_flush_hand_mult = 2.0
-flush_hand_mult = 3.0
-
-def score(hand, table_wind, seat_wind, my_mahjongkers):
+def score(hand, table_wind, seat_wind, my_mahjongkers, sequence_hand_mult, triplet_hand_mult, half_flush_hand_mult, flush_hand_mult):
     points = 0
     mult = 1
 

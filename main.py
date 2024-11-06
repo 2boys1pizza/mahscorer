@@ -9,13 +9,14 @@ from mahscorer import *
 
 # global scoring
 HAND_TYPE_UPGRADE_MULT = 1.5
-HAND_SIZE_COSTS = [4,9,16,26]
+HAND_SIZE_COSTS = [6,11,16,26]
 SEQUENCE_UPGRADE_COST = 2
 TRIPLET_UPGRADE_COST = 2
 HALF_FLUSH_UPGRADE_COST = 2
 FLUSH_UPGRADE_COST = 2
 AVATAR_UPGRADE_COST = 7
-ITEM_COST = 2
+ITEM_COST = 3
+MAX_NUM_MAHJONGKERS = 5
 
 # hands
 sequence_hand_level = 0
@@ -23,6 +24,10 @@ triplet_hand_level = 0
 half_flush_hand_level = 0
 flush_hand_level = 0
 hand_size_level = 0
+sequence_hand_mult = 1.5
+triplet_hand_mult = 2.0
+half_flush_hand_mult = 2.0
+flush_hand_mult = 3.0
 
 # stats
 money = 0
@@ -31,6 +36,7 @@ hand_size = 10
 money_text = ft.Text(money, size=80)
 score_text = ft.Text(total_score, size=80)
 hand_size_text = ft.Text(hand_size, size=80)
+score_adjust_tf = []
 
 # mahjongkers
 my_mahjongkers = []
@@ -88,6 +94,7 @@ shop_row = []
 shop_mahjongker_text = ""
 reroll_cost = 1
 shop_money_text = ""
+hand_size_upgrade_button = []
 shop_selected_i = []
 sequence_button = []
 triplet_button = []
@@ -152,6 +159,33 @@ def main(page: ft.Page):
         money -= 1
         money_text.value = str(money)
         page.update()
+
+    def adjust_score(e):
+        global total_score
+        global score_text
+        print(float(score_adjust_tf.value))
+        total_score = float(score_adjust_tf.value)
+        score_text.value = total_score
+        page.update()
+
+    def increment_hand_size(e):
+        global hand_size
+        global hand_size_level
+        global hand_size_text
+        hand_size = hand_size + 1
+        hand_size_level = hand_size_level + 1
+        hand_size_text.value = str(hand_size)
+        page.update()
+
+    def decrement_hand_size(e):
+        global hand_size
+        global hand_size_level
+        global hand_size_text
+        hand_size = max(10, hand_size - 1)
+        hand_size_level = max(0, hand_size_level - 1)
+        hand_size_text.value = str(hand_size)
+        page.update()
+
 
     # -------------------------------------------------------------
     # MAHJONGKER FUNC
@@ -257,7 +291,7 @@ def main(page: ft.Page):
             if mahjongker.name == "Pingker":
                 pingker = mahjongker
                 break
-        pingker.point_value = pingker.point_value + 15
+        pingker.point_value = pingker.point_value + 20
         pingker_text.value = f"Pingker value: {pingker.point_value}"
         page.update()
 
@@ -268,7 +302,7 @@ def main(page: ft.Page):
             if mahjongker.name == "Pingker":
                 pingker = mahjongker
                 break
-        pingker.point_value = max(0, pingker.point_value - 15)
+        pingker.point_value = max(0, pingker.point_value - 20)
         pingker_text.value = f"Pingker value: {pingker.point_value}"
         page.update()
 
@@ -357,7 +391,7 @@ def main(page: ft.Page):
             if mahjongker.name == "Meldker":
                 meldker = mahjongker
                 break
-        meldker.point_value = meldker.point_value + 40
+        meldker.point_value = meldker.point_value + 30
         meldker_text.value = f"Meldker value: {meldker.point_value}"
         page.update()
 
@@ -368,7 +402,7 @@ def main(page: ft.Page):
             if mahjongker.name == "Meldker":
                 meldker = mahjongker
                 break
-        meldker.point_value = max(0, meldker.point_value - 40)
+        meldker.point_value = max(0, meldker.point_value - 30)
         meldker_text.value = f"Meldker value: {meldker.point_value}"
         page.update()
 
@@ -566,7 +600,7 @@ def main(page: ft.Page):
         for mahjongker_container in my_mahjongkers_containers:
             my_mahjongker_grid.controls.append(mahjongker_container)
 
-        my_jongkers_panel.header = ft.ListTile(title=ft.Text(f"My Jongkers ({len(my_mahjongkers)}/7)"))
+        my_jongkers_panel.header = ft.ListTile(title=ft.Text(f"My Jongkers ({len(my_mahjongkers)}/{MAX_NUM_MAHJONGKERS})"))
         page.update()
 
     def refresh_all_mahjongkers():
@@ -897,7 +931,11 @@ def main(page: ft.Page):
     def score_hand(e):
         # global hand_score_text
         global tot_score
-        i = score(current_hand, table_wind, seat_wind, my_mahjongkers)
+        global sequence_hand_mult
+        global triplet_hand_mult
+        global half_flush_hand_mult 
+        global flush_hand_mult
+        i = score(current_hand, table_wind, seat_wind, my_mahjongkers, sequence_hand_mult, triplet_hand_mult, half_flush_hand_mult, flush_hand_mult)
         tot_score = i[0] * i[1]
         hand_score_text.value =  f"Score: {i[0]} x {i[1]} = {tot_score}"
         page.update()
@@ -1175,6 +1213,10 @@ def main(page: ft.Page):
 
     def upgrade_avatar(e):
         global money
+        global sequence_hand_mult
+        global triplet_hand_mult
+        global half_flush_hand_mult
+        global flush_hand_mult
         if money >= AVATAR_UPGRADE_COST:
             money = money - AVATAR_UPGRADE_COST
             sequence_hand_mult = sequence_hand_mult * HAND_TYPE_UPGRADE_MULT
@@ -1236,13 +1278,18 @@ def main(page: ft.Page):
         global hand_size_level
         global hand_size_text
         global hand_size
+        global hand_size_upgrade_button
+        print(hand_size_upgrade_button.text)
         if money >= HAND_SIZE_COSTS[hand_size_level]:
             money = money - HAND_SIZE_COSTS[hand_size_level]
             hand_size = hand_size + 1
             hand_size_level = hand_size_level + 1
             hand_size_text.value = str(hand_size)
+            hand_size_upgrade_button.text = f"Upgrade Hand Size - ${HAND_SIZE_COSTS[hand_size_level]}"
+            print(hand_size_upgrade_button.text)
             refresh_money_text()
             page.update()
+        page.update()
 
     def do_nothing(e):
         print("I do nothing!")
@@ -1251,6 +1298,7 @@ def main(page: ft.Page):
     # PAGES - ROUTES HERE
     # -------------------------------------------------------------
     def route_change(e):
+        global score_adjust_tf
         global money
         global hand_size_text
         global hand_size
@@ -1286,6 +1334,7 @@ def main(page: ft.Page):
         global shop_mahjongker_text
         global reroll_cost
         global shop_money_text
+        global hand_size_upgrade_button
         global shop_selected_i
         global sequence_button
         global triplet_button
@@ -1293,6 +1342,8 @@ def main(page: ft.Page):
         global flush_button
         global avatar_button
         global hand_upgrade_enabled
+
+        score_adjust_tf = ft.TextField(label="Score Adjust")
 
         page.views.clear() 
         page.views.append(
@@ -1305,7 +1356,12 @@ def main(page: ft.Page):
                                 ft.Text("Score", size=40),
                                 score_text],
                                 horizontal_alignment=ft.CrossAxisAlignment.CENTER
-                            ))
+                            )),
+                            (ft.Column([
+                                score_adjust_tf,
+                                ft.ElevatedButton(text="Adjust Score", on_click=adjust_score)],
+                                horizontal_alignment=ft.CrossAxisAlignment.CENTER
+                            )),
                         ],
                         alignment=ft.MainAxisAlignment.CENTER),
                     ft.Row(
@@ -1362,7 +1418,15 @@ def main(page: ft.Page):
                             # ft.Text("hi")],
                             ft.Column([
                                 ft.Text("Hand Size", size=40),
-                                hand_size_text],
+                                ft.Row([
+                                    hand_size_text,
+                                    ft.Column([
+                                        ft.ElevatedButton(text="↑", on_click=increment_hand_size),
+                                        ft.ElevatedButton(text="↓", on_click=decrement_hand_size)
+                                        ])
+                                    ],
+                                    alignment=ft.MainAxisAlignment.CENTER)
+                                ],
                                 horizontal_alignment=ft.CrossAxisAlignment.CENTER
                             )],
                         # hand_size_text]
@@ -1377,6 +1441,7 @@ def main(page: ft.Page):
                         on_change=go_to_page,
                         selected_index=0)
                 ],
+                scroll=ft.ScrollMode.AUTO
             )
         )
         page.update()
@@ -1398,7 +1463,7 @@ def main(page: ft.Page):
 
             my_jongkers_panel = ft.ExpansionPanel(
                 bgcolor=ft.colors.GREEN_500,
-                header=ft.ListTile(title=ft.Text(f"My Jongkers ({len(my_mahjongkers)}/7)")),
+                header=ft.ListTile(title=ft.Text(f"My Jongkers ({len(my_mahjongkers)}/{MAX_NUM_MAHJONGKERS})")),
             )
 
             my_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
@@ -1508,6 +1573,7 @@ def main(page: ft.Page):
                             on_change=go_to_page,
                             selected_index=1)
                     ],
+                    scroll=ft.ScrollMode.AUTO
                 )
             )
         page.update()
@@ -1646,6 +1712,7 @@ def main(page: ft.Page):
                             on_change=go_to_page,
                             selected_index=2)
                     ],
+                    scroll=ft.ScrollMode.AUTO
                 )
             )
 
@@ -1653,7 +1720,7 @@ def main(page: ft.Page):
         page.update()
 
         # -------------------------------------------------------------
-        # OTHER Page
+        # SHOP Page
         # -------------------------------------------------------------
         if page.route == "/shop":
             # expansion panel list
@@ -1685,6 +1752,7 @@ def main(page: ft.Page):
             )
             shop_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
             shop_money_text = ft.Text(f"Money: {money}", size=30)
+            hand_size_upgrade_button = ft.ElevatedButton(text=f"Upgrade Hand Size - ${HAND_SIZE_COSTS[hand_size_level]}", on_click=upgrade_hand_size)
             sequence_button = ft.ElevatedButton(text="x", on_click=do_nothing)
             triplet_button = ft.ElevatedButton(text="x", on_click=do_nothing)
             half_flush_button = ft.ElevatedButton(text="x", on_click=do_nothing)
@@ -1741,7 +1809,7 @@ def main(page: ft.Page):
                     ]),
                     ft.Column([
                         ft.ElevatedButton(text=f"Buy Item - ${ITEM_COST}", on_click=buy_item),
-                        ft.ElevatedButton(text=f"Upgrade Hand Size - ${HAND_SIZE_COSTS[hand_size_level]}", on_click=upgrade_hand_size)
+                        hand_size_upgrade_button
                         ],
                         spacing=50)
                 ])
@@ -1853,6 +1921,7 @@ def main(page: ft.Page):
                             on_change=go_to_page,
                             selected_index=3)
                     ],
+                    scroll=ft.ScrollMode.AUTO
                 )
             )
             page.update()
@@ -1871,7 +1940,7 @@ def main(page: ft.Page):
     page.on_route_change = route_change
     page.on_view_pop = view_pop
     page.scroll = ft.ScrollMode.AUTO
-    page.auto_scroll = True
+    # page.auto_scroll = True
 
     page.go("/stats")
 

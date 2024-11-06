@@ -4,9 +4,9 @@ from tiles import *
 # GLOBALS
 # ------------------------------------------------
 
-COMMON_MAHJONGKER_COST = 2
-UNCOMMON_MAHJONGKER_COST = 5
-RARE_MAHJONGKER_COST = 8
+COMMON_MAHJONGKER_COST = 3
+UNCOMMON_MAHJONGKER_COST = 6
+RARE_MAHJONGKER_COST = 10
 
 
 
@@ -315,28 +315,28 @@ class Kohlker(Mahjongker):
 # Windker
 class Windker(Mahjongker):
     name = "Windker"
-    description = "+0.4 mult for each wind meld"
+    description = "+0.6 mult for each wind meld"
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/windker.jpg"
 
     def eval_score(self, meld):
         if meld.suit == "wind":
-            return (0, 0.4)
+            return (0, 0.6)
         else:
             return (0, 0)
 
 # Draker
 class Draker(Mahjongker):
     name = "Draker"
-    description = "+0.3 mult for each dragon meld"
+    description = "+0.5 mult for each dragon meld"
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/draker.jpg"
 
     def eval_score(self, meld):
         if meld.suit == "dragon":
-            return (0, 0.3)
+            return (0, 0.5)
         else:
             return (0, 0)
 
@@ -390,7 +390,7 @@ class AYCker(Mahjongker):
 # Pingker
 class Pingker(Mahjongker):
     name = "Pingker"
-    description = "This Mahjongker gains +15 pts on pong (stacking) Current: 0"
+    description = "This Mahjongker gains +20 pts on pong (stacking) Current: 0"
     priority = 5 
     cost = UNCOMMON_MAHJONGKER_COST
     img_src = "/jongker/pingker.jpg"
@@ -458,7 +458,7 @@ class Bourdainker(Mahjongker):
 # Dollker
 class Dollker(Mahjongker):
     name = "Dollker"
-    description = "+$3 for discarding your seat wind"
+    description = "+$5 for discarding your seat wind"
     priority = 5 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/dollker.jpg"
@@ -469,7 +469,7 @@ class Dollker(Mahjongker):
 # Yenker
 class Yenker(Mahjongker):
     name = "Yenker"
-    description = "+$3 for discarding the table wind"
+    description = "+$5 for discarding the table wind"
     priority = 5 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/yenker.jpg"
@@ -516,7 +516,7 @@ class Gayker(Mahjongker):
 # Bumungker
 class Bumungker(Mahjongker):
     name = "Bumungker"
-    description = "+2.0 mult for a hand with only bamboos (excluding honors)"
+    description = "+30 pts for a hand with only bamboos (excluding honors)"
     priority = 4 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/bumungker.jpg"
@@ -527,14 +527,14 @@ class Bumungker(Mahjongker):
             if meld.suit != "bamboo" and meld.suit != "dragon" and meld.suit != "wind":
                 all_bamboos = False
         if all_bamboos:
-            return (0, 2)
+            return (30, 0)
         else:
             return (0, 0)
 
 # Dungker
 class Dungker(Mahjongker):
     name = "Dungker"
-    description = "+2.0 mult for a hand with only dots (excluding honors)"
+    description = "+30 pts for a hand with only dots (excluding honors)"
     priority = 4 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/dungker.jpg"
@@ -545,14 +545,14 @@ class Dungker(Mahjongker):
             if meld.suit != "dot" and meld.suit != "dragon" and meld.suit != "wind":
                 all_dots = False
         if all_dots:
-            return (0, 2)
+            return (30, 0)
         else:
             return (0, 0)
 
 # Chungker
 class Chungker(Mahjongker):
     name = "Chungker"
-    description = "+2.0 mult for a hand with only characters (excluding honors)"
+    description = "+30 pts for a hand with only characters (excluding honors)"
     priority = 4 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/chungker.jpg"
@@ -563,49 +563,49 @@ class Chungker(Mahjongker):
             if meld.suit != "character" and meld.suit != "dragon" and meld.suit != "wind":
                 all_chars = False
         if all_chars:
-            return (0, 2)
+            return (30, 0)
         else:
             return (0, 0)
 
 # Bimingker
 class Bimingker(Mahjongker):
     name = "Bimingker"
-    description = "+0.2 mult for each bamboo meld"
+    description = "+0.4 mult for each bamboo meld"
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/bimingker.jpg"
 
     def eval_score(self, meld):
         if meld.suit == "bamboo":
-            return (0, 0.2)
+            return (0, 0.4)
         else:
             return (0, 0)
 
 # Dingker
 class Dingker(Mahjongker):
     name = "Dingker"
-    description = "+0.2 mult for each dot meld"
+    description = "+0.4 mult for each dot meld"
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/dingker.jpg"
 
     def eval_score(self, meld):
         if meld.suit == "dot":
-            return (0, 0.2)
+            return (0, 0.4)
         else:
             return (0, 0)
 
 # Chingker
 class Chingker(Mahjongker):
     name = "Chingker"
-    description = "+0.2 mult for each character meld"
+    description = "+0.4 mult for each character meld"
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/chingker.jpg"
 
     def eval_score(self, meld):
         if meld.suit == "character":
-            return (0, 0.2)
+            return (0, 0.4)
         else:
             return (0, 0)
 
@@ -784,7 +784,7 @@ class Magellker(Mahjongker):
 # Salarymanker
 class Salarymanker(Mahjongker):
     name = "Salarymanker"
-    description = "+$3 at the end of the round"
+    description = "+$4 at the end of the round"
     priority = 5 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/salarymanker.jpg"
@@ -795,7 +795,7 @@ class Salarymanker(Mahjongker):
 # MealTicker
 class MealTicker(Mahjongker):
     name = "MealTicker"
-    description = "+$3 each time you chi"
+    description = "+$4 each time you chi"
     priority = 5 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/mealticker.jpg"
@@ -806,7 +806,7 @@ class MealTicker(Mahjongker):
 # WenGeker
 class WenGeker(Mahjongker):
     name = "WenGeker"
-    description = "+$3 each time you pong"
+    description = "+$4 each time you pong"
     priority = 5 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/wengeker.jpg"
@@ -817,7 +817,7 @@ class WenGeker(Mahjongker):
 # Fourker
 class Fourker(Mahjongker):
     name = "Fourker"
-    description = "+$6 each time you kong"
+    description = "+$8 each time you kong"
     priority = 5 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/fourker.jpg"
@@ -828,7 +828,7 @@ class Fourker(Mahjongker):
 # DOWker
 class DOWker(Mahjongker):
     name = "DOWker"
-    description = "At the start of the next shop, you may give this to another player.  They must give you back $2"
+    description = "At the start of the next shop, you may give this to another player.  They must give you back $5"
     priority = 5 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/DOWker.jpg"
@@ -839,7 +839,7 @@ class DOWker(Mahjongker):
 # Comebacker
 class Comebacker(Mahjongker):
     name = "Comebacker"
-    description = "+$8 at the start of shop phase if you are in last place for total points"
+    description = "+$10 at the start of shop phase if you are in last place for total points"
     priority = 5 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/comebacker.jpg"
@@ -916,7 +916,7 @@ class Boomerangker(Mahjongker):
 # Doraker
 class Doraker(Mahjongker):
     name = "Doraker"
-    description = "At the start of the round, a random tile is selected. That tile is worth an additional 15 points when scored"
+    description = "At the start of the round, a random tile is selected. That tile is worth an additional 20 points when scored"
     priority = 1 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/doraker.jpg"
@@ -924,7 +924,7 @@ class Doraker(Mahjongker):
 
     def eval_score(self, tile):
         if tile.suit == selected_tile.suit and tile.rank == selected_tile.rank:
-            return (15, 0)
+            return (20, 0)
         else:
             return (0, 0)
 
