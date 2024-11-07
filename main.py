@@ -1,6 +1,7 @@
 import flet as ft
 import time
 import random
+from items import *
 from mahscorer import *
 
 # -------------------------------------------------------------
@@ -10,13 +11,17 @@ from mahscorer import *
 # global scoring
 HAND_TYPE_UPGRADE_MULT = 1.5
 HAND_SIZE_COSTS = [6,11,16,26]
-SEQUENCE_UPGRADE_COST = 2
-TRIPLET_UPGRADE_COST = 2
-HALF_FLUSH_UPGRADE_COST = 2
-FLUSH_UPGRADE_COST = 2
-AVATAR_UPGRADE_COST = 7
+SEQUENCE_UPGRADE_COST = 3
+TRIPLET_UPGRADE_COST = 3
+HALF_FLUSH_UPGRADE_COST = 3
+FLUSH_UPGRADE_COST = 3
+AVATAR_UPGRADE_COST = 10
 ITEM_COST = 3
 MAX_NUM_MAHJONGKERS = 5
+SEQUENCE_UPGRADE_AMOUNT = 0.5
+TRIPLET_UPGRADE_AMOUNT = 0.7
+HALF_FLUSH_UPGRADE_AMOUNT = 0.7
+FLUSH_UPGRADE_AMOUNT = 1.0
 
 # hands
 sequence_hand_level = 0
@@ -37,6 +42,10 @@ money_text = ft.Text(money, size=80)
 score_text = ft.Text(total_score, size=80)
 hand_size_text = ft.Text(hand_size, size=80)
 score_adjust_tf = []
+sequence_mult_text = []
+triplet_mult_text = []
+half_flush_mult_text = []
+flush_mult_text = []
 
 # mahjongkers
 my_mahjongkers = []
@@ -91,17 +100,19 @@ tot_score = 0
 initial_mahjongkers_row = []
 initial_mahjongker_text = ""
 shop_row = []
+item_row = []
 shop_mahjongker_text = ""
 reroll_cost = 1
 shop_money_text = ""
 hand_size_upgrade_button = []
 shop_selected_i = []
+item_selected = []
 sequence_button = []
 triplet_button = []
 half_flush_button = []
 flush_button = []
 avatar_button = []
-hand_upgrade_enabled = False
+hand_upgrade_enabled = True
 
 #------------------------------------------
 # CUSTOM CLASSES 
@@ -186,6 +197,62 @@ def main(page: ft.Page):
         hand_size_text.value = str(hand_size)
         page.update()
 
+    def increment_sequence_mult(e):
+        global sequence_hand_mult
+        global sequence_mult_text
+        sequence_hand_mult = sequence_hand_mult + SEQUENCE_UPGRADE_AMOUNT
+        sequence_mult_text.value = str(sequence_hand_mult)
+        page.update()
+
+    def increment_triplet_mult(e):
+        global triplet_hand_mult
+        global triplet_mult_text
+        triplet_hand_mult = triplet_hand_mult + TRIPLET_UPGRADE_AMOUNT
+        triplet_mult_text.value = str(triplet_hand_mult)
+        page.update()
+
+    def increment_half_flush_mult(e):
+        global half_flush_hand_mult
+        global half_flush_mult_text
+        half_flush_hand_mult = half_flush_hand_mult + HALF_FLUSH_UPGRADE_AMOUNT
+        half_flush_mult_text.value = str(half_flush_hand_mult)
+        page.update()
+
+    def increment_flush_mult(e):
+        global flush_hand_mult
+        global flush_mult_text
+        flush_hand_mult = flush_hand_mult + FLUSH_UPGRADE_AMOUNT
+        flush_mult_text.value = str(flush_hand_mult)
+        page.update()
+
+    def decrement_sequence_mult(e):
+        global sequence_hand_mult
+        global sequence_mult_text
+        sequence_hand_mult = sequence_hand_mult - SEQUENCE_UPGRADE_AMOUNT
+        sequence_mult_text.value = str(sequence_hand_mult)
+        page.update()
+
+    def decrement_triplet_mult(e):
+        global triplet_hand_mult
+        global triplet_mult_text
+        triplet_hand_mult = triplet_hand_mult - TRIPLET_UPGRADE_AMOUNT
+        triplet_mult_text.value = str(triplet_hand_mult)
+        page.update()
+
+
+    def decrement_half_flush_mult(e):
+        global half_flush_hand_mult
+        global half_flush_mult_text
+        half_flush_hand_mult = half_flush_hand_mult - HALF_FLUSH_UPGRADE_AMOUNT
+        half_flush_mult_text.value = str(half_flush_hand_mult)
+        page.update()
+
+    def decrement_flush_mult(e):
+        global flush_hand_mult
+        global flush_mult_text
+        flush_hand_mult = flush_hand_mult - FLUSH_UPGRADE_AMOUNT
+        flush_mult_text.value = str(flush_hand_mult)
+        page.update()
 
     # -------------------------------------------------------------
     # MAHJONGKER FUNC
@@ -1180,36 +1247,40 @@ def main(page: ft.Page):
         global sequence_hand_mult
         if money >= SEQUENCE_UPGRADE_COST:
             money = money - SEQUENCE_UPGRADE_COST
-            sequence_hand_mult = sequence_hand_mult * HAND_TYPE_UPGRADE_MULT
+            # sequence_hand_mult = sequence_hand_mult * HAND_TYPE_UPGRADE_MULT
+            sequence_hand_mult = sequence_hand_mult + SEQUENCE_UPGRADE_AMOUNT
             refresh_money_text()
-            disable_hand_upgrade_buy()
+            # disable_hand_upgrade_buy()
 
     def upgrade_triplet(e):
         global money
         global triplet_hand_mult
         if money >= TRIPLET_UPGRADE_COST:
             money = money - TRIPLET_UPGRADE_COST
-            triplet_hand_mult = triplet_hand_mult * HAND_TYPE_UPGRADE_MULT
+            # triplet_hand_mult = triplet_hand_mult * HAND_TYPE_UPGRADE_MULT
+            triplet_hand_mult = triplet_hand_mult + TRIPLET_UPGRADE_AMOUNT
             refresh_money_text()
-            disable_hand_upgrade_buy()
+            # disable_hand_upgrade_buy()
 
     def upgrade_half_flush(e):
         global money
         global half_flush_hand_mult
         if money >= HALF_FLUSH_UPGRADE_COST:
             money = money - HALF_FLUSH_UPGRADE_COST
-            half_flush_hand_mult = half_flush_hand_mult * HAND_TYPE_UPGRADE_MULT
+            # half_flush_hand_mult = half_flush_hand_mult * HAND_TYPE_UPGRADE_MULT
+            half_flush_hand_mult = half_flush_hand_mult + HALF_FLUSH_UPGRADE_AMOUNT
             refresh_money_text()
-            disable_hand_upgrade_buy()
+            # disable_hand_upgrade_buy()
 
     def upgrade_flush(e):
         global money
         global flush_hand_mult
         if money >= FLUSH_UPGRADE_COST:
             money = money - FLUSH_UPGRADE_COST
-            flush_hand_mult = flush_hand_mult * HAND_TYPE_UPGRADE_MULT
+            # flush_hand_mult = flush_hand_mult * HAND_TYPE_UPGRADE_MULT
+            flush_hand_mult = flush_hand_mult + FLUSH_UPGRADE_AMOUNT
             refresh_money_text()
-            disable_hand_upgrade_buy()
+            # disable_hand_upgrade_buy()
 
     def upgrade_avatar(e):
         global money
@@ -1219,12 +1290,12 @@ def main(page: ft.Page):
         global flush_hand_mult
         if money >= AVATAR_UPGRADE_COST:
             money = money - AVATAR_UPGRADE_COST
-            sequence_hand_mult = sequence_hand_mult * HAND_TYPE_UPGRADE_MULT
-            triplet_hand_mult = triplet_hand_mult * HAND_TYPE_UPGRADE_MULT
-            half_flush_hand_mult = half_flush_hand_mult * HAND_TYPE_UPGRADE_MULT
-            flush_hand_mult = flush_hand_mult * HAND_TYPE_UPGRADE_MULT
+            sequence_hand_mult = sequence_hand_mult + SEQUENCE_UPGRADE_AMOUNT
+            triplet_hand_mult = triplet_hand_mult + TRIPLET_UPGRADE_AMOUNT
+            half_flush_hand_mult = half_flush_hand_mult + HALF_FLUSH_UPGRADE_AMOUNT
+            flush_hand_mult = flush_hand_mult + FLUSH_UPGRADE_AMOUNT
             refresh_money_text()
-            disable_hand_upgrade_buy()
+            # disable_hand_upgrade_buy()
 
     def disable_hand_upgrade_buy():
         global sequence_button
@@ -1253,15 +1324,15 @@ def main(page: ft.Page):
         global flush_button
         global avatar_button
         global hand_upgrade_enabled
-        sequence_button.text = "$2"
+        sequence_button.text = "${0}".format(SEQUENCE_UPGRADE_COST)
         sequence_button.on_click = upgrade_sequence
-        triplet_button.text = "$2"
+        triplet_button.text = "${0}".format(TRIPLET_UPGRADE_COST)
         triplet_button.on_click = upgrade_triplet
-        half_flush_button.text = "$2"
+        half_flush_button.text = "${0}".format(HALF_FLUSH_UPGRADE_COST)
         half_flush_button.on_click = upgrade_half_flush
-        flush_button.text = "$2"
+        flush_button.text = "${0}".format(FLUSH_UPGRADE_COST)
         flush_button.on_click = upgrade_flush
-        avatar_button.text = "$7"
+        avatar_button.text = "${0}".format(AVATAR_UPGRADE_COST)
         avatar_button.on_click = upgrade_avatar
         hand_upgrade_enabled = True
         page.update()
@@ -1269,9 +1340,69 @@ def main(page: ft.Page):
 
     def buy_item(e):
         global money
+        global item_selected
+        global item_row
         if money >= ITEM_COST:
+            item_selected = []
+            item_row.controls = []
             money = money - ITEM_COST
             refresh_money_text()
+            i = 0
+            item_selected = []
+            while i < 3:
+                random_i = random.randint(0,len(all_items_list)-1)
+                print(random_i)
+                item = all_items_list[random_i]
+                print(item)
+                if item not in item_selected: 
+                    item_selected.append(item)
+                    i = i+1
+
+            for item in item_selected:
+
+                item_row.controls.append(
+                    ft.Container(
+                            image=ft.DecorationImage(src=item.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                            content=ft.Text(f"{item.name}", bgcolor="#000000", color=ft.colors.WHITE),
+                            border_radius=ft.border_radius.all(5),
+                            ink=True,
+                            on_click=handle_add_shop_item_select,
+                            tooltip=ft.Tooltip(
+                                message=f"{item.description}",
+                                padding=20,
+                                border_radius=10,
+                                text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                                gradient=ft.LinearGradient(
+                                    begin=ft.alignment.top_left,
+                                    end=ft.alignment.Alignment(0.8, 1),
+                                    colors=[
+                                        "0xff1f005c",
+                                        "0xff5b0060",
+                                        "0xff870160",
+                                        "0xffac255e",
+                                        "0xffca485c",
+                                        "0xffe16b5c",
+                                        "0xfff39060",
+                                        "0xffffb56b",
+                                    ],
+                                    tile_mode=ft.GradientTileMode.MIRROR,
+                                )
+                            )
+                        )
+                )
+            page.update()
+
+    def handle_add_shop_item_select(e):
+        item_row.controls = []
+        for i in range(3):
+            item_row.controls.append(
+                ft.Container(
+                    image=ft.DecorationImage(src="/jongker/sold.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                    border_radius=ft.border_radius.all(5),
+                    ink=True,
+                )
+            )
+        page.update()
 
     def upgrade_hand_size(e):
         global money
@@ -1307,6 +1438,10 @@ def main(page: ft.Page):
         global triplet_hand_mult
         global half_flush_hand_mult
         global flush_hand_mult
+        global sequence_mult_text
+        global triplet_mult_text
+        global half_flush_mult_text
+        global flush_mult_text
         global my_mahjongkers
         global filtered_mahjongkers_list
         global all_mahjongker_text
@@ -1331,11 +1466,13 @@ def main(page: ft.Page):
         global initial_mahjongkers_row
         global initial_mahjongker_text
         global shop_row
+        global item_row
         global shop_mahjongker_text
         global reroll_cost
         global shop_money_text
         global hand_size_upgrade_button
         global shop_selected_i
+        global item_selected
         global sequence_button
         global triplet_button
         global half_flush_button
@@ -1344,6 +1481,10 @@ def main(page: ft.Page):
         global hand_upgrade_enabled
 
         score_adjust_tf = ft.TextField(label="Score Adjust")
+        sequence_mult_text = ft.Text(f"{sequence_hand_mult}")
+        triplet_mult_text = ft.Text(f"{triplet_hand_mult}")
+        half_flush_mult_text = ft.Text(f"{half_flush_hand_mult}")
+        flush_mult_text = ft.Text(f"{flush_hand_mult}")
 
         page.views.clear() 
         page.views.append(
@@ -1387,51 +1528,75 @@ def main(page: ft.Page):
                                 columns=[
                                     ft.DataColumn(ft.Text("Hand")),
                                     ft.DataColumn(ft.Text("Mult")),
+                                    ft.DataColumn(ft.Text("Adjust")),
                                 ],
                                 rows=[
                                     ft.DataRow(
                                         cells=[
                                             ft.DataCell(ft.Text("Sequence")),
-                                            ft.DataCell(ft.Text(f"{sequence_hand_mult}"))
+                                            ft.DataCell(sequence_mult_text),
+                                            ft.DataCell(
+                                                ft.Row([
+                                                    ft.ElevatedButton(text="↑", on_click=increment_sequence_mult),
+                                                    ft.ElevatedButton(text="↓", on_click=decrement_sequence_mult)
+                                                    ])
+                                            )
                                         ]
                                     ),
                                     ft.DataRow(
                                         cells=[
                                             ft.DataCell(ft.Text("Triplet")),
-                                            ft.DataCell(ft.Text(f"{triplet_hand_mult}"))
+                                            ft.DataCell(triplet_mult_text),
+                                            ft.DataCell(
+                                                ft.Row([
+                                                    ft.ElevatedButton(text="↑", on_click=increment_triplet_mult),
+                                                    ft.ElevatedButton(text="↓", on_click=decrement_triplet_mult)
+                                                    ])
+                                            )
                                         ]
                                     ),
                                     ft.DataRow(
                                         cells=[
                                             ft.DataCell(ft.Text("Half Flush")),
-                                            ft.DataCell(ft.Text(f"{half_flush_hand_mult}"))
+                                            ft.DataCell(half_flush_mult_text),
+                                            ft.DataCell(
+                                                ft.Row([
+                                                    ft.ElevatedButton(text="↑", on_click=increment_half_flush_mult),
+                                                    ft.ElevatedButton(text="↓", on_click=decrement_half_flush_mult)
+                                                    ])
+                                            )
                                         ]
                                     ),
                                     ft.DataRow(
                                         cells=[
                                             ft.DataCell(ft.Text("Flush")),
-                                            ft.DataCell(ft.Text(f"{flush_hand_mult}"))
+                                            ft.DataCell(flush_mult_text),
+                                            ft.DataCell(
+                                                ft.Row([
+                                                    ft.ElevatedButton(text="↑", on_click=increment_flush_mult),
+                                                    ft.ElevatedButton(text="↓", on_click=decrement_flush_mult)
+                                                    ])
+                                            )
                                         ]
                                     ),
                                 ]
-                            ), 
-                            # ft.Text("hi")],
-                            ft.Column([
-                                ft.Text("Hand Size", size=40),
-                                ft.Row([
-                                    hand_size_text,
-                                    ft.Column([
-                                        ft.ElevatedButton(text="↑", on_click=increment_hand_size),
-                                        ft.ElevatedButton(text="↓", on_click=decrement_hand_size)
-                                        ])
-                                    ],
-                                    alignment=ft.MainAxisAlignment.CENTER)
-                                ],
-                                horizontal_alignment=ft.CrossAxisAlignment.CENTER
                             )],
-                        # hand_size_text]
-                        alignment=ft.MainAxisAlignment.CENTER,
-                        spacing=15),
+                            alignment=ft.MainAxisAlignment.CENTER,
+                            spacing=15), 
+
+                        ft.Column([
+                            ft.Text("Hand Size", size=40),
+                            ft.Row([
+                                hand_size_text,
+                                ft.Column([
+                                    ft.ElevatedButton(text="↑", on_click=increment_hand_size),
+                                    ft.ElevatedButton(text="↓", on_click=decrement_hand_size)
+                                    ])
+                                ],
+                                alignment=ft.MainAxisAlignment.CENTER)
+                            ],
+                            horizontal_alignment=ft.CrossAxisAlignment.CENTER
+                        ),
                     ft.NavigationBar(destinations=[
                         ft.NavigationBarDestination(icon=ft.icons.QUERY_STATS, label="Stats"),
                         ft.NavigationBarDestination(icon=ft.icons.ADD_TO_PHOTOS, label="Mahjongkers"),
@@ -1750,6 +1915,16 @@ def main(page: ft.Page):
                 spacing=5,
                 run_spacing=5,
             )
+            item_row = ft.GridView(
+                # expand=1,
+                height=100,
+                width=400,
+                runs_count=1,
+                max_extent=95,
+                child_aspect_ratio=1.0,
+                spacing=5,
+                run_spacing=5,
+            )
             shop_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
             shop_money_text = ft.Text(f"Money: {money}", size=30)
             hand_size_upgrade_button = ft.ElevatedButton(text=f"Upgrade Hand Size - ${HAND_SIZE_COSTS[hand_size_level]}", on_click=upgrade_hand_size)
@@ -1768,7 +1943,15 @@ def main(page: ft.Page):
                     ft.ElevatedButton(text="Buy", on_click=buy_mahjongker),
                     shop_mahjongker_text
                 ]),
-                ft.Text("Hand Upgrades", color=ft.colors.WHITE),
+                ft.Column([
+                    ft.ElevatedButton(text=f"Buy Item - ${ITEM_COST}", on_click=buy_item),
+                    ],
+                    spacing=50),
+                item_row,
+                ft.Row([
+                    ft.Text("Hand Upgrades", color=ft.colors.WHITE),
+                    hand_size_upgrade_button
+                    ]),
                 ft.Row(
                     [ft.DataTable(
                     columns=[
@@ -1806,12 +1989,7 @@ def main(page: ft.Page):
                                 ft.DataCell(avatar_button)
                             ]
                         ),
-                    ]),
-                    ft.Column([
-                        ft.ElevatedButton(text=f"Buy Item - ${ITEM_COST}", on_click=buy_item),
-                        hand_size_upgrade_button
-                        ],
-                        spacing=50)
+                    ]) 
                 ])
             ])
 
@@ -1863,6 +2041,48 @@ def main(page: ft.Page):
                         )
                     )
             shop_row.controls.append(ft.FloatingActionButton(text=f"${reroll_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_mahjongkers))
+
+            if item_selected:
+                for item in item_selected:
+                    item_row.controls.append(
+                        ft.Container(
+                            image=ft.DecorationImage(src=item.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                            content=ft.Text(f"{item.name}", bgcolor="#000000", color=ft.colors.WHITE),
+                            border_radius=ft.border_radius.all(5),
+                            ink=True,
+                            on_click=handle_add_shop_item_select,
+                            tooltip=ft.Tooltip(
+                                message=f"{item.description}",
+                                padding=20,
+                                border_radius=10,
+                                text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                                gradient=ft.LinearGradient(
+                                    begin=ft.alignment.top_left,
+                                    end=ft.alignment.Alignment(0.8, 1),
+                                    colors=[
+                                        "0xff1f005c",
+                                        "0xff5b0060",
+                                        "0xff870160",
+                                        "0xffac255e",
+                                        "0xffca485c",
+                                        "0xffe16b5c",
+                                        "0xfff39060",
+                                        "0xffffb56b",
+                                    ],
+                                    tile_mode=ft.GradientTileMode.MIRROR,
+                                )
+                            )
+                        )
+                    )
+            else:
+                for i in range(3):
+                    item_row.controls.append(
+                        ft.Container(
+                            image=ft.DecorationImage(src="/jongker/sold.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                            border_radius=ft.border_radius.all(5),
+                            ink=True,
+                        )
+                    )
             panel.controls.append(shop_panel)
 
             # -------------------------------------------------------------
