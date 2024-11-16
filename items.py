@@ -111,7 +111,7 @@ class Item_Splitter(Item):
 
 class Item_Stun_Gun(Item):
     name = "Stun Gun"
-    description = "hoose a player.  One random tile for that player is disabled until the end of their next turn.  It still counts towards hand size but otherwise does not exist, e.g. it cannot be used to pong, chi, or mahjong."
+    description = "Choose a player.  One random tile for that player is disabled until the end of their next turn.  It still counts towards hand size but otherwise does not exist, e.g. it cannot be used to pong, chi, or mahjong."
     img_src = "/items/stun-gun.png"
 
 class Item_Take_2(Item):
@@ -133,6 +133,16 @@ class Item_Weather_Vane(Item):
     name = "Weather Vane"
     description = "Shift the seat winds clockwise or counterclockwise."
     img_src = "/items/weather-vane.png"
+
+class Item_Handmaxxing(Item):
+    name = "Handmaxxing"
+    description = "Draw 4. Skip your draw phase for the rest of the round."
+    img_src = "/items/handmaxxing.jpg"
+
+class Item_12_Inch(Item):
+    name = "12 Inch Barrel Revolver"
+    description = "Choose a player.  A random mahjongker for that player is disabled for the rest of this round."
+    img_src = "/items/12inch.png"
 
 # --------------------------------------------------------------------------------------
 # ALL ITEMS LIST
@@ -163,3 +173,5 @@ all_items_list.append(Item_Take_2())
 all_items_list.append(Item_Trap_Card())
 all_items_list.append(Item_Upheaval())
 all_items_list.append(Item_Weather_Vane())
+all_items_list.append(Item_Handmaxxing())
+all_items_list.append(Item_12_Inch())

@@ -6,6 +6,7 @@ from tiles import *
 
 COMMON_MAHJONGKER_COST = 3
 UNCOMMON_MAHJONGKER_COST = 6
+CONSISTENCY_MAHJONGKER_COST = 8
 RARE_MAHJONGKER_COST = 10
 
 
@@ -416,7 +417,7 @@ class Gapker(Mahjongker):
     name = "Gapker"
     description = "Sequences may contain one gap of 1 (1-2-4 valid, 2-4-6 not valid)"
     priority = 5 
-    cost = UNCOMMON_MAHJONGKER_COST
+    cost = CONSISTENCY_MAHJONGKER_COST
     img_src = "/jongker/gapker.jpg"
 
     def eval_score(self):
@@ -427,8 +428,19 @@ class DEIker(Mahjongker):
     name = "DEIker"
     description = "Triplets may contain up to two different suits (honors excluded)"
     priority = 5 
-    cost = UNCOMMON_MAHJONGKER_COST
+    cost = CONSISTENCY_MAHJONGKER_COST
     img_src = "/jongker/deiker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# SEIquenker
+class SEIquenker(Mahjongker):
+    name = "SEIquenker"
+    description = "Sequences may contain up to two different suits (honors excluded)"
+    priority = 5 
+    cost = CONSISTENCY_MAHJONGKER_COST
+    img_src = "/jongker/seiquenker.jpg"
 
     def eval_score(self):
         return (0, 0)
@@ -644,9 +656,7 @@ class Snakeker(Mahjongker):
         for tile in eyes.tiles:
             if tile.rank != "1":
                 return (0, 0)
-        if rank_1:
-            return (111, 0)
-        return (0, 0)
+        return (111, 0)
 
 # Seeker
 class Seeker(Mahjongker):
@@ -683,15 +693,10 @@ class SeeingDoubker(Mahjongker):
     img_src = "/jongker/seeingdoubker.jpg"
 
     def eval_score(self, eyes):
-        rank_2 = True
         for tile in eyes.tiles:
             if tile.rank != "2":
-                rank_2 = False
                 return (0, 0)
-        if rank_2:
-            (0, 2)
-        else:
-            (0, 0)
+        return (0, 2)
 
 # Seequenker
 class Seequenker(Mahjongker):
@@ -714,8 +719,8 @@ class Highker(Mahjongker):
 
     def eval_score(self, meld):
         high = True
-        for tile in meld:
-            if tile.rank <= 5:
+        for tile in meld.tiles:
+            if int(tile.rank) <= 5:
                 high = False
                 return (0, 0)
         if high:
@@ -733,8 +738,8 @@ class Lowker(Mahjongker):
 
     def eval_score(self, meld):
         low = True
-        for tile in meld:
-            if tile.rank >= 5:
+        for tile in meld.tiles:
+            if int(tile.rank) >= 5:
                 low = False
                 return (0, 0)
         if low:
@@ -745,14 +750,14 @@ class Lowker(Mahjongker):
 # Rainbowker
 class Rainbowker(Mahjongker):
     name = "Rainbowker"
-    description = "You can form a meld with all three suits. You cannot do this via chi or pong. +15 points for each of these melds"
+    description = "You can form a meld with all three suits. +15 points for each of these melds"
     priority = 2 
-    cost = UNCOMMON_MAHJONGKER_COST
+    cost = CONSISTENCY_MAHJONGKER_COST
     img_src = "/jongker/rainbowker.jpg"
 
     def eval_score(self, meld):
         seen_suits = []
-        for tile in meld:
+        for tile in meld.tiles:
             if tile.suit in seen_suits:
                 return (0, 0)
             else:
@@ -975,7 +980,7 @@ class Straightker(Mahjongker):
         total_points = 0
         for meld in hand.melds:
             if meld.typing == "sequence":
-                meld.tiles.sort(key=lambda tile: tile.rank)
+                meld.tiles.sort(key=lambda tile: int(tile.rank))
                 lows.append(meld.tiles[0])
                 highs.append(meld.tiles[len(meld.tiles-1)])
         while len(highs) > 0:
@@ -989,6 +994,17 @@ class Straightker(Mahjongker):
                     if i == len(high - 1):
                         return (total_points, 0)
         return (total_points, 0)
+
+# Arthker
+class Arthker(Mahjongker):
+    name = "Arthker"
+    description = "-1 max hand size. +50 pts"
+    priority = 5 
+    cost = COMMON_MAHJONGKER_COST
+    img_src = "/jongker/arthker.jpg"
+
+    def eval_score(self):
+        return (50, 0)
 
 # --------------------------------------------------------------------------------------
 # MAHJONGKER LIST
@@ -1012,6 +1028,7 @@ all_mahjongkers_list.append(Pingker())
 all_mahjongkers_list.append(KingKongker())
 all_mahjongkers_list.append(Gapker())
 all_mahjongkers_list.append(DEIker())
+all_mahjongkers_list.append(SEIquenker())
 all_mahjongkers_list.append(Siker())
 all_mahjongkers_list.append(Bourdainker())
 all_mahjongkers_list.append(Dollker())
@@ -1054,6 +1071,7 @@ all_mahjongkers_list.append(AllforOneker())
 all_mahjongkers_list.append(OneforAllker())
 all_mahjongkers_list.append(Pickgker())
 all_mahjongkers_list.append(Straightker())
+all_mahjongkers_list.append(Arthker())
 # --------------------------------------------------------------------------------------
 # MAHJONGKER DICT
 # --------------------------------------------------------------------------------------
@@ -1076,6 +1094,7 @@ all_mahjongkers_dict["pingker"] = Pingker()
 all_mahjongkers_dict["kingkongker"] = KingKongker()
 all_mahjongkers_dict["gapker"] = Gapker()
 all_mahjongkers_dict["deiker"] = DEIker()
+all_mahjongkers_dict["seiquenker"] = SEIquenker()
 all_mahjongkers_dict["siker"] = Siker()
 all_mahjongkers_dict["bourdainker"] = Bourdainker()
 all_mahjongkers_dict["dollker"] = Dollker()
@@ -1118,6 +1137,7 @@ all_mahjongkers_dict["allforoneker"] = AllforOneker()
 all_mahjongkers_dict["oneforallker"] = OneforAllker()
 all_mahjongkers_dict["pickgker"] = Pickgker()
 all_mahjongkers_dict["straightker"] = Straightker()
+all_mahjongkers_dict["arthker"] = Arthker()
 
 # --------------------------------------------------------------------------------------
 # COMMON MAHJONGKER LIST
@@ -1132,7 +1152,7 @@ for mahjongker in all_mahjongkers_list:
 # --------------------------------------------------------------------------------------
 uncommon_mahjongkers_list = []
 for mahjongker in all_mahjongkers_list:
-    if mahjongker.cost == UNCOMMON_MAHJONGKER_COST:
+    if mahjongker.cost == UNCOMMON_MAHJONGKER_COST or mahjongker.cost == CONSISTENCY_MAHJONGKER_COST:
         uncommon_mahjongkers_list.append(mahjongker)
 
 # --------------------------------------------------------------------------------------

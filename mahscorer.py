@@ -1,10 +1,22 @@
 from tiles import *
 from mahjongkers import *
+from math import *
 
 def score(hand, table_wind, seat_wind, my_mahjongkers, sequence_hand_mult, triplet_hand_mult, half_flush_hand_mult, flush_hand_mult):
     points = 0
     mult = 1
 
+    # score hand.. needs some ordering to pick best hand? or do hands stack?
+    if len(hand.melds) >= 3 and len(hand.eyes) >= 1:
+        if hand.is_sequence:
+            mult = max(mult, sequence_hand_mult)
+        if hand.is_triplet:
+            mult = max(mult, triplet_hand_mult)
+        if hand.is_half_flush:
+            mult = max(mult, half_flush_hand_mult)
+        if hand.is_flush:
+            mult = max(mult, flush_hand_mult)
+            
     # score melds
     for meld in hand.melds: 
         if meld.typing != "none":
@@ -48,17 +60,6 @@ def score(hand, table_wind, seat_wind, my_mahjongkers, sequence_hand_mult, tripl
                 evaluated_score = mahjongker.eval_score(hand.eyes[0])
                 points += evaluated_score[0]
                 mult += evaluated_score[1]
-
-    # score hand.. needs some ordering to pick best hand? or do hands stack?
-    if len(hand.melds) >= 3 and len(hand.eyes) >= 1:
-        if hand.is_sequence:
-            mult = sequence_hand_mult
-        if hand.is_triplet:
-            mult = triplet_hand_mult
-        if hand.is_flush:
-            mult = half_flush_hand_mult
-        elif hand.is_half_flush:
-            mult = flush_hand_mult
 
         # prio 4, hand jongkers
         for mahjongker in my_mahjongkers:

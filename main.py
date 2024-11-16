@@ -1102,14 +1102,17 @@ def main(page: ft.Page):
         global shop_row
         global reroll_cost
         global shop_selected_i
+        global my_mahjongkers
         shop_row.controls.clear()
         i = 0
         shop_selected_i = []
         while i < 3:
             index = random.randint(0,len(all_mahjongkers_list)-1)
             if index not in shop_selected_i: 
-                shop_selected_i.append(index)
-                i = i+1
+                mahjongker = all_mahjongkers_list[index]
+                if mahjongker not in my_mahjongkers:
+                    shop_selected_i.append(index)
+                    i = i+1
 
         for i in shop_selected_i:
             mahjongker = all_mahjongkers_list[i]
@@ -1149,6 +1152,7 @@ def main(page: ft.Page):
         enable_hand_upgrade_buy()
 
     def reroll_shop_mahjongkers(e):
+        global my_mahjongkers
         global reroll_cost
         global shop_row
         global shop_selected_i
@@ -1163,7 +1167,7 @@ def main(page: ft.Page):
             while i < 3:
                 index = random.randint(0,len(all_mahjongkers_list)-1)
                 if index not in shop_selected_i: 
-                    mahjongker = all_mahjongkers_list[i]
+                    mahjongker = all_mahjongkers_list[index]
                     if mahjongker not in my_mahjongkers:
                         shop_selected_i.append(index)
                         i = i+1
@@ -1938,19 +1942,34 @@ def main(page: ft.Page):
                     shop_money_text,
                     ft.ElevatedButton(text="Refresh Shop", on_click=refresh_shop)
                 ]),
+                ft.Divider(),
+                ft.Row([
+                    ft.Text("Mahjongkers", size=20, color=ft.colors.WHITE),
+                    ]),
                 shop_row,
                 ft.Row([
                     ft.ElevatedButton(text="Buy", on_click=buy_mahjongker),
                     shop_mahjongker_text
                 ]),
+                ft.Divider(),
+                ft.Row([
+                    ft.Text("Item Pack ", size=20, color=ft.colors.WHITE),
+                    ]),
                 ft.Column([
                     ft.ElevatedButton(text=f"Buy Item - ${ITEM_COST}", on_click=buy_item),
                     ],
                     spacing=50),
                 item_row,
+                ft.Divider(),
                 ft.Row([
-                    ft.Text("Hand Upgrades", color=ft.colors.WHITE),
+                    ft.Text("Hand Size Upgrade", size=20, color=ft.colors.WHITE),
+                    ]),
+                ft.Row([
                     hand_size_upgrade_button
+                    ]),
+                ft.Divider(),
+                ft.Row([
+                    ft.Text("Hand Type Upgrades", size=20, color=ft.colors.WHITE),
                     ]),
                 ft.Row(
                     [ft.DataTable(
