@@ -23,7 +23,7 @@ for suit in ["dot", "bamboo", "character"]:
         all_tiles[suit][str(rank)] = Tile(str(rank), suit, 5, "/tiles/" + suit + "-" + str(rank) + ".jpg")
 
 for rank in ["red", "white", "green"]:
-    all_tiles["dragon"][rank] = Tile(rank, "dragon", 15, "/tiles/" + "dragon" + "-" + rank + ".jpg")
+    all_tiles["dragon"][rank] = Tile(rank, "dragon", 10, "/tiles/" + "dragon" + "-" + rank + ".jpg")
 
 for rank in ["east", "south", "west", "north"]:
-    all_tiles["wind"][rank] = Tile(rank, "wind", 20, "/tiles/" + "wind" + "-" + rank + ".jpg")
+    all_tiles["wind"][rank] = Tile(rank, "wind", 10, "/tiles/" + "wind" + "-" + rank + ".jpg")

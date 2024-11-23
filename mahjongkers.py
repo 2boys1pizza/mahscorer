@@ -9,8 +9,6 @@ UNCOMMON_MAHJONGKER_COST = 6
 CONSISTENCY_MAHJONGKER_COST = 8
 RARE_MAHJONGKER_COST = 10
 
-
-
 class Meld:
     typing = "none" # sequence, triplet
     tiles = [] # array of 3-4 Tiles
@@ -316,28 +314,28 @@ class Kohlker(Mahjongker):
 # Windker
 class Windker(Mahjongker):
     name = "Windker"
-    description = "+0.6 mult for each wind meld"
+    description = "+0.3 mult for each wind meld"
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/windker.jpg"
 
     def eval_score(self, meld):
         if meld.suit == "wind":
-            return (0, 0.6)
+            return (0, 0.3)
         else:
             return (0, 0)
 
 # Draker
 class Draker(Mahjongker):
     name = "Draker"
-    description = "+0.5 mult for each dragon meld"
+    description = "+0.3 mult for each dragon meld"
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/draker.jpg"
 
     def eval_score(self, meld):
         if meld.suit == "dragon":
-            return (0, 0.5)
+            return (0, 0.3)
         else:
             return (0, 0)
 
@@ -503,14 +501,14 @@ class Falchionker(Mahjongker):
 # Neenjaker
 class Neenjaker(Mahjongker):
     name = "Neenjaker"
-    description = "+15 points for each hidden meld"
+    description = "+30 points for each hidden meld"
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/neenjaker.jpg"
 
     def eval_score(self, meld):
         if meld.hidden:
-            return (15, 0)
+            return (30, 0)
         else:
             return (0, 0)
 
@@ -582,42 +580,42 @@ class Chungker(Mahjongker):
 # Bimingker
 class Bimingker(Mahjongker):
     name = "Bimingker"
-    description = "+0.4 mult for each bamboo meld"
+    description = "+0.15 mult for each bamboo meld"
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/bimingker.jpg"
 
     def eval_score(self, meld):
         if meld.suit == "bamboo":
-            return (0, 0.4)
+            return (0, 0.15)
         else:
             return (0, 0)
 
 # Dingker
 class Dingker(Mahjongker):
     name = "Dingker"
-    description = "+0.4 mult for each dot meld"
+    description = "+0.15 mult for each dot meld"
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/dingker.jpg"
 
     def eval_score(self, meld):
         if meld.suit == "dot":
-            return (0, 0.4)
+            return (0, 0.15)
         else:
             return (0, 0)
 
 # Chingker
 class Chingker(Mahjongker):
     name = "Chingker"
-    description = "+0.4 mult for each character meld"
+    description = "+0.15 mult for each character meld"
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/chingker.jpg"
 
     def eval_score(self, meld):
         if meld.suit == "character":
-            return (0, 0.4)
+            return (0, 0.15)
         else:
             return (0, 0)
 
@@ -687,7 +685,7 @@ class LeeSinker(Mahjongker):
 # SeeingDoubker
 class SeeingDoubker(Mahjongker):
     name = "SeeingDoubker"
-    description = "+2 mult if your eyes are rank 2"
+    description = "+1 mult if your eyes are rank 2"
     priority = 3 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/seeingdoubker.jpg"
@@ -712,7 +710,7 @@ class Seequenker(Mahjongker):
 # Highker
 class Highker(Mahjongker):
     name = "Highker"
-    description = "+15 points for each meld containing numbered tiles where all rank > 5"
+    description = "+20 points for each meld containing numbered tiles where all rank > 5"
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/highker.jpg"
@@ -724,14 +722,14 @@ class Highker(Mahjongker):
                 high = False
                 return (0, 0)
         if high:
-            return (15, 0)
+            return (20, 0)
         else:
             return (0, 0)
 
 # Lowker
 class Lowker(Mahjongker):
     name = "Lowker"
-    description = "+15 points for each meld containing numbered tiles where all rank < 5"
+    description = "+20 points for each meld containing numbered tiles where all rank < 5"
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/lowker.jpg"
@@ -743,7 +741,7 @@ class Lowker(Mahjongker):
                 low = False
                 return (0, 0)
         if low:
-            return (15, 0)
+            return (20, 0)
         else:
             return (0, 0)
 
@@ -969,7 +967,7 @@ class Pickgker(Mahjongker):
 # Straightker - pretty sure this shit doesn't work lol. test again later
 class Straightker(Mahjongker):
     name = "Straightker"
-    description = "+60 pts for every two sequence melds that are in sequence (1-2-3, 4-5-6)"
+    description = "+30 pts for every two sequence melds that are in sequence (1-2-3, 4-5-6)"
     priority = 4 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/straightker.jpg"
@@ -1015,10 +1013,10 @@ all_mahjongkers_list.append(Donker())
 all_mahjongkers_list.append(Chonker())
 all_mahjongkers_list.append(Dragonker())
 all_mahjongkers_list.append(Winker())
-all_mahjongkers_list.append(Sequencker())
-all_mahjongkers_list.append(MahMahMahjonker())
-all_mahjongkers_list.append(Milwaunker())
-all_mahjongkers_list.append(Kohlker())
+# all_mahjongkers_list.append(Sequencker())
+# all_mahjongkers_list.append(MahMahMahjonker())
+# all_mahjongkers_list.append(Milwaunker())
+# all_mahjongkers_list.append(Kohlker())
 all_mahjongkers_list.append(Windker())
 all_mahjongkers_list.append(Draker())
 all_mahjongkers_list.append(Evenker())
