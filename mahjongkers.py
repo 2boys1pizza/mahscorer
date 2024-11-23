@@ -718,8 +718,11 @@ class Highker(Mahjongker):
     def eval_score(self, meld):
         high = True
         for tile in meld.tiles:
-            if int(tile.rank) <= 5:
-                high = False
+            if tile.suit != "wind" and tile.suit != "dragon":
+                if int(tile.rank) <= 5:
+                    high = False
+                    return (0, 0)
+            else:
                 return (0, 0)
         if high:
             return (20, 0)
@@ -737,8 +740,11 @@ class Lowker(Mahjongker):
     def eval_score(self, meld):
         low = True
         for tile in meld.tiles:
-            if int(tile.rank) >= 5:
-                low = False
+            if tile.suit != "wind" and tile.suit != "dragon":
+                if int(tile.rank) >= 5:
+                    low = False
+                    return (0, 0)
+            else:
                 return (0, 0)
         if low:
             return (20, 0)
