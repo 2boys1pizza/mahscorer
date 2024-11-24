@@ -460,7 +460,7 @@ def main(page: ft.Page):
             if mahjongker.name == "Meldker":
                 meldker = mahjongker
                 break
-        meldker.point_value = meldker.point_value + 30
+        meldker.point_value = meldker.point_value + 15
         meldker_text.value = f"Meldker value: {meldker.point_value}"
         page.update()
 
@@ -471,7 +471,7 @@ def main(page: ft.Page):
             if mahjongker.name == "Meldker":
                 meldker = mahjongker
                 break
-        meldker.point_value = max(0, meldker.point_value - 30)
+        meldker.point_value = max(0, meldker.point_value - 15)
         meldker_text.value = f"Meldker value: {meldker.point_value}"
         page.update()
 
@@ -1196,6 +1196,9 @@ def main(page: ft.Page):
             )
         page.update()
         reroll_cost = 1
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Picker":
+                reroll_cost = 0
         shop_row.controls.append(ft.FloatingActionButton(text=f"${reroll_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_mahjongkers))
         page.update()
         enable_hand_upgrade_buy()

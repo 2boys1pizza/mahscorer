@@ -228,14 +228,14 @@ class Chonker(Mahjongker):
 # Dragonker
 class Dragonker(Mahjongker):
     name = "Dragonker"
-    description = "+45 pts for each dragon meld"
+    description = "+30 pts for each dragon meld"
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/dragonker.jpg"
 
     def eval_score(self, meld):
         if meld.suit == "dragon":
-            return (45, 0)
+            return (30, 0)
         else:
             return (0, 0)
 
@@ -840,7 +840,7 @@ class DOWker(Mahjongker):
     description = "At the start of the next shop, you may give this to another player.  They must give you back $5"
     priority = 5 
     cost = COMMON_MAHJONGKER_COST
-    img_src = "/jongker/DOWker.jpg"
+    img_src = "/jongker/dowker.jpg"
 
     def eval_score(self):
         return (0, 0)
@@ -925,7 +925,7 @@ class Boomerangker(Mahjongker):
 # Doraker
 class Doraker(Mahjongker):
     name = "Doraker"
-    description = "At the start of the round, a random tile is selected. That tile is worth an additional 20 points when scored"
+    description = "At the start of the round, a random tile from your hand is selected.  That tile is worth an additional 10 points."
     priority = 1 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/doraker.jpg"
@@ -933,14 +933,14 @@ class Doraker(Mahjongker):
 
     def eval_score(self, tile):
         if tile.suit == selected_tile.suit and tile.rank == selected_tile.rank:
-            return (20, 0)
+            return (10, 0)
         else:
             return (0, 0)
 
 # AllforOneker - needs special scoring check
 class AllforOneker(Mahjongker):
     name = "AllforOneker"
-    description = "All winds are your seat wind"
+    description = "All winds are your seat wind and the same tile.  You do not score bonus points from the table wind."
     priority = 5 
     cost = RARE_MAHJONGKER_COST
     img_src = "/jongker/allforoneker.jpg"
@@ -964,7 +964,7 @@ class Pickgker(Mahjongker):
     name = "Pickgker"
     description = "When you would gain an item, instead draw 3 and pick 1"
     priority = 5 
-    cost = RARE_MAHJONGKER_COST
+    cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/pickgker.jpg"
 
     def eval_score(self):
@@ -1009,6 +1009,61 @@ class Arthker(Mahjongker):
 
     def eval_score(self):
         return (50, 0)
+
+# DuckDuckGooseker
+class DuckDuckGooseker(Mahjongker):
+    name = "DuckDuckGooseker"
+    description = "Your triplets may contain one tile with a Rank difference of 1 (112 valid, 113 not valid)"
+    priority = 5 
+    cost = CONSISTENCY_MAHJONGKER_COST
+    img_src = "/jongker/duckduckgooseker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# DebtCollectker
+class DebtCollectker(Mahjongker):
+    name = "DebtCollectker"
+    description = "When you pong, take $1 from that player."
+    priority = 5 
+    cost = COMMON_MAHJONGKER_COST
+    img_src = "/jongker/debtcollectker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Quaker
+class Quaker(Mahjongker):
+    name = "Quaker"
+    description = "When you kong, all other players randomly discard a tile, then draw 1."
+    priority = 5 
+    cost = COMMON_MAHJONGKER_COST
+    img_src = "/jongker/quaker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Anthonyker
+class Anthonyker(Mahjongker):
+    name = "Anthonyker"
+    description = "Chi from player that goes after you."
+    priority = 5 
+    cost = UNCOMMON_MAHJONGKER_COST
+    img_src = "/jongker/anthonyker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Picker
+class Picker(Mahjongker):
+    name = "Picker"
+    description = "Gain a free reroll each shop phase."
+    priority = 5 
+    cost = COMMON_MAHJONGKER_COST
+    img_src = "/jongker/picker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
 
 # --------------------------------------------------------------------------------------
 # MAHJONGKER LIST
@@ -1076,6 +1131,11 @@ all_mahjongkers_list.append(OneforAllker())
 all_mahjongkers_list.append(Pickgker())
 all_mahjongkers_list.append(Straightker())
 all_mahjongkers_list.append(Arthker())
+all_mahjongkers_list.append(DuckDuckGooseker())
+all_mahjongkers_list.append(DebtCollectker())
+all_mahjongkers_list.append(Quaker())
+all_mahjongkers_list.append(Anthonyker())
+all_mahjongkers_list.append(Picker())
 # --------------------------------------------------------------------------------------
 # MAHJONGKER DICT
 # --------------------------------------------------------------------------------------
@@ -1142,6 +1202,11 @@ all_mahjongkers_dict["oneforallker"] = OneforAllker()
 all_mahjongkers_dict["pickgker"] = Pickgker()
 all_mahjongkers_dict["straightker"] = Straightker()
 all_mahjongkers_dict["arthker"] = Arthker()
+all_mahjongkers_dict["duckduckgooseker"] = DuckDuckGooseker()
+all_mahjongkers_dict["debtcollectker"] = DebtCollectker()
+all_mahjongkers_dict["debtcollectker"] = Quaker()
+all_mahjongkers_dict["anthonyker"] = Anthonyker()
+all_mahjongkers_dict["picker"] = Picker()
 
 # --------------------------------------------------------------------------------------
 # COMMON MAHJONGKER LIST
