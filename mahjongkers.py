@@ -916,7 +916,7 @@ class Boomerangker(Mahjongker):
     name = "Boomerangker"
     description = "If this mahjonker is empty: set aside a tile face-up on this card.  After three turns, you must draw this tile during your draw step if able. You may not use this again until the start of your next turn"
     priority = 5 
-    cost = RARE_MAHJONGKER_COST
+    cost = UNCOMMON_MAHJONGKER_COST
     img_src = "/jongker/boomerangker.jpg"
 
     def eval_score(self):
@@ -1065,6 +1065,140 @@ class Picker(Mahjongker):
     def eval_score(self):
         return (0, 0)
 
+# Luckgker
+class Luckgker(Mahjongker):
+    name = "Luckgker"
+    description = "Any time you would roll a dice, you may roll 2 and pick one to keep."
+    priority = 5 
+    cost = COMMON_MAHJONGKER_COST
+    img_src = "/jongker/luckgker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Buffettker
+class Buffettker(Mahjongker):
+    name = "Buffettker"
+    description = "For every $3 you have, +10 pts."
+    priority = 5 
+    cost = COMMON_MAHJONGKER_COST
+    img_src = "/jongker/buffettker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Fuckgker
+class Fuckgker(Mahjongker):
+    name = "Fuckgker"
+    description = "Whenever you take a tile from an opponent, this permanently gains 10 points. Current: 0"
+    priority = 5 
+    cost = COMMON_MAHJONGKER_COST
+    img_src = "/jongker/fuckgker.jpg"
+    point_value = 0
+
+    def eval_score(self):
+        return (self.point_value, 0)
+
+# Toker
+class Toker(Mahjongker):
+    name = "Toker"
+    description = "Once per your turn, you may randomly discard a tile from your hand, and draw 1 tile. Gain $1."
+    priority = 5 
+    cost = COMMON_MAHJONGKER_COST
+    img_src = "/jongker/toker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Emeraldker
+class Emeraldker(Mahjongker):
+    name = "Emeraldker"
+    description = "Once per turn, you may use Controlled Chaos. Costs $3 per use."
+    priority = 5 
+    cost = COMMON_MAHJONGKER_COST
+    img_src = "/jongker/emeraldker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Snipker
+class Snipker(Mahjongker):
+    name = "Snipker"
+    description = "Once per turn, you may use Called Shot: Rank. Costs $3 per use."
+    priority = 5 
+    cost = COMMON_MAHJONGKER_COST
+    img_src = "/jongker/snipker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Grenadeker
+class Grenadeker(Mahjongker):
+    name = "Grenadeker"
+    description = "Once per turn, you may use Called Shot: Suit. Costs $3 per use."
+    priority = 5 
+    cost = COMMON_MAHJONGKER_COST
+    img_src = "/jongker/grenadeker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Stepsisker
+class Stepsisker(Mahjongker):
+    name = "Stepsisker"
+    description = "Each tile taken from an opponent is worth +10 pts"
+    priority = 5 
+    cost = COMMON_MAHJONGKER_COST
+    img_src = "/jongker/stepsisker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# LarryEllisker
+class LarryEllisker(Mahjongker):
+    name = "LarryEllisker"
+    description = "Up to once per turn you may pay $2 to scry 2."
+    priority = 5 
+    cost = COMMON_MAHJONGKER_COST
+    img_src = "/jongker/larryellisker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Suckgker
+class Suckgker(Mahjongker):
+    name = "Suckgker"
+    description = "Every time you are targeted by another player this mahjongker permanently gains +10 points. Current: 0"
+    priority = 5 
+    cost = COMMON_MAHJONGKER_COST
+    img_src = "/jongker/suckgker.jpg"
+    point_value = 0
+
+    def eval_score(self):
+        return (self.point_value, 0)
+
+# Oracker
+class Oracker(Mahjongker):
+    name = "Oracker"
+    description = "Each turn before you draw, guess the suit of the tile you’re about to draw.  If you get it right, gain $1."
+    priority = 5 
+    cost = COMMON_MAHJONGKER_COST
+    img_src = "/jongker/oracker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Riggedker
+class Riggedker(Mahjongker):
+    name = "Riggedker"
+    description = "Each turn before you draw, guess the suit of the tile you’re about to draw.  If you get it right, gain $1."
+    priority = 5 
+    cost = COMMON_MAHJONGKER_COST
+    img_src = "/jongker/riggedker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
 # --------------------------------------------------------------------------------------
 # MAHJONGKER LIST
 # --------------------------------------------------------------------------------------
@@ -1136,6 +1270,18 @@ all_mahjongkers_list.append(DebtCollectker())
 all_mahjongkers_list.append(Quaker())
 all_mahjongkers_list.append(Anthonyker())
 all_mahjongkers_list.append(Picker())
+all_mahjongkers_list.append(Luckgker())
+all_mahjongkers_list.append(Buffettker())
+all_mahjongkers_list.append(Fuckgker())
+all_mahjongkers_list.append(Toker())
+all_mahjongkers_list.append(Emeraldker())
+all_mahjongkers_list.append(Snipker())
+all_mahjongkers_list.append(Grenadeker())
+all_mahjongkers_list.append(Stepsisker())
+all_mahjongkers_list.append(LarryEllisker())
+all_mahjongkers_list.append(Suckgker())
+all_mahjongkers_list.append(Oracker())
+# all_mahjongkers_list.append(Riggedker())
 # --------------------------------------------------------------------------------------
 # MAHJONGKER DICT
 # --------------------------------------------------------------------------------------
@@ -1207,6 +1353,19 @@ all_mahjongkers_dict["debtcollectker"] = DebtCollectker()
 all_mahjongkers_dict["debtcollectker"] = Quaker()
 all_mahjongkers_dict["anthonyker"] = Anthonyker()
 all_mahjongkers_dict["picker"] = Picker()
+all_mahjongkers_dict["luckgker"] = Luckgker()
+all_mahjongkers_dict["buffettker"] = Buffettker()
+all_mahjongkers_dict["fuckgker"] = Fuckgker()
+all_mahjongkers_dict["toker"] = Toker()
+all_mahjongkers_dict["emeraldker"] = Emeraldker()
+all_mahjongkers_dict["snipker"] = Snipker()
+all_mahjongkers_dict["grenadeker"] = Grenadeker()
+all_mahjongkers_dict["stepsisker"] = Stepsisker()
+all_mahjongkers_dict["larryellisker"] = LarryEllisker()
+all_mahjongkers_dict["suckgker"] = Suckgker()
+all_mahjongkers_dict["oracker"] = Oracker()
+# all_mahjongkers_dict["riggedker"] = Riggedker()
+# ----------------------------------------------
 
 # --------------------------------------------------------------------------------------
 # COMMON MAHJONGKER LIST

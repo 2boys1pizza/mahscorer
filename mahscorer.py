@@ -54,6 +54,12 @@ def score(hand, table_wind, seat_wind, my_mahjongkers, sequence_hand_mult, tripl
                     points += tile.points
             else:
                 points += tile.points
+            # prio 1, tile jongkers in eyes
+            for mahjongker in my_mahjongkers:
+                if mahjongker.priority == 1:
+                    evaluated_score = mahjongker.eval_score(tile)
+                    points += evaluated_score[0]
+                    mult += evaluated_score[1]
         # prio 3, eyes jongkers
         for mahjongker in my_mahjongkers:
             if mahjongker.priority == 3:

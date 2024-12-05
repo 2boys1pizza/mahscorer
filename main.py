@@ -19,6 +19,7 @@ FLUSH_UPGRADE_COST = 2
 AVATAR_UPGRADE_COST = 6
 # ITEM_COST = 3
 MAX_NUM_MAHJONGKERS = 5
+MAX_NUM_ITEMS = 2
 SEQUENCE_UPGRADE_AMOUNT = 0.1
 TRIPLET_UPGRADE_AMOUNT = 0.15
 HALF_FLUSH_UPGRADE_AMOUNT = 0.15
@@ -48,14 +49,26 @@ triplet_mult_text = []
 half_flush_mult_text = []
 flush_mult_text = []
 
-# mahjongkers
+# inventory
 my_mahjongkers = []
+my_items = []
 filtered_mahjongkers_list = []
 all_mahjongker_text = []
 all_mahjongkers_containers = []
-my_mahjongker_text = []
+my_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
+my_item_text = ft.Text("", color=ft.colors.WHITE)
 mahjongker_filter = ""
 my_mahjongker_grid = ft.GridView(
+    # expand=1,
+    height=100,
+    width=400,
+    runs_count=5,
+    max_extent=150,
+    child_aspect_ratio=1.0,
+    spacing=15,
+    run_spacing=15,
+)
+my_items_grid = ft.GridView(
     # expand=1,
     height=100,
     width=400,
@@ -80,6 +93,8 @@ aycker_text = ft.Text("AYCker value: 0", size=40)
 pingker_text = ft.Text("Pingker value: 0", size=40)
 kingkongker_text = ft.Text("KingKongker value: 0", size=40)
 meldker_text = ft.Text("Meldker value: 0", size=40)
+fuckgker_text = ft.Text("Fuckgker value: 0", size=40)
+suckgker_text = ft.Text("Suckgker value: 0", size=40)
 
 # scorer
 selected_tiles = []
@@ -151,7 +166,7 @@ def main(page: ft.Page):
         if e.control.selected_index == 0:
             page.go("/stats")
         elif e.control.selected_index == 1:
-            page.go("/mahjongkers")
+            page.go("/inventory")
         elif e.control.selected_index == 2:
             page.go("/scorer")
         else:
@@ -257,7 +272,7 @@ def main(page: ft.Page):
         page.update()
 
     # -------------------------------------------------------------
-    # MAHJONGKER FUNC
+    # INVENTORY FUNC
     # -------------------------------------------------------------
 
     def handle_add_mahjongker_select(e):
@@ -273,6 +288,16 @@ def main(page: ft.Page):
         my_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
         if len(my_jongkers_panel.content.controls) >= 3:
             del my_jongkers_panel.content.controls[1]
+        page.update()
+
+    def handle_remove_item_select(e):
+        global my_item_text
+        global all_item_text
+        item_name = e.control.image.src.split("/")[2].split(".")[0]
+        my_item_text.value = all_items_dict[item_name].name
+        print(all_items_dict[item_name].name)
+        if len(my_items_panel.content.controls) >= 3:
+            del my_items_panel.content.controls[1]
         page.update()
 
     def handle_AYCker_select(e):
@@ -475,6 +500,106 @@ def main(page: ft.Page):
         meldker_text.value = f"Meldker value: {meldker.point_value}"
         page.update()
 
+    def handle_fuckgker_select(e):
+        global my_mahjongker_text
+        global my_jongkers_panel
+        global fuckgker_text
+        # Add UI to increase/decrease value of ayceker
+        fuckgker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Fuckgker":
+                fuckgker = mahjongker
+                break
+        fuckgker_text.value = f"Fuckgker value: {fuckgker.point_value}"
+        upgrade_row = ft.Row([
+            fuckgker_text,
+            ft.Column([
+                ft.ElevatedButton(text="↑", on_click=increment_fuckgker_score),
+                ft.ElevatedButton(text="↓", on_click=decrement_fuckgker_score)
+                ])
+            ],
+            alignment=ft.MainAxisAlignment.CENTER)
+        if len(my_jongkers_panel.content.controls) >= 3:
+            my_jongkers_panel.content.controls[1] = upgrade_row
+        else:
+            my_jongkers_panel.content.controls.insert(1, upgrade_row)
+
+        jonker_name = e.control.image.src.split("/")[2].split(".")[0]
+        my_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
+        page.update()
+
+    def increment_fuckgker_score(e):
+        global fuckgker_text
+        fuckgker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Fuckgker":
+                fuckgker = mahjongker
+                break
+        fuckgker.point_value = fuckgker.point_value + 10
+        fuckgker_text.value = f"Fuckgker value: {fuckgker.point_value}"
+        page.update()
+
+    def decrement_fuckgker_score(e):
+        global fuckgker_text
+        fuckgker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Fuckgker":
+                fuckgker = mahjongker
+                break
+        fuckgker.point_value = max(0, fuckgker.point_value - 10)
+        fuckgker_text.value = f"Fuckgker value: {fuckgker.point_value}"
+        page.update()
+
+    def handle_suckgker_select(e):
+        global my_mahjongker_text
+        global my_jongkers_panel
+        global suckgker_text
+        # Add UI to increase/decrease value of ayceker
+        suckgker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Suckgker":
+                suckgker = mahjongker
+                break
+        suckgker_text.value = f"Suckgker value: {suckgker.point_value}"
+        upgrade_row = ft.Row([
+            suckgker_text,
+            ft.Column([
+                ft.ElevatedButton(text="↑", on_click=increment_suckgker_score),
+                ft.ElevatedButton(text="↓", on_click=decrement_suckgker_score)
+                ])
+            ],
+            alignment=ft.MainAxisAlignment.CENTER)
+        if len(my_jongkers_panel.content.controls) >= 3:
+            my_jongkers_panel.content.controls[1] = upgrade_row
+        else:
+            my_jongkers_panel.content.controls.insert(1, upgrade_row)
+
+        jonker_name = e.control.image.src.split("/")[2].split(".")[0]
+        my_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
+        page.update()
+
+    def increment_suckgker_score(e):
+        global suckgker_text
+        suckgker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Suckgker":
+                suckgker = mahjongker
+                break
+        suckgker.point_value = suckgker.point_value + 10
+        suckgker_text.value = f"Suckgker value: {suckgker.point_value}"
+        page.update()
+
+    def decrement_suckgker_score(e):
+        global suckgker_text
+        suckgker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Suckgker":
+                suckgker = mahjongker
+                break
+        suckgker.point_value = max(0, suckgker.point_value - 10)
+        suckgker_text.value = f"Suckgker value: {suckgker.point_value}"
+        page.update()
+
     def apply_mahjongker_filter(e):
         global filtered_mahjongkers_list
         global mahjongker_filter
@@ -503,6 +628,14 @@ def main(page: ft.Page):
             my_mahjongkers.remove(all_mahjongkers_dict[my_mahjongker_text.value.lower()])
         my_mahjongker_text.value = ""
         refresh_my_mahjongkers()
+
+    def remove_item(e):
+        global my_items
+        global my_item_text
+        if my_item_text.value != "":
+            my_items.remove(all_item_names_dict[my_item_text.value])
+        my_item_text.value = ""
+        refresh_my_items()
 
     def refresh_my_mahjongkers():
         global my_mahjongker_grid
@@ -635,6 +768,68 @@ def main(page: ft.Page):
                         )
                     )
                 )
+            elif mahjongker.name == "Fuckgker":
+                my_mahjongkers_containers.append(
+                    ft.Container(
+                        image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(mahjongker.name, bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_fuckgker_select,
+                        tooltip=ft.Tooltip(
+                            message=mahjongker.description,
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        )
+                    )
+                )
+            elif mahjongker.name == "Suckgker":
+                my_mahjongkers_containers.append(
+                    ft.Container(
+                        image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(mahjongker.name, bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_suckgker_select,
+                        tooltip=ft.Tooltip(
+                            message=mahjongker.description,
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        )
+                    )
+                )
             else:
                 my_mahjongkers_containers.append(
                     ft.Container(
@@ -670,6 +865,49 @@ def main(page: ft.Page):
             my_mahjongker_grid.controls.append(mahjongker_container)
 
         my_jongkers_panel.header = ft.ListTile(title=ft.Text(f"My Jongkers ({len(my_mahjongkers)}/{MAX_NUM_MAHJONGKERS})"))
+        page.update()
+
+    def refresh_my_items():
+        global my_items_grid
+        global my_items_panel
+        global my_items
+        my_items_grid.controls.clear()
+        my_items_containers = []
+        for item in my_items:
+            my_items_containers.append(
+                ft.Container(
+                    image=ft.DecorationImage(src=item.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                    content=ft.Text(item.name, bgcolor="#000000", color=ft.colors.WHITE),
+                    border_radius=ft.border_radius.all(5),
+                    ink=True,
+                    on_click=handle_remove_item_select,
+                    tooltip=ft.Tooltip(
+                        message=item.description,
+                        padding=20,
+                        border_radius=10,
+                        text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                        gradient=ft.LinearGradient(
+                            begin=ft.alignment.top_left,
+                            end=ft.alignment.Alignment(0.8, 1),
+                            colors=[
+                                "0xff1f005c",
+                                "0xff5b0060",
+                                "0xff870160",
+                                "0xffac255e",
+                                "0xffca485c",
+                                "0xffe16b5c",
+                                "0xfff39060",
+                                "0xffffb56b",
+                            ],
+                            tile_mode=ft.GradientTileMode.MIRROR,
+                        )
+                    )
+                )
+            )
+        for item_container in my_items_containers:
+            my_items_grid.controls.append(item_container)
+
+        my_items_panel.header = ft.ListTile(title=ft.Text(f"My Items ({len(my_items)}/{MAX_NUM_ITEMS})"))
         page.update()
 
     def refresh_all_mahjongkers():
@@ -1005,8 +1243,9 @@ def main(page: ft.Page):
         global half_flush_hand_mult 
         global flush_hand_mult
         i = score(current_hand, table_wind, seat_wind, my_mahjongkers, sequence_hand_mult, triplet_hand_mult, half_flush_hand_mult, flush_hand_mult)
-        tot_score = i[0] * i[1]
-        hand_score_text.value =  f"Score: {i[0]} x {i[1]} = {tot_score}"
+        buffetker_score = score_buffettker()
+        tot_score = (i[0] + buffetker_score) * i[1]
+        hand_score_text.value =  f"Score: {i[0] + buffetker_score} x {i[1]} = {tot_score}"
         page.update()
 
     def add_to_total_score(e):
@@ -1019,6 +1258,15 @@ def main(page: ft.Page):
         current_hand.melds = []
         current_hand.eyes = []
         refresh_current_hand()
+
+    def score_buffettker():
+        global my_mahjongkers
+        global money
+        buffettker = Buffettker()
+        if buffettker in my_mahjongkers:
+            return int(money/3)*10
+        else:
+            return 0
 
     # -------------------------------------------------------------
     # SHOP FUNC
@@ -1397,11 +1645,13 @@ def main(page: ft.Page):
     def buy_item(e):
         global shop_item_text
         global money
+        global my_items
         global item_row
         selected_container = []
         if shop_item_text.value != "" and shop_item_text.value != "TOO POOR":
             item = all_item_names_dict[shop_item_text.value]
             if money >= item.cost:
+                my_items.append(item)
                 money = money - item.cost
                 # then replace this slot in the grid view
                 for container in item_row.controls:
@@ -1466,9 +1716,12 @@ def main(page: ft.Page):
         global all_mahjongker_text
         global all_mahjongker_grid
         global my_mahjongker_text
+        global my_item_text
         global mahjongker_filter
         global my_mahjongker_grid
+        global my_items_grid
         global my_jongkers_panel
+        global my_items_panel
         global selected_tiles
         global current_hand
         global table_wind
@@ -1619,7 +1872,7 @@ def main(page: ft.Page):
                         ),
                     ft.NavigationBar(destinations=[
                         ft.NavigationBarDestination(icon=ft.icons.QUERY_STATS, label="Stats"),
-                        ft.NavigationBarDestination(icon=ft.icons.ADD_TO_PHOTOS, label="Mahjongkers"),
+                        ft.NavigationBarDestination(icon=ft.icons.ADD_TO_PHOTOS, label="Inventory"),
                         ft.NavigationBarDestination(icon=ft.icons.CALCULATE, label="Scorer"),
                         ft.NavigationBarDestination(icon=ft.icons.ADD_SHOPPING_CART, label="Shop"),
                         ],
@@ -1633,7 +1886,7 @@ def main(page: ft.Page):
         # -------------------------------------------------------------
         # Mahjongkers Page
         # -------------------------------------------------------------
-        if page.route == "/mahjongkers":
+        if page.route == "/inventory":
             # expansion panel list
             panel = ft.ExpansionPanelList(
                 expand_icon_color=ft.colors.AMBER,
@@ -1649,6 +1902,7 @@ def main(page: ft.Page):
             my_jongkers_panel = ft.ExpansionPanel(
                 bgcolor=ft.colors.GREEN_500,
                 header=ft.ListTile(title=ft.Text(f"My Jongkers ({len(my_mahjongkers)}/{MAX_NUM_MAHJONGKERS})")),
+                can_tap_header=True
             )
 
             my_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
@@ -1675,12 +1929,45 @@ def main(page: ft.Page):
             panel.controls.append(my_jongkers_panel)
 
             # -------------------------------------------------------------
+            # my items tab 
+            # -------------------------------------------------------------
+            my_items_panel = ft.ExpansionPanel(
+                bgcolor=ft.colors.RED_500,
+                header=ft.ListTile(title=ft.Text(f"My Items ({len(my_items)}/{MAX_NUM_ITEMS})")),
+                can_tap_header=True
+            )
+
+            my_item_text = ft.Text("", color=ft.colors.WHITE)
+            my_items_grid = ft.GridView(
+                # expand=1,
+                height=400,
+                width=400,
+                runs_count=5,
+                max_extent=150,
+                child_aspect_ratio=1.0,
+                spacing=15,
+                run_spacing=15,
+            )
+            
+            my_items_panel.content = ft.Column([
+                my_items_grid,
+                ft.Row([
+                    ft.ElevatedButton(text="Remove", on_click=remove_item),
+                    my_item_text
+                ])
+            ])
+
+            refresh_my_items()
+            panel.controls.append(my_items_panel)
+
+            # -------------------------------------------------------------
             # add jongkers tab 
             # -------------------------------------------------------------
 
             add_jongkers_panel = ft.ExpansionPanel(
                 bgcolor=ft.colors.BLUE_800,
                 header=ft.ListTile(title=ft.Text("Add Jongkers")),
+                can_tap_header=True
             )
 
             mahjongker_filter = ft.TextField(label="Filter", on_change=apply_mahjongker_filter)
@@ -1746,12 +2033,12 @@ def main(page: ft.Page):
 
             page.views.append(
                 ft.View(
-                    "/mahjongkers",
+                    "/inventory",
                     [
                         panel,
                         ft.NavigationBar(destinations=[
                             ft.NavigationBarDestination(icon=ft.icons.QUERY_STATS, label="Stats"),
-                            ft.NavigationBarDestination(icon=ft.icons.ADD_TO_PHOTOS, label="Mahjongkers"),
+                            ft.NavigationBarDestination(icon=ft.icons.ADD_TO_PHOTOS, label="Inventory"),
                             ft.NavigationBarDestination(icon=ft.icons.CALCULATE, label="Scorer"),
                             ft.NavigationBarDestination(icon=ft.icons.ADD_SHOPPING_CART, label="Shop"),
                             ],
@@ -1781,6 +2068,7 @@ def main(page: ft.Page):
             add_tiles_panel = ft.ExpansionPanel(
                 bgcolor=ft.colors.GREEN_500,
                 header=ft.ListTile(title=ft.Text(f"Add Tiles")),
+                can_tap_header=True
             )
 
             tile_radio = ft.RadioGroup(content=ft.Row([
@@ -1850,6 +2138,7 @@ def main(page: ft.Page):
             other_scoring_panel = ft.ExpansionPanel(
                 bgcolor=ft.colors.GREEN_500,
                 header=ft.ListTile(title=ft.Text(f"Other Scoring")),
+                can_tap_header=True
             )
 
             other_scoring_panel.content = ft.Column([])
@@ -1877,6 +2166,7 @@ def main(page: ft.Page):
             current_hand_panel = ft.ExpansionPanel(
                 bgcolor=ft.colors.GREEN_500,
                 header=ft.ListTile(title=ft.Text(f"Current Hand Scoring")),
+                can_tap_header=True
             )
 
             current_hand_panel.content = ft.Column([])
@@ -1890,7 +2180,7 @@ def main(page: ft.Page):
                         panel,
                         ft.NavigationBar(destinations=[
                             ft.NavigationBarDestination(icon=ft.icons.QUERY_STATS, label="Stats"),
-                            ft.NavigationBarDestination(icon=ft.icons.ADD_TO_PHOTOS, label="Mahjongkers"),
+                            ft.NavigationBarDestination(icon=ft.icons.ADD_TO_PHOTOS, label="Inventory"),
                             ft.NavigationBarDestination(icon=ft.icons.CALCULATE, label="Scorer"),
                             ft.NavigationBarDestination(icon=ft.icons.ADD_SHOPPING_CART, label="Shop"),
                             ],
@@ -1923,6 +2213,7 @@ def main(page: ft.Page):
             shop_panel = ft.ExpansionPanel(
                 bgcolor=ft.colors.GREEN_500,
                 header=ft.ListTile(title=ft.Text(f"Shop")),
+                can_tap_header=True
             )
 
             shop_row = ft.GridView(
@@ -2083,7 +2374,7 @@ def main(page: ft.Page):
                     item_row.controls.append(
                         ft.Container(
                             image=ft.DecorationImage(src=item.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
-                            content=ft.Text(f"{item.name}", bgcolor="#000000", color=ft.colors.WHITE),
+                            content=ft.Text(f"{item.name} - ${item.cost}", bgcolor="#000000", color=ft.colors.WHITE),
                             border_radius=ft.border_radius.all(5),
                             ink=True,
                             on_click=handle_add_shop_item_select,
@@ -2128,6 +2419,7 @@ def main(page: ft.Page):
             first_mahjongker_panel = ft.ExpansionPanel(
                 bgcolor=ft.colors.GREEN_500,
                 header=ft.ListTile(title=ft.Text(f"First Mahjongker Roll")),
+                can_tap_header=True
             )
 
             initial_mahjongkers_row = ft.GridView(
@@ -2170,7 +2462,7 @@ def main(page: ft.Page):
                         panel,
                         ft.NavigationBar(destinations=[
                             ft.NavigationBarDestination(icon=ft.icons.QUERY_STATS, label="Stats"),
-                            ft.NavigationBarDestination(icon=ft.icons.ADD_TO_PHOTOS, label="Mahjongkers"),
+                            ft.NavigationBarDestination(icon=ft.icons.ADD_TO_PHOTOS, label="Inventory"),
                             ft.NavigationBarDestination(icon=ft.icons.CALCULATE, label="Scorer"),
                             ft.NavigationBarDestination(icon=ft.icons.ADD_SHOPPING_CART, label="Shop"),
                             ],
