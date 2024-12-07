@@ -24,6 +24,8 @@ SEQUENCE_UPGRADE_AMOUNT = 0.1
 TRIPLET_UPGRADE_AMOUNT = 0.15
 HALF_FLUSH_UPGRADE_AMOUNT = 0.15
 FLUSH_UPGRADE_AMOUNT = 0.2
+SHOP_MAHJONGKER_RARITIES = ["common", "uncommon", "rare"]
+SHOP_MAHJONGKER_RARITY_PROBABILITIES = {1:[0.75, 0.25, 0], 2:[65, 30, 5], 3:[60, 30, 10], 4:[50, 35, 15], 5:[40, 40, 20]}
 
 # hands
 sequence_hand_level = 0
@@ -113,8 +115,8 @@ current_hand_panel = []
 tot_score = 0
 
 # shop
-initial_mahjongkers_row = []
-initial_mahjongker_text = ""
+shop_round = 1
+refresh_shop_button = []
 shop_row = []
 item_row = []
 shop_mahjongker_text = ""
@@ -130,6 +132,14 @@ half_flush_button = []
 flush_button = []
 avatar_button = []
 hand_upgrade_enabled = True
+
+initial_mahjongkers_row = []
+initial_mahjongker_text = ""
+uncommon_mahjongkers_row = []
+uncommon_mahjongker_text = ""
+rare_mahjongkers_row = []
+rare_mahjongker_text = ""
+
 
 #------------------------------------------
 # CUSTOM CLASSES 
@@ -1271,6 +1281,7 @@ def main(page: ft.Page):
     # -------------------------------------------------------------
     # SHOP FUNC
     # -------------------------------------------------------------
+    # common mahjongker roll
     def refresh_initial_mahjongkers(e):
         global initial_mahjongkers_row
         initial_mahjongkers_row.controls.clear()
@@ -1279,8 +1290,10 @@ def main(page: ft.Page):
         while i < 3:
             index = random.randint(0,len(common_mahjongkers_list)-1)
             if index not in selected_i: 
-                selected_i.append(index)
-                i = i+1
+                mahjongker = common_mahjongkers_list[index]
+                if mahjongker not in my_mahjongkers:
+                    selected_i.append(index)
+                    i = i+1
 
         for i in selected_i:
             mahjongker = common_mahjongkers_list[i]
@@ -1348,23 +1361,213 @@ def main(page: ft.Page):
         refresh_my_mahjongkers()
         refresh_initial_mahjongkers_empty()
 
+    # uncommon mahjongker roll
+    def refresh_uncommon_mahjongkers(e):
+        global uncommon_mahjongkers_row
+        uncommon_mahjongkers_row.controls.clear()
+        i = 0
+        selected_i = []
+        while i < 3:
+            index = random.randint(0,len(uncommon_mahjongkers_list)-1)
+            if index not in selected_i: 
+                mahjongker = uncommon_mahjongkers_list[index]
+                if mahjongker not in my_mahjongkers:
+                    selected_i.append(index)
+                    i = i+1
+
+        for i in selected_i:
+            mahjongker = uncommon_mahjongkers_list[i]
+            uncommon_mahjongkers_row.controls.append(
+                ft.Container(
+                        image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(mahjongker.name, bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_add_uncommon_mahjongker_select,
+                        tooltip=ft.Tooltip(
+                            message=mahjongker.description,
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        ),
+                        # tooltip=MahjongkerTooltip(mahjongker=mahjongker)
+                    )
+            )
+        uncommon_mahjongkers_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_uncommon_mahjongkers))
+        page.update()
+
+    def refresh_uncommon_mahjongkers_empty():
+        global uncommon_mahjongkers_row
+        uncommon_mahjongkers_row.controls.clear()
+        for i in range(3):
+            uncommon_mahjongkers_row.controls.append(
+                ft.Container(
+                    content=ft.Text("Empty", bgcolor="#000000",color=ft.colors.WHITE),
+                    image=ft.DecorationImage(src="/tiles/empty.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                    border_radius=ft.border_radius.all(5),
+                    ink=True,
+                    )
+                )
+        uncommon_mahjongkers_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_uncommon_mahjongkers))
+        page.update()
+
+    def handle_add_uncommon_mahjongker_select(e):
+        global uncommon_mahjongker_text
+        jonker_name = e.control.image.src.split("/")[2].split(".")[0]
+        uncommon_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
+        page.update()
+
+    def add_uncommon_mahjongker(e):
+        global my_mahjongkers
+        global uncommon_mahjongker_text
+        if uncommon_mahjongker_text.value != "":
+            my_mahjongkers.append(all_mahjongkers_dict[uncommon_mahjongker_text.value.lower()])
+        uncommon_mahjongker_text.value = ""
+        refresh_my_mahjongkers()
+        refresh_uncommon_mahjongkers_empty()
+
+    # rare mahjongker roll
+    def refresh_rare_mahjongkers(e):
+        global rare_mahjongkers_row
+        rare_mahjongkers_row.controls.clear()
+        i = 0
+        selected_i = []
+        while i < 3:
+            index = random.randint(0,len(rare_mahjongkers_list)-1)
+            if index not in selected_i: 
+                mahjongker = rare_mahjongkers_list[index]
+                if mahjongker not in my_mahjongkers:
+                    selected_i.append(index)
+                    i = i+1
+
+        for i in selected_i:
+            mahjongker = rare_mahjongkers_list[i]
+            rare_mahjongkers_row.controls.append(
+                ft.Container(
+                        image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(mahjongker.name, bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_add_rare_mahjongker_select,
+                        tooltip=ft.Tooltip(
+                            message=mahjongker.description,
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        ),
+                        # tooltip=MahjongkerTooltip(mahjongker=mahjongker)
+                    )
+            )
+        rare_mahjongkers_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_rare_mahjongkers))
+        page.update()
+
+    def refresh_rare_mahjongkers_empty():
+        global rare_mahjongkers_row
+        rare_mahjongkers_row.controls.clear()
+        for i in range(3):
+            rare_mahjongkers_row.controls.append(
+                ft.Container(
+                    content=ft.Text("Empty", bgcolor="#000000",color=ft.colors.WHITE),
+                    image=ft.DecorationImage(src="/tiles/empty.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                    border_radius=ft.border_radius.all(5),
+                    ink=True,
+                    )
+                )
+        rare_mahjongkers_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_rare_mahjongkers))
+        page.update()
+
+    def handle_add_rare_mahjongker_select(e):
+        global rare_mahjongker_text
+        jonker_name = e.control.image.src.split("/")[2].split(".")[0]
+        rare_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
+        page.update()
+
+    def add_rare_mahjongker(e):
+        global my_mahjongkers
+        global rare_mahjongker_text
+        if rare_mahjongker_text.value != "":
+            my_mahjongkers.append(all_mahjongkers_dict[rare_mahjongker_text.value.lower()])
+        rare_mahjongker_text.value = ""
+        refresh_my_mahjongkers()
+        refresh_rare_mahjongkers_empty()
+
+    def roll_mahjongker(rarity):
+        global my_mahjongkers
+        global shop_selected_i
+        if rarity == "common":
+            for i in range(20):
+                index = random.randint(0,len(common_mahjongkers_list)-1)
+                mahjongker = common_mahjongkers_list[index]
+                if mahjongker not in my_mahjongkers and all_mahjongkers_list.index(mahjongker) not in shop_selected_i:
+                    return mahjongker
+        elif rarity == "uncommon":
+            for i in range(20):
+                index = random.randint(0,len(uncommon_mahjongkers_list)-1)
+                mahjongker = uncommon_mahjongkers_list[index]
+                if mahjongker not in my_mahjongkers and all_mahjongkers_list.index(mahjongker) not in shop_selected_i:
+                    return mahjongker
+        else:
+            for i in range(20):
+                index = random.randint(0,len(rare_mahjongkers_list)-1)
+                mahjongker = rare_mahjongkers_list[index]
+                if mahjongker not in my_mahjongkers and all_mahjongkers_list.index(mahjongker) not in shop_selected_i:
+                    return mahjongker 
+
     def refresh_shop(e):
         global shop_row
+        global shop_round
+        global refresh_shop_button
         global item_row
         global reroll_cost
         global shop_selected_i
         global item_selected
         global my_mahjongkers
         shop_row.controls.clear()
+        shop_round = min(5, shop_round + 1)
+        refresh_shop_button.text = f"Refresh Shop Round {shop_round}"
         i = 0
         shop_selected_i = []
         while i < 3:
-            index = random.randint(0,len(all_mahjongkers_list)-1)
-            if index not in shop_selected_i: 
-                mahjongker = all_mahjongkers_list[index]
-                if mahjongker not in my_mahjongkers:
-                    shop_selected_i.append(index)
-                    i = i+1
+            rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_RARITY_PROBABILITIES[int(shop_round)])[0]
+            mahjongker = roll_mahjongker(rarity_roll)
+            shop_selected_i.append(all_mahjongkers_list.index(mahjongker))
+            i = i+1
+            # index = random.randint(0,len(all_mahjongkers_list)-1)
+            # if index not in shop_selected_i: 
+            #     mahjongker = all_mahjongkers_list[index]
+            #     if mahjongker not in my_mahjongkers:
+            #         shop_selected_i.append(index)
+            #         i = i+1
 
         for i in shop_selected_i:
             mahjongker = all_mahjongkers_list[i]
@@ -1404,9 +1607,7 @@ def main(page: ft.Page):
         item_selected = []
         while i < 3:
             random_i = random.randint(0,len(all_items_list)-1)
-            print(random_i)
             item = all_items_list[random_i]
-            print(item)
             if item not in item_selected: 
                 item_selected.append(item)
                 i = i+1
@@ -1453,6 +1654,7 @@ def main(page: ft.Page):
 
     def reroll_shop_mahjongkers(e):
         global my_mahjongkers
+        global shop_round
         global reroll_cost
         global shop_row
         global shop_selected_i
@@ -1465,12 +1667,10 @@ def main(page: ft.Page):
             i = 0
             shop_selected_i = []
             while i < 3:
-                index = random.randint(0,len(all_mahjongkers_list)-1)
-                if index not in shop_selected_i: 
-                    mahjongker = all_mahjongkers_list[index]
-                    if mahjongker not in my_mahjongkers:
-                        shop_selected_i.append(index)
-                        i = i+1
+                rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_RARITY_PROBABILITIES[int(shop_round)])[0]
+                mahjongker = roll_mahjongker(rarity_roll)
+                shop_selected_i.append(all_mahjongkers_list.index(mahjongker))
+                i = i+1
 
             for i in shop_selected_i:
                 mahjongker = all_mahjongkers_list[i]
@@ -1691,6 +1891,13 @@ def main(page: ft.Page):
             page.update()
         page.update()
 
+    def adjust_shop_round(e):
+        global shop_round
+        global refresh_shop_button
+        shop_round = e.control.value
+        refresh_shop_button.text = f"Refresh Shop Round {shop_round}"
+        page.update()
+
     def do_nothing(e):
         print("I do nothing!")
 
@@ -1698,7 +1905,9 @@ def main(page: ft.Page):
     # PAGES - ROUTES HERE
     # -------------------------------------------------------------
     def route_change(e):
+        # stats
         global score_adjust_tf
+        global shop_round
         global money
         global hand_size_text
         global hand_size
@@ -1711,6 +1920,7 @@ def main(page: ft.Page):
         global triplet_mult_text
         global half_flush_mult_text
         global flush_mult_text
+        # inventory
         global my_mahjongkers
         global filtered_mahjongkers_list
         global all_mahjongker_text
@@ -1722,6 +1932,7 @@ def main(page: ft.Page):
         global my_items_grid
         global my_jongkers_panel
         global my_items_panel
+        # scorer
         global selected_tiles
         global current_hand
         global table_wind
@@ -1735,8 +1946,14 @@ def main(page: ft.Page):
         global other_scoring_panel
         global scoring_tiles_row
         global current_hand_panel
+        # shop
+        global refresh_shop_button
         global initial_mahjongkers_row
         global initial_mahjongker_text
+        global uncommon_mahjongkers_row
+        global uncommon_mahjongker_text
+        global rare_mahjongkers_row
+        global rare_mahjongker_text
         global shop_row
         global item_row
         global shop_mahjongker_text
@@ -2211,7 +2428,7 @@ def main(page: ft.Page):
             # -------------------------------------------------------------
 
             shop_panel = ft.ExpansionPanel(
-                bgcolor=ft.colors.GREEN_500,
+                bgcolor=ft.colors.GREY_500,
                 header=ft.ListTile(title=ft.Text(f"Shop")),
                 can_tap_header=True
             )
@@ -2236,6 +2453,7 @@ def main(page: ft.Page):
                 spacing=5,
                 run_spacing=5,
             )
+            refresh_shop_button = ft.ElevatedButton(text=f"Refresh Shop Round {shop_round}", on_click=refresh_shop)
             shop_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
             shop_item_text = ft.Text("", color=ft.colors.WHITE)
             shop_money_text = ft.Text(f"Money: {money}", size=30)
@@ -2248,7 +2466,8 @@ def main(page: ft.Page):
             shop_panel.content = ft.Column([
                 ft.Row([
                     shop_money_text,
-                    ft.ElevatedButton(text="Refresh Shop", on_click=refresh_shop)
+                    refresh_shop_button,
+                    ft.TextField(label="Shop Round", hint_text=shop_round, on_change=adjust_shop_round)
                 ]),
                 ft.Divider(),
                 ft.Row([
@@ -2413,12 +2632,12 @@ def main(page: ft.Page):
             panel.controls.append(shop_panel)
 
             # -------------------------------------------------------------
-            # first mahjongker tab 
+            # common mahjongker tab 
             # -------------------------------------------------------------
 
             first_mahjongker_panel = ft.ExpansionPanel(
-                bgcolor=ft.colors.GREEN_500,
-                header=ft.ListTile(title=ft.Text(f"First Mahjongker Roll")),
+                bgcolor=ft.colors.BLUE_500,
+                header=ft.ListTile(title=ft.Text(f"Common Mahjongker Roll")),
                 can_tap_header=True
             )
 
@@ -2454,6 +2673,92 @@ def main(page: ft.Page):
                 ])
 
             panel.controls.append(first_mahjongker_panel)
+
+            # -------------------------------------------------------------
+            # uncommon mahjongker tab 
+            # -------------------------------------------------------------
+
+            uncommon_mahjongker_panel = ft.ExpansionPanel(
+                bgcolor=ft.colors.GREEN_500,
+                header=ft.ListTile(title=ft.Text(f"Uncommon Mahjongker Roll")),
+                can_tap_header=True
+            )
+
+            uncommon_mahjongkers_row = ft.GridView(
+                # expand=1,
+                height=100,
+                width=400,
+                runs_count=1,
+                max_extent=95,
+                child_aspect_ratio=1.0,
+                spacing=5,
+                run_spacing=5,
+            )
+
+            # set up base row
+            for i in range(3):
+                uncommon_mahjongkers_row.controls.append(
+                    ft.Container(
+                        content=ft.Text("Empty", bgcolor="#000000",color=ft.colors.WHITE),
+                        image=ft.DecorationImage(src="/tiles/empty.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        )
+                    )
+            uncommon_mahjongkers_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_uncommon_mahjongkers))
+            uncommon_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
+            uncommon_mahjongker_panel.content = ft.Column([
+                    uncommon_mahjongkers_row,
+                    ft.Row([
+                        ft.ElevatedButton(text="Select", on_click=add_uncommon_mahjongker),
+                        uncommon_mahjongker_text
+                    ])
+                ])
+
+            panel.controls.append(uncommon_mahjongker_panel)
+
+            # -------------------------------------------------------------
+            # rare mahjongker tab 
+            # -------------------------------------------------------------
+
+            rare_mahjongker_panel = ft.ExpansionPanel(
+                bgcolor=ft.colors.PURPLE_500,
+                header=ft.ListTile(title=ft.Text(f"Rare Mahjongker Roll")),
+                can_tap_header=True
+            )
+
+            rare_mahjongkers_row = ft.GridView(
+                # expand=1,
+                height=100,
+                width=400,
+                runs_count=1,
+                max_extent=95,
+                child_aspect_ratio=1.0,
+                spacing=5,
+                run_spacing=5,
+            )
+
+            # set up base row
+            for i in range(3):
+                rare_mahjongkers_row.controls.append(
+                    ft.Container(
+                        content=ft.Text("Empty", bgcolor="#000000",color=ft.colors.WHITE),
+                        image=ft.DecorationImage(src="/tiles/empty.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        )
+                    )
+            rare_mahjongkers_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_rare_mahjongkers))
+            rare_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
+            rare_mahjongker_panel.content = ft.Column([
+                    rare_mahjongkers_row,
+                    ft.Row([
+                        ft.ElevatedButton(text="Select", on_click=add_rare_mahjongker),
+                        rare_mahjongker_text
+                    ])
+                ])
+
+            panel.controls.append(rare_mahjongker_panel)
 
             page.views.append(
                 ft.View(
