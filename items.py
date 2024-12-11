@@ -170,6 +170,12 @@ class Item_12_Inch(Item):
     cost = 2
     img_src = "/items/12inch.jpg"
 
+class Item_Sleight_Of_Han(Item):
+    name = "Sleight of Han"
+    description = "Steal a random item from another player."
+    cost = 3
+    img_src = "/items/sleightofhan.jpg"
+
 # --------------------------------------------------------------------------------------
 # ALL ITEMS LIST
 # --------------------------------------------------------------------------------------
@@ -201,6 +207,7 @@ all_items_list.append(Item_Upheaval())
 all_items_list.append(Item_Weather_Vane())
 all_items_list.append(Item_Handmaxxing())
 all_items_list.append(Item_12_Inch())
+all_items_list.append(Item_Sleight_Of_Han())
 
 # --------------------------------------------------------------------------------------
 # ITEM DICT
@@ -231,6 +238,7 @@ all_items_dict["upheaval"] = Item_Upheaval()
 all_items_dict["weather-vane"] = Item_Weather_Vane()
 all_items_dict["handmaxxing"] = Item_Handmaxxing()
 all_items_dict["12inch"] = Item_12_Inch()
+all_items_dict["sleight-of-han"] = Item_Sleight_Of_Han()
 
 # --------------------------------------------------------------------------------------
 # ITEM NAME DICT
@@ -261,3 +269,4 @@ all_item_names_dict["Upheaval"] = Item_Upheaval()
 all_item_names_dict["Weather Vane"] = Item_Weather_Vane()
 all_item_names_dict["Handmaxxing"] = Item_Handmaxxing()
 all_item_names_dict["12 Inch Barrel Revolver"] = Item_12_Inch()
+all_item_names_dict["Sleight Of Han"] = Item_Sleight_Of_Han()

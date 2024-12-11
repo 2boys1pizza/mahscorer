@@ -166,8 +166,9 @@ class Mahjongker:
     # 1 is for tile checking
     # 2 is for meld checking
     # 3 is for eyes checking
-    # 4 is for hand checking
-    # 5 is for no interaction 
+    # 4 is for hand type checking
+    # 5 is for whole hand
+    # 6 is for no interaction 
 
     def __repr__(self):
         return repr((self.name, self.description, self.priority))
@@ -367,7 +368,7 @@ class Oddker(Mahjongker):
 
     def eval_score(self, tile):
         if tile.suit == "bamboo" or tile.suit == "dot" or tile.suit == "character":
-            if int(tile.rank) % 1 == 0:
+            if int(tile.rank) % 2 == 1:
                 return (5, 0)
             else:
                 return (0, 0)
@@ -378,7 +379,7 @@ class Oddker(Mahjongker):
 class AYCker(Mahjongker):
     name = "AYCker"
     description = "This Mahjongker gains +15 pts on chi (stacking) Current: 0"
-    priority = 5 
+    priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
     img_src = "/jongker/aycker.jpg"
     point_value = 0
@@ -390,7 +391,7 @@ class AYCker(Mahjongker):
 class Pingker(Mahjongker):
     name = "Pingker"
     description = "This Mahjongker gains +20 pts on pong (stacking) Current: 0"
-    priority = 5 
+    priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
     img_src = "/jongker/pingker.jpg"
     point_value = 0
@@ -402,7 +403,7 @@ class Pingker(Mahjongker):
 class KingKongker(Mahjongker):
     name = "KingKongker"
     description = "This Mahjongker gains +40 pts on kong (stacking) Current: 0"
-    priority = 5 
+    priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
     img_src = "/jongker/kingkongker.jpg"
     point_value = 0
@@ -414,7 +415,7 @@ class KingKongker(Mahjongker):
 class Gapker(Mahjongker):
     name = "Gapker"
     description = "Sequences may contain one gap of 1 (1-2-4 valid, 2-4-6 not valid)"
-    priority = 5 
+    priority = 6 
     cost = RARE_MAHJONGKER_COST
     img_src = "/jongker/gapker.jpg"
 
@@ -425,7 +426,7 @@ class Gapker(Mahjongker):
 class DEIker(Mahjongker):
     name = "DEIker"
     description = "Triplets may contain up to two different suits (honors excluded)"
-    priority = 5 
+    priority = 6 
     cost = RARE_MAHJONGKER_COST
     img_src = "/jongker/deiker.jpg"
 
@@ -436,7 +437,7 @@ class DEIker(Mahjongker):
 class SEIquenker(Mahjongker):
     name = "SEIquenker"
     description = "Sequences may contain up to two different suits (honors excluded)"
-    priority = 5 
+    priority = 6 
     cost = RARE_MAHJONGKER_COST
     img_src = "/jongker/seiquenker.jpg"
 
@@ -447,7 +448,7 @@ class SEIquenker(Mahjongker):
 class Siker(Mahjongker):
     name = "Siker"
     description = "You may form a kong with a sequence (chi only, 3456)"
-    priority = 5 
+    priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
     img_src = "/jongker/siker.jpg"
 
@@ -458,7 +459,7 @@ class Siker(Mahjongker):
 class Bourdainker(Mahjongker):
     name = "Bourdainker"
     description = "You may chi from the player across from you"
-    priority = 5 
+    priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
     img_src = "/jongker/bourdainker.jpg"
 
@@ -469,7 +470,7 @@ class Bourdainker(Mahjongker):
 class Dollker(Mahjongker):
     name = "Dollker"
     description = "+$5 for discarding your seat wind"
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/dollker.jpg"
 
@@ -480,7 +481,7 @@ class Dollker(Mahjongker):
 class Yenker(Mahjongker):
     name = "Yenker"
     description = "+$5 for discarding the table wind"
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/yenker.jpg"
 
@@ -491,7 +492,7 @@ class Yenker(Mahjongker):
 class Falchionker(Mahjongker):
     name = "Falchionker"
     description = "+$3 for discarding any dragon"
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/falchionker.jpg"
 
@@ -516,7 +517,7 @@ class Neenjaker(Mahjongker):
 class Gayker(Mahjongker):
     name = "Gayker"
     description = "Sequences can loop (912)"
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/gayker.jpg"
 
@@ -527,15 +528,17 @@ class Gayker(Mahjongker):
 class Bumungker(Mahjongker):
     name = "Bumungker"
     description = "+30 pts for a hand with only bamboos (excluding honors). Once per turn, you may use Called Shot: Bamboo. Costs $2 per use."
-    priority = 4 
+    priority = 5 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/bumungker.jpg"
 
     def eval_score(self, hand):
         all_bamboos = True
-        for meld in hand:
+        for meld in hand.melds:
             if meld.suit != "bamboo" and meld.suit != "dragon" and meld.suit != "wind":
                 all_bamboos = False
+        if hand.eyes and hand.eyes[0].suit != "bamboo" and hand.eyes[0].suit != "dragon" and hand.eyes[0].suit != "wind":
+            all_chars = False
         if all_bamboos:
             return (30, 0)
         else:
@@ -545,15 +548,17 @@ class Bumungker(Mahjongker):
 class Dungker(Mahjongker):
     name = "Dungker"
     description = "+30 pts for a hand with only dots (excluding honors). Once per turn, you may use Called Shot: Dots. Costs $2 per use."
-    priority = 4 
+    priority = 5 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/dungker.jpg"
 
     def eval_score(self, hand):
         all_dots = True
-        for meld in hand:
+        for meld in hand.melds:
             if meld.suit != "dot" and meld.suit != "dragon" and meld.suit != "wind":
                 all_dots = False
+        if hand.eyes and hand.eyes[0].suit != "dot" and hand.eyes[0].suit != "dragon" and hand.eyes[0].suit != "wind":
+            all_chars = False
         if all_dots:
             return (30, 0)
         else:
@@ -563,15 +568,17 @@ class Dungker(Mahjongker):
 class Chungker(Mahjongker):
     name = "Chungker"
     description = "+30 pts for a hand with only characters (excluding honors). Once per turn, you may use Called Shot: Character. Costs $2 per use."
-    priority = 4 
+    priority = 5 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/chungker.jpg"
 
     def eval_score(self, hand):
         all_chars = True
-        for meld in hand:
+        for meld in hand.melds:
             if meld.suit != "character" and meld.suit != "dragon" and meld.suit != "wind":
                 all_chars = False
+        if hand.eyes and hand.eyes[0].suit != "character" and hand.eyes[0].suit != "dragon" and hand.eyes[0].suit != "wind":
+            all_chars = False
         if all_chars:
             return (30, 0)
         else:
@@ -623,7 +630,7 @@ class Chingker(Mahjongker):
 class Hoardker(Mahjongker):
     name = "Hoardker"
     description = "Whenever a pretty is drawn, you may discard a tile at random and you gain two items. Draw to replace the discarded tile"
-    priority = 5 
+    priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
     img_src = "/jongker/hoardker.jpg"
 
@@ -634,7 +641,7 @@ class Hoardker(Mahjongker):
 class Meldker(Mahjongker):
     name = "Meldker"
     description = "If the last 3 tiles you discarded form a meld, +30 points (stacking) Current: 0"
-    priority = 5 
+    priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
     img_src = "/jongker/meldker.jpg"
     point_value = 0
@@ -663,7 +670,7 @@ class Snakeker(Mahjongker):
 class Seeker(Mahjongker):
     name = "Seeker"
     description = "You may pong your eyes at any time"
-    priority = 5 
+    priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
     img_src = "/jongker/seeker.jpg"
 
@@ -674,7 +681,7 @@ class Seeker(Mahjongker):
 class LeeSinker(Mahjongker):
     name = "LeeSinker"
     description = "You can mahjong without eyes.  The eye tiles are not considered for determining your hand type. -30 base points if you mahjong this way"
-    priority = 5 
+    priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
     img_src = "/jongker/leesinker.jpg"
     active = False
@@ -703,7 +710,7 @@ class SeeingDoubker(Mahjongker):
 class Seequenker(Mahjongker):
     name = "Seequenker"
     description = "Your eyes can be a sequence"
-    priority = 5 
+    priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
     img_src = "/jongker/seequenker.jpg"
 
@@ -775,7 +782,7 @@ class Rainbowker(Mahjongker):
 class Raindraker(Mahjongker):
     name = "Raindraker"
     description = "You can form a sequence with the three dragon suits"
-    priority = 5 
+    priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
     img_src = "/jongker/raindraker.jpg"
 
@@ -786,7 +793,7 @@ class Raindraker(Mahjongker):
 class Magellker(Mahjongker):
     name = "Magellker"
     description = "You can form a sequence with the winds. They are ordered dong (E) -> xi (S) -> nan (W) -> bei (N)"
-    priority = 5 
+    priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
     img_src = "/jongker/magellker.jpg"
 
@@ -797,7 +804,7 @@ class Magellker(Mahjongker):
 class Salarymanker(Mahjongker):
     name = "Salarymanker"
     description = "+$4 at the end of the round"
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/salarymanker.jpg"
 
@@ -808,7 +815,7 @@ class Salarymanker(Mahjongker):
 class MealTicker(Mahjongker):
     name = "MealTicker"
     description = "+$4 each time you chi"
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/mealticker.jpg"
 
@@ -819,7 +826,7 @@ class MealTicker(Mahjongker):
 class WenGeker(Mahjongker):
     name = "WenGeker"
     description = "+$4 each time you pong"
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/wengeker.jpg"
 
@@ -830,7 +837,7 @@ class WenGeker(Mahjongker):
 class Fourker(Mahjongker):
     name = "Fourker"
     description = "+$8 each time you kong"
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/fourker.jpg"
 
@@ -841,7 +848,7 @@ class Fourker(Mahjongker):
 class DOWker(Mahjongker):
     name = "DOWker"
     description = "At the start of the next shop, you may give this to another player.  They must give you back $5"
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/dowker.jpg"
 
@@ -852,7 +859,7 @@ class DOWker(Mahjongker):
 class Comebacker(Mahjongker):
     name = "Comebacker"
     description = "+$10 at the start of shop phase if you are in last place for total points"
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/comebacker.jpg"
 
@@ -863,7 +870,7 @@ class Comebacker(Mahjongker):
 class Underdoker(Mahjongker):
     name = "Underdoker"
     description = "+$5 whenever you place last in a round"
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/underdoker.jpg"
 
@@ -874,7 +881,7 @@ class Underdoker(Mahjongker):
 class Compensaker(Mahjongker):
     name = "Compensaker"
     description = "When you would draw 1 on your draw phase, instead draw 2"
-    priority = 5 
+    priority = 6 
     cost = RARE_MAHJONGKER_COST
     img_src = "/jongker/compensaker.jpg"
 
@@ -885,7 +892,7 @@ class Compensaker(Mahjongker):
 class Gronkowsker(Mahjongker):
     name = "Gronkowsker"
     description = "On your first turn each round, add a wild tile of your choice to your hand instead of drawing"
-    priority = 5 
+    priority = 6 
     cost = RARE_MAHJONGKER_COST
     img_src = "/jongker/gronkowsker.jpg"
 
@@ -896,7 +903,7 @@ class Gronkowsker(Mahjongker):
 class Dumpsker(Mahjongker):
     name = "Dumpsker"
     description = "Once per round: when you would draw on your draw step, you may pay $3 to draw from the discard pile instead of the living wall"
-    priority = 5 
+    priority = 6 
     cost = RARE_MAHJONGKER_COST
     img_src = "/jongker/dumpsker.jpg"
 
@@ -907,7 +914,7 @@ class Dumpsker(Mahjongker):
 class Copycatker(Mahjongker):
     name = "Copycatker"
     description = "During scoring: choose one of your melds to become an exact copy of another player's meld"
-    priority = 5 
+    priority = 6 
     cost = RARE_MAHJONGKER_COST
     img_src = "/jongker/copycatker.jpg"
 
@@ -918,7 +925,7 @@ class Copycatker(Mahjongker):
 class Boomerangker(Mahjongker):
     name = "Boomerangker"
     description = "If this mahjonker is empty: set aside a tile face-up on this card.  After three turns, you must draw this tile during your draw step if able. You may not use this again until the start of your next turn"
-    priority = 5 
+    priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
     img_src = "/jongker/boomerangker.jpg"
 
@@ -944,7 +951,7 @@ class Doraker(Mahjongker):
 class AllforOneker(Mahjongker):
     name = "AllforOneker"
     description = "All winds are your seat wind and the same tile.  You do not score bonus points from the table wind."
-    priority = 5 
+    priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
     img_src = "/jongker/allforoneker.jpg"
 
@@ -955,7 +962,7 @@ class AllforOneker(Mahjongker):
 class OneforAllker(Mahjongker):
     name = "OneforAllker"
     description = "All dragons are the same dragon"
-    priority = 5 
+    priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
     img_src = "/jongker/oneforallker.jpg"
 
@@ -966,7 +973,7 @@ class OneforAllker(Mahjongker):
 class Pickgker(Mahjongker):
     name = "Pickgker"
     description = "When you would gain an item, instead draw 3 and pick 1"
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/pickgker.jpg"
 
@@ -977,7 +984,7 @@ class Pickgker(Mahjongker):
 class Straightker(Mahjongker):
     name = "Straightker"
     description = "+30 pts for every two sequence melds that are in sequence (1-2-3, 4-5-6)"
-    priority = 4 
+    priority = 5 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/straightker.jpg"
 
@@ -1006,7 +1013,7 @@ class Straightker(Mahjongker):
 class Arthker(Mahjongker):
     name = "Arthker"
     description = "-1 max hand size. +30 pts"
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/arthker.jpg"
 
@@ -1017,7 +1024,7 @@ class Arthker(Mahjongker):
 class DuckDuckGooseker(Mahjongker):
     name = "DuckDuckGooseker"
     description = "Your triplets may contain one tile with a Rank difference of 1 (112 valid, 113 not valid)"
-    priority = 5 
+    priority = 6 
     cost = RARE_MAHJONGKER_COST
     img_src = "/jongker/duckduckgooseker.jpg"
 
@@ -1027,8 +1034,8 @@ class DuckDuckGooseker(Mahjongker):
 # DebtCollectker
 class DebtCollectker(Mahjongker):
     name = "DebtCollectker"
-    description = "When you pong, take $1 from that player."
-    priority = 5 
+    description = "When you pong, take $2 from that player."
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/debtcollectker.jpg"
 
@@ -1039,7 +1046,7 @@ class DebtCollectker(Mahjongker):
 class Quaker(Mahjongker):
     name = "Quaker"
     description = "When you kong, all other players randomly discard a tile, then draw 1."
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/quaker.jpg"
 
@@ -1050,7 +1057,7 @@ class Quaker(Mahjongker):
 class Anthonyker(Mahjongker):
     name = "Anthonyker"
     description = "Chi from player that goes after you."
-    priority = 5 
+    priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
     img_src = "/jongker/anthonyker.jpg"
 
@@ -1061,7 +1068,7 @@ class Anthonyker(Mahjongker):
 class Picker(Mahjongker):
     name = "Picker"
     description = "Gain a free reroll each shop phase."
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/picker.jpg"
 
@@ -1072,7 +1079,7 @@ class Picker(Mahjongker):
 class Luckgker(Mahjongker):
     name = "Luckgker"
     description = "Any time you would roll a dice, you may roll 2 and pick one to keep."
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/luckgker.jpg"
 
@@ -1083,7 +1090,7 @@ class Luckgker(Mahjongker):
 class Buffettker(Mahjongker):
     name = "Buffettker"
     description = "For every $3 you have, +10 pts."
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/buffettker.jpg"
 
@@ -1094,7 +1101,7 @@ class Buffettker(Mahjongker):
 class Fuckgker(Mahjongker):
     name = "Fuckgker"
     description = "Whenever you take a tile from an opponent, this permanently gains 10 points. Current: 0"
-    priority = 5 
+    priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
     img_src = "/jongker/fuckgker.jpg"
     point_value = 0
@@ -1106,7 +1113,7 @@ class Fuckgker(Mahjongker):
 class Toker(Mahjongker):
     name = "Toker"
     description = "Once per your turn, you may randomly discard a tile from your hand, and draw 1 tile. Gain $1."
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/toker.jpg"
 
@@ -1117,7 +1124,7 @@ class Toker(Mahjongker):
 class Emeraldker(Mahjongker):
     name = "Emeraldker"
     description = "Once per turn, you may use Controlled Chaos. Costs $3 per use."
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/emeraldker.jpg"
 
@@ -1128,7 +1135,7 @@ class Emeraldker(Mahjongker):
 class Snipker(Mahjongker):
     name = "Snipker"
     description = "Once per turn, you may use Called Shot: Rank. Costs $3 per use."
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/snipker.jpg"
 
@@ -1139,7 +1146,7 @@ class Snipker(Mahjongker):
 class Grenadeker(Mahjongker):
     name = "Grenadeker"
     description = "Once per turn, you may use Called Shot: Suit. Costs $3 per use."
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/grenadeker.jpg"
 
@@ -1150,7 +1157,7 @@ class Grenadeker(Mahjongker):
 class Stepsisker(Mahjongker):
     name = "Stepsisker"
     description = "Each tile taken from an opponent is worth +10 pts"
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/stepsisker.jpg"
 
@@ -1161,7 +1168,7 @@ class Stepsisker(Mahjongker):
 class LarryEllisker(Mahjongker):
     name = "LarryEllisker"
     description = "Up to once per turn you may pay $2 to scry 2."
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/larryellisker.jpg"
 
@@ -1172,7 +1179,7 @@ class LarryEllisker(Mahjongker):
 class Suckgker(Mahjongker):
     name = "Suckgker"
     description = "Every time you are targeted by another player this mahjongker permanently gains +10 points. Current: 0"
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/suckgker.jpg"
     point_value = 0
@@ -1184,7 +1191,7 @@ class Suckgker(Mahjongker):
 class Oracker(Mahjongker):
     name = "Oracker"
     description = "Each turn before you draw, guess the suit of the tile you’re about to draw.  If you get it right, gain $1."
-    priority = 5 
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/oracker.jpg"
 
@@ -1194,13 +1201,57 @@ class Oracker(Mahjongker):
 # Riggedker
 class Riggedker(Mahjongker):
     name = "Riggedker"
-    description = "Each turn before you draw, guess the suit of the tile you’re about to draw.  If you get it right, gain $1."
-    priority = 5 
+    description = "Nothing for you is ever at random, you always select."
+    priority = 6 
     cost = COMMON_MAHJONGKER_COST
     img_src = "/jongker/riggedker.jpg"
 
     def eval_score(self):
         return (0, 0)
+
+# Fibonaccker
+class Fibonaccker(Mahjongker):
+    name = "Fibonaccker"
+    description = "If your hand contains 1, 1, 2, 3, 5, and 8, +50 points."
+    priority = 5 
+    cost = COMMON_MAHJONGKER_COST
+    img_src = "/jongker/fibonaccker.jpg"
+
+    def eval_score(self, hand):
+        ranks = {}
+        total_points = 0
+        for meld in hand.melds:
+            for tile in meld.tiles:
+                if tile.rank in ranks:
+                    ranks[tile.rank] = ranks[tile.rank] + 1
+                else:
+                    ranks[tile.rank] = 1
+
+        for tile in hand.eyes[0].tiles:
+            if tile.rank in ranks:
+                ranks[tile.rank] = ranks[tile.rank] + 1
+            else:
+                ranks[tile.rank] = 1
+
+        if "1" in ranks:
+            if ranks["1"] < 2:
+                return (0, 0)
+        else: 
+            return (0, 0)
+
+        if "2" not in ranks:
+            return (0, 0)
+
+        if "3" not in ranks:
+            return (0, 0)
+
+        if "5" not in ranks:
+            return (0, 0)
+
+        if "8" not in ranks:
+            return (0, 0)
+
+        return (50, 0)
 
 # --------------------------------------------------------------------------------------
 # MAHJONGKER LIST
@@ -1285,6 +1336,9 @@ all_mahjongkers_list.append(LarryEllisker())
 all_mahjongkers_list.append(Suckgker())
 all_mahjongkers_list.append(Oracker())
 # all_mahjongkers_list.append(Riggedker())
+all_mahjongkers_list.append(Oracker())
+all_mahjongkers_list.append(Fibonaccker())
+
 # --------------------------------------------------------------------------------------
 # MAHJONGKER DICT
 # --------------------------------------------------------------------------------------
@@ -1368,6 +1422,7 @@ all_mahjongkers_dict["larryellisker"] = LarryEllisker()
 all_mahjongkers_dict["suckgker"] = Suckgker()
 all_mahjongkers_dict["oracker"] = Oracker()
 # all_mahjongkers_dict["riggedker"] = Riggedker()
+all_mahjongkers_dict["fibonaccker"] = Fibonaccker()
 # ----------------------------------------------
 
 # --------------------------------------------------------------------------------------

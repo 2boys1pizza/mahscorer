@@ -67,16 +67,23 @@ def score(hand, table_wind, seat_wind, my_mahjongkers, sequence_hand_mult, tripl
                 points += evaluated_score[0]
                 mult += evaluated_score[1]
 
-        # prio 4, hand jongkers
+        # prio 4, hand type jongkers
         for mahjongker in my_mahjongkers:
             if mahjongker.priority == 4:
                 evaluated_score = mahjongker.eval_score(hand)
                 points += evaluated_score[0]
                 mult += evaluated_score[1]
 
-    # prio 5, non-interative jongkers
+    # prio 5, whole hand jongkers            
     for mahjongker in my_mahjongkers:
         if mahjongker.priority == 5:
+            evaluated_score = mahjongker.eval_score(hand)
+            points += evaluated_score[0]
+            mult += evaluated_score[1]
+
+    # prio 6, non-interative jongkers
+    for mahjongker in my_mahjongkers:
+        if mahjongker.priority == 6:
             evaluated_score = mahjongker.eval_score()
             points += evaluated_score[0]
             mult += evaluated_score[1]
