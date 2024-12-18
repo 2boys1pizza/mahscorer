@@ -2051,6 +2051,7 @@ def main(page: ft.Page):
                             )),
                         ],
                         alignment=ft.MainAxisAlignment.CENTER),
+                    ft.Divider(),
                     ft.Row(
                         [
                             (ft.Column([
@@ -2068,6 +2069,7 @@ def main(page: ft.Page):
                             ))
                         ],
                         alignment=ft.MainAxisAlignment.CENTER),
+                    ft.Divider(),
                     ft.Row(
                         [
                             ft.DataTable(
@@ -2129,7 +2131,7 @@ def main(page: ft.Page):
                             )],
                             alignment=ft.MainAxisAlignment.CENTER,
                             spacing=15), 
-
+                        ft.Divider(),
                         ft.Column([
                             ft.Text("Hand Size", size=40),
                             ft.Row([
@@ -2409,7 +2411,7 @@ def main(page: ft.Page):
             # other scoring tab 
             # -------------------------------------------------------------
             other_scoring_panel = ft.ExpansionPanel(
-                bgcolor=ft.colors.GREEN_500,
+                bgcolor=ft.colors.RED_500,
                 header=ft.ListTile(title=ft.Text(f"Other Scoring")),
                 can_tap_header=True
             )
@@ -2437,7 +2439,7 @@ def main(page: ft.Page):
             # -------------------------------------------------------------
             
             current_hand_panel = ft.ExpansionPanel(
-                bgcolor=ft.colors.GREEN_500,
+                bgcolor=ft.colors.BLUE_800,
                 header=ft.ListTile(title=ft.Text(f"Current Hand Scoring")),
                 can_tap_header=True
             )
@@ -2587,7 +2589,7 @@ def main(page: ft.Page):
                         ),
                         ft.DataRow(
                             cells=[
-                                ft.DataCell(ft.Text("Avatar")),
+                                ft.DataCell(ft.Text("All")),
                                 ft.DataCell(avatar_button)
                             ]
                         ),
