@@ -228,42 +228,43 @@ def main(page: ft.Page):
     def increment_sequence_mult(e):
         global sequence_hand_mult
         global sequence_mult_text
-        sequence_hand_mult = sequence_hand_mult + SEQUENCE_UPGRADE_AMOUNT
+        sequence_hand_mult = round(sequence_hand_mult + SEQUENCE_UPGRADE_AMOUNT, 2)
+        print(sequence_hand_mult)
         sequence_mult_text.value = str(sequence_hand_mult)
         page.update()
 
     def increment_triplet_mult(e):
         global triplet_hand_mult
         global triplet_mult_text
-        triplet_hand_mult = triplet_hand_mult + TRIPLET_UPGRADE_AMOUNT
+        triplet_hand_mult = round(triplet_hand_mult + TRIPLET_UPGRADE_AMOUNT, 2)
         triplet_mult_text.value = str(triplet_hand_mult)
         page.update()
 
     def increment_half_flush_mult(e):
         global half_flush_hand_mult
         global half_flush_mult_text
-        half_flush_hand_mult = half_flush_hand_mult + HALF_FLUSH_UPGRADE_AMOUNT
+        half_flush_hand_mult = round(half_flush_hand_mult + HALF_FLUSH_UPGRADE_AMOUNT, 2)
         half_flush_mult_text.value = str(half_flush_hand_mult)
         page.update()
 
     def increment_flush_mult(e):
         global flush_hand_mult
         global flush_mult_text
-        flush_hand_mult = flush_hand_mult + FLUSH_UPGRADE_AMOUNT
+        flush_hand_mult = round(flush_hand_mult + FLUSH_UPGRADE_AMOUNT, 2)
         flush_mult_text.value = str(flush_hand_mult)
         page.update()
 
     def decrement_sequence_mult(e):
         global sequence_hand_mult
         global sequence_mult_text
-        sequence_hand_mult = sequence_hand_mult - SEQUENCE_UPGRADE_AMOUNT
+        sequence_hand_mult = round(sequence_hand_mult - SEQUENCE_UPGRADE_AMOUNT, 2)
         sequence_mult_text.value = str(sequence_hand_mult)
         page.update()
 
     def decrement_triplet_mult(e):
         global triplet_hand_mult
         global triplet_mult_text
-        triplet_hand_mult = triplet_hand_mult - TRIPLET_UPGRADE_AMOUNT
+        triplet_hand_mult = round(triplet_hand_mult - TRIPLET_UPGRADE_AMOUNT, 2)
         triplet_mult_text.value = str(triplet_hand_mult)
         page.update()
 
@@ -271,14 +272,14 @@ def main(page: ft.Page):
     def decrement_half_flush_mult(e):
         global half_flush_hand_mult
         global half_flush_mult_text
-        half_flush_hand_mult = half_flush_hand_mult - HALF_FLUSH_UPGRADE_AMOUNT
+        half_flush_hand_mult = round(half_flush_hand_mult - HALF_FLUSH_UPGRADE_AMOUNT, 2)
         half_flush_mult_text.value = str(half_flush_hand_mult)
         page.update()
 
     def decrement_flush_mult(e):
         global flush_hand_mult
         global flush_mult_text
-        flush_hand_mult = flush_hand_mult - FLUSH_UPGRADE_AMOUNT
+        flush_hand_mult = round(flush_hand_mult - FLUSH_UPGRADE_AMOUNT, 2)
         flush_mult_text.value = str(flush_hand_mult)
         page.update()
 
@@ -2020,6 +2021,10 @@ def main(page: ft.Page):
         global flush_button
         global avatar_button
         global hand_upgrade_enabled
+
+        # -------------------------------------------------------------
+        # Stats Page
+        # -------------------------------------------------------------
 
         score_adjust_tf = ft.TextField(label="Score Adjust")
         sequence_mult_text = ft.Text(f"{sequence_hand_mult}")
