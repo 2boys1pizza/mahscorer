@@ -1255,14 +1255,14 @@ def main(page: ft.Page):
         global flush_hand_mult
         i = score(current_hand, table_wind, seat_wind, my_mahjongkers, sequence_hand_mult, triplet_hand_mult, half_flush_hand_mult, flush_hand_mult)
         buffetker_score = score_buffettker()
-        tot_score = (i[0] + buffetker_score) * i[1]
+        tot_score = round((i[0] + buffetker_score) * i[1], 2)
         hand_score_text.value =  f"Score: {i[0] + buffetker_score} x {i[1]} = {tot_score}"
         page.update()
 
     def add_to_total_score(e):
         global total_score
         global tot_score
-        total_score += tot_score
+        total_score = round(total_score + tot_score, 2)
         tot_score = 0
         hand_score_text.value =  f"Score: 0"
         score_text.value = str(total_score)
