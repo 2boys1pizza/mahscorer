@@ -25,7 +25,7 @@ TRIPLET_UPGRADE_AMOUNT = 0.15
 HALF_FLUSH_UPGRADE_AMOUNT = 0.15
 FLUSH_UPGRADE_AMOUNT = 0.2
 SHOP_MAHJONGKER_RARITIES = ["common", "uncommon", "rare"]
-SHOP_MAHJONGKER_RARITY_PROBABILITIES = {1:[0.75, 0.25, 0], 2:[65, 30, 5], 3:[60, 30, 10], 4:[50, 35, 15], 5:[40, 40, 20]}
+SHOP_MAHJONGKER_RARITY_PROBABILITIES = {1:[85, 15, 0], 2:[75, 23, 2], 3:[60, 30, 10], 4:[50, 35, 15], 5:[40, 40, 20]}
 
 # hands
 sequence_hand_level = 0
@@ -122,6 +122,7 @@ item_row = []
 shop_mahjongker_text = ""
 shop_item_text = ""
 reroll_cost = 1
+reroll_item_cost = 1
 shop_money_text = ""
 hand_size_upgrade_button = []
 shop_selected_i = []
@@ -1014,7 +1015,6 @@ def main(page: ft.Page):
     def handle_tile_filter(e):
         all_tile_containers.clear()
         all_tile_grid.controls.clear()
-        print(tile_radio.value)
         if tile_radio.value == "honor":
             for rank in all_tiles["dragon"].keys():
                 tile = all_tiles["dragon"][rank]
@@ -1060,13 +1060,13 @@ def main(page: ft.Page):
         if len(selected_tiles) < 2:
             print("Invalid tile combination.")
         elif len(selected_tiles) == 2:
-            print("is eyes")
+            print("Is eyes")
             eyes = Eyes()
             for tile in selected_tiles:
                 eyes.add_tile(tile)
             current_hand.add_eyes(eyes)
         else:
-            print ("is meld")
+            print ("Is meld")
             meld = Meld()
             for tile in selected_tiles:
                 meld.add_tile(tile)
@@ -1553,21 +1553,14 @@ def main(page: ft.Page):
         global item_selected
         global my_mahjongkers
         shop_row.controls.clear()
-        shop_round = min(5, shop_round + 1)
-        refresh_shop_button.text = f"Refresh Shop Round {shop_round}"
         i = 0
         shop_selected_i = []
         while i < 3:
             rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_RARITY_PROBABILITIES[int(shop_round)])[0]
+            print(rarity_roll)
             mahjongker = roll_mahjongker(rarity_roll)
             shop_selected_i.append(all_mahjongkers_list.index(mahjongker))
             i = i+1
-            # index = random.randint(0,len(all_mahjongkers_list)-1)
-            # if index not in shop_selected_i: 
-            #     mahjongker = all_mahjongkers_list[index]
-            #     if mahjongker not in my_mahjongkers:
-            #         shop_selected_i.append(index)
-            #         i = i+1
 
         for i in shop_selected_i:
             mahjongker = all_mahjongkers_list[i]
@@ -1602,6 +1595,7 @@ def main(page: ft.Page):
                     )
             )
 
+        # items
         item_row.controls.clear()
         i = 0
         item_selected = []
@@ -1649,6 +1643,9 @@ def main(page: ft.Page):
             if mahjongker.name == "Picker":
                 reroll_cost = 0
         shop_row.controls.append(ft.FloatingActionButton(text=f"${reroll_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_mahjongkers))
+        item_row.controls.append(ft.FloatingActionButton(text=f"${reroll_item_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_items))
+        shop_round = min(5, shop_round + 1)
+        refresh_shop_button.text = f"Refresh Shop Round {shop_round}"
         page.update()
         enable_hand_upgrade_buy()
 
@@ -1706,6 +1703,59 @@ def main(page: ft.Page):
                 )
             shop_row.controls.append(ft.FloatingActionButton(text=f"${reroll_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_mahjongkers))
             page.update()
+
+    def reroll_shop_items(e):
+        global reroll_item_cost
+        global money
+        global item_row
+        if money >= reroll_item_cost:
+            money = money - reroll_item_cost
+            refresh_money_text()
+            reroll_item_cost += 1
+            item_row.controls.clear()
+        i = 0
+        item_selected = []
+        while i < 3:
+            random_i = random.randint(0,len(all_items_list)-1)
+            item = all_items_list[random_i]
+            if item not in item_selected: 
+                item_selected.append(item)
+                i = i+1
+
+        for item in item_selected:
+            item_row.controls.append(
+                ft.Container(
+                        image=ft.DecorationImage(src=item.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(f"{item.name} - ${item.cost}", bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_add_shop_item_select,
+                        tooltip=ft.Tooltip(
+                            message=f"${item.cost} - {item.description}",
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        )
+                    )
+            )
+
+        item_row.controls.append(ft.FloatingActionButton(text=f"${reroll_item_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_items))
+        page.update()
 
     def handle_add_shop_mahjongker_select(e):
         global shop_mahjongker_text
@@ -1894,7 +1944,7 @@ def main(page: ft.Page):
     def adjust_shop_round(e):
         global shop_round
         global refresh_shop_button
-        shop_round = e.control.value
+        shop_round = int(e.control.value)
         refresh_shop_button.text = f"Refresh Shop Round {shop_round}"
         page.update()
 
@@ -1959,6 +2009,7 @@ def main(page: ft.Page):
         global shop_mahjongker_text
         global shop_item_text
         global reroll_cost
+        global reroll_item_cost
         global shop_money_text
         global hand_size_upgrade_button
         global shop_selected_i
@@ -2446,7 +2497,7 @@ def main(page: ft.Page):
             item_row = ft.GridView(
                 # expand=1,
                 height=100,
-                width=300,
+                width=400,
                 runs_count=1,
                 max_extent=95,
                 child_aspect_ratio=1.0,
@@ -2629,6 +2680,7 @@ def main(page: ft.Page):
                             ink=True,
                         )
                     )
+            item_row.controls.append(ft.FloatingActionButton(text=f"${reroll_item_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_items))
             panel.controls.append(shop_panel)
 
             # -------------------------------------------------------------

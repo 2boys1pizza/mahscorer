@@ -47,6 +47,7 @@ class Meld:
                     else:
                         self.typing = "none"
                         return
+        print(f"Meld typing: {self.typing}")
 
     def determine_suit(self):
         self.suit = sorted(self.tiles, key=lambda tile: tile.rank)[0].suit
@@ -110,6 +111,12 @@ class Hand:
             self.determine_typing()
 
     def determine_typing(self):
+        # reset
+        self.is_sequence = True
+        self.is_triplet = True
+        self.is_half_flush = True
+        self.is_flush = True
+
         # check sequence hand
         for meld in self.melds:
             if meld.typing == "sequence":
@@ -118,7 +125,7 @@ class Hand:
                 if meld.suit == "dragon" or meld.suit == "wind":
                     continue
                 else:
-                   self.is_sequence = False 
+                    self.is_sequence = False
             else:
                 self.is_sequence = False
                 break
@@ -151,6 +158,11 @@ class Hand:
             self.is_flush = False
         if self.is_half_flush and self.eyes[0].suit != "dragon" and self.eyes[0].suit != "wind" and self.eyes[0].suit != current_suit:
             self.is_half_flush = False
+
+        print(f"Sequence: {self.is_sequence}")
+        print(f"Triplet: {self.is_triplet}")
+        print(f"Half Flush: {self.is_half_flush}")
+        print(f"Flush: {self.is_flush}")
 
     def __repr__(self):
         return repr((self.melds, self.eyes))
