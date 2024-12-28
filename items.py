@@ -174,7 +174,7 @@ class Item_Sleight_Of_Han(Item):
     name = "Sleight of Han"
     description = "Steal a random item from another player."
     cost = 3
-    img_src = "/items/sleightofhan.jpg"
+    img_src = "/items/sleight-of-han.jpg"
 
 # --------------------------------------------------------------------------------------
 # ALL ITEMS LIST

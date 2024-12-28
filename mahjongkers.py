@@ -8,6 +8,10 @@ COMMON_MAHJONGKER_COST = 3
 UNCOMMON_MAHJONGKER_COST = 6
 CONSISTENCY_MAHJONGKER_COST = 8
 RARE_MAHJONGKER_COST = 10
+COMMON_MAHJONGKER_SELL_VALUE = 1
+UNCOMMON_MAHJONGKER_SELL_VALUE = 3
+CONSISTENCY_MAHJONGKER_SELL_VALUE = 4
+RARE_MAHJONGKER_SELL_VALUE = 5
 
 class Meld:
     typing = "none" # sequence, triplet
@@ -171,7 +175,8 @@ class Mahjongker:
     name = "" # for jank reasons the name MUST be the same as the img_src name
     description = ""
     priority = 0 
-    cost = 2
+    cost = 3
+    sell_value = 1
     img_src = ""
     # lower priority gets scored first
     # 0 is for validity checking
@@ -202,6 +207,7 @@ class Bamonker(Mahjongker):
     description = "+15 pts for each bamboo meld. Once per turn, you may use Called Shot: Bamboo. Costs $2 per use."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/bamonker.jpg"
 
     def eval_score(self, meld):
@@ -216,6 +222,7 @@ class Donker(Mahjongker):
     description = "+15 pts for each dot meld. Once per turn, you may use Called Shot: Dots. Costs $2 per use."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/donker.jpg"
 
     def eval_score(self, meld):
@@ -230,6 +237,7 @@ class Chonker(Mahjongker):
     description = "+15 pts for each character meld. Once per turn, you may use Called Shot: Character. Costs $2 per use."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/chonker.jpg"
 
     def eval_score(self, meld):
@@ -244,6 +252,7 @@ class Dragonker(Mahjongker):
     description = "+30 pts for each dragon meld. Once per draw phase, you may instead draw the next dragon in the deck. Costs $3 per use."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/dragonker.jpg"
 
     def eval_score(self, meld):
@@ -258,6 +267,7 @@ class Winker(Mahjongker):
     description = "+30 pts for each wind meld. Once per draw phase, you may instead draw the next wind in the deck. Costs $3 per use."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/winker.jpg"
 
     def eval_score(self, meld):
@@ -272,6 +282,7 @@ class Sequencker(Mahjongker):
     description = "+2 mult for sequence hand"
     priority = 4 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/sequencker.jpg"
 
     def eval_score(self, hand):
@@ -286,6 +297,7 @@ class MahMahMahjonker(Mahjongker):
     description = "+4 mult for all in triplet hand"
     priority = 4 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/mahmahmahjonker.jpg"
 
     def eval_score(self, hand):
@@ -300,6 +312,7 @@ class Milwaunker(Mahjongker):
     description = "+4 mult for half flush hand"
     priority = 4 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/milwaunker.jpg"
 
     # what happens if hand is all honors?
@@ -315,6 +328,7 @@ class Kohlker(Mahjongker):
     description = "+7 mult for flush hand"
     priority = 4 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/kohlker.jpg"
 
     # what happens if hand is all honors?
@@ -330,6 +344,7 @@ class Windker(Mahjongker):
     description = "+0.3 mult for each wind meld. Once per draw phase, you may instead draw the next wind in the deck. Costs $3 per use."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/windker.jpg"
 
     def eval_score(self, meld):
@@ -344,6 +359,7 @@ class Draker(Mahjongker):
     description = "+0.3 mult for each dragon meld. Once per draw phase, you may instead draw the next dragon in the deck. Costs $3 per use."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/draker.jpg"
 
     def eval_score(self, meld):
@@ -359,6 +375,7 @@ class Evenker(Mahjongker):
     description = "+5 pts for each even tile"
     priority = 1 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/evenker.jpg"
 
     def eval_score(self, tile):
@@ -376,6 +393,7 @@ class Oddker(Mahjongker):
     description = "+5 pts for each odd tile"
     priority = 1 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/oddker.jpg"
 
     def eval_score(self, tile):
@@ -393,6 +411,7 @@ class AYCker(Mahjongker):
     description = "This Mahjongker gains +15 pts on chi (stacking) Current: 0"
     priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/aycker.jpg"
     point_value = 0
 
@@ -405,6 +424,7 @@ class Pingker(Mahjongker):
     description = "This Mahjongker gains +20 pts on pong (stacking) Current: 0"
     priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/pingker.jpg"
     point_value = 0
 
@@ -417,6 +437,7 @@ class KingKongker(Mahjongker):
     description = "This Mahjongker gains +40 pts on kong (stacking) Current: 0"
     priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/kingkongker.jpg"
     point_value = 0
 
@@ -429,6 +450,7 @@ class Gapker(Mahjongker):
     description = "Sequences may contain one gap of 1 (1-2-4 valid, 2-4-6 not valid)"
     priority = 6 
     cost = RARE_MAHJONGKER_COST
+    sell_value = RARE_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/gapker.jpg"
 
     def eval_score(self):
@@ -440,6 +462,7 @@ class DEIker(Mahjongker):
     description = "Triplets may contain up to two different suits (honors excluded)"
     priority = 6 
     cost = RARE_MAHJONGKER_COST
+    sell_value = RARE_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/deiker.jpg"
 
     def eval_score(self):
@@ -451,6 +474,7 @@ class SEIquenker(Mahjongker):
     description = "Sequences may contain up to two different suits (honors excluded)"
     priority = 6 
     cost = RARE_MAHJONGKER_COST
+    sell_value = RARE_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/seiquenker.jpg"
 
     def eval_score(self):
@@ -462,6 +486,7 @@ class Siker(Mahjongker):
     description = "You may form a kong with a sequence (chi only, 3456)"
     priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/siker.jpg"
 
     def eval_score(self):
@@ -473,6 +498,7 @@ class Bourdainker(Mahjongker):
     description = "You may chi from the player across from you"
     priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/bourdainker.jpg"
 
     def eval_score(self):
@@ -484,6 +510,7 @@ class Dollker(Mahjongker):
     description = "+$5 for discarding your seat wind"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/dollker.jpg"
 
     def eval_score(self):
@@ -495,6 +522,7 @@ class Yenker(Mahjongker):
     description = "+$5 for discarding the table wind"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/yenker.jpg"
 
     def eval_score(self):
@@ -506,6 +534,7 @@ class Falchionker(Mahjongker):
     description = "+$3 for discarding any dragon"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/falchionker.jpg"
 
     def eval_score(self):
@@ -517,6 +546,7 @@ class Neenjaker(Mahjongker):
     description = "+30 points for each hidden meld"
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/neenjaker.jpg"
 
     def eval_score(self, meld):
@@ -531,6 +561,7 @@ class Gayker(Mahjongker):
     description = "Sequences can loop (912)"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/gayker.jpg"
 
     def eval_score(self):
@@ -542,6 +573,7 @@ class Bumungker(Mahjongker):
     description = "+30 pts for a hand with only bamboos (excluding honors). Once per turn, you may use Called Shot: Bamboo. Costs $2 per use."
     priority = 5 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/bumungker.jpg"
 
     def eval_score(self, hand):
@@ -562,6 +594,7 @@ class Dungker(Mahjongker):
     description = "+30 pts for a hand with only dots (excluding honors). Once per turn, you may use Called Shot: Dots. Costs $2 per use."
     priority = 5 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/dungker.jpg"
 
     def eval_score(self, hand):
@@ -582,6 +615,7 @@ class Chungker(Mahjongker):
     description = "+30 pts for a hand with only characters (excluding honors). Once per turn, you may use Called Shot: Character. Costs $2 per use."
     priority = 5 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/chungker.jpg"
 
     def eval_score(self, hand):
@@ -602,6 +636,7 @@ class Bimingker(Mahjongker):
     description = "+0.15 mult for each bamboo meld. Once per turn, you may use Called Shot: Bamboo. Costs $2 per use."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/bimingker.jpg"
 
     def eval_score(self, meld):
@@ -616,6 +651,7 @@ class Dingker(Mahjongker):
     description = "+0.15 mult for each dot meld. Once per turn, you may use Called Shot: Dots. Costs $2 per use."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/dingker.jpg"
 
     def eval_score(self, meld):
@@ -630,6 +666,7 @@ class Chingker(Mahjongker):
     description = "+0.15 mult for each character meld. Once per turn, you may use Called Shot: Character. Costs $2 per use."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/chingker.jpg"
 
     def eval_score(self, meld):
@@ -644,6 +681,7 @@ class Hoardker(Mahjongker):
     description = "Whenever a pretty is drawn, you may discard a tile at random and you gain two items. Draw to replace the discarded tile"
     priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/hoardker.jpg"
 
     def eval_score(self):
@@ -655,6 +693,7 @@ class Meldker(Mahjongker):
     description = "If the last 3 tiles you discarded form a meld, +30 points (stacking) Current: 0"
     priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/meldker.jpg"
     point_value = 0
 
@@ -667,6 +706,7 @@ class Snakeker(Mahjongker):
     description = "Every turn you may roll 2 d6, if they are snake eyes gain $11"
     priority = 3 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/snakeker.jpg"
 
     def eval_score(self):
@@ -684,6 +724,7 @@ class Seeker(Mahjongker):
     description = "You may pong your eyes at any time"
     priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/seeker.jpg"
 
     def eval_score(self):
@@ -695,6 +736,7 @@ class LeeSinker(Mahjongker):
     description = "You can mahjong without eyes.  The eye tiles are not considered for determining your hand type. -30 base points if you mahjong this way"
     priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/leesinker.jpg"
     active = False
 
@@ -710,6 +752,7 @@ class SeeingDoubker(Mahjongker):
     description = "+1 mult if your eyes are rank 2"
     priority = 3 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/seeingdoubker.jpg"
 
     def eval_score(self, eyes):
@@ -724,6 +767,7 @@ class Seequenker(Mahjongker):
     description = "Your eyes can be a sequence"
     priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/seequenker.jpg"
 
     def eval_score(self):
@@ -735,6 +779,7 @@ class Highker(Mahjongker):
     description = "+20 points for each meld containing numbered tiles where all rank > 5"
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/highker.jpg"
 
     def eval_score(self, meld):
@@ -757,6 +802,7 @@ class Lowker(Mahjongker):
     description = "+20 points for each meld containing numbered tiles where all rank < 5"
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/lowker.jpg"
 
     def eval_score(self, meld):
@@ -779,6 +825,7 @@ class Rainbowker(Mahjongker):
     description = "You can form a meld with all three suits. +15 points for each of these melds"
     priority = 2 
     cost = CONSISTENCY_MAHJONGKER_COST
+    sell_value = CONSISTENCY_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/rainbowker.jpg"
 
     def eval_score(self, meld):
@@ -796,6 +843,7 @@ class Raindraker(Mahjongker):
     description = "You can form a sequence with the three dragon suits"
     priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/raindraker.jpg"
 
     def eval_score(self):
@@ -807,6 +855,7 @@ class Magellker(Mahjongker):
     description = "You can form a sequence with the winds. They are ordered dong (E) -> xi (S) -> nan (W) -> bei (N)"
     priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/magellker.jpg"
 
     def eval_score(self):
@@ -818,6 +867,7 @@ class Salarymanker(Mahjongker):
     description = "+$4 at the end of the round"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/salarymanker.jpg"
 
     def eval_score(self):
@@ -829,6 +879,7 @@ class MealTicker(Mahjongker):
     description = "+$4 each time you chi"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/mealticker.jpg"
 
     def eval_score(self):
@@ -840,6 +891,7 @@ class WenGeker(Mahjongker):
     description = "+$4 each time you pong"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/wengeker.jpg"
 
     def eval_score(self):
@@ -851,6 +903,7 @@ class Fourker(Mahjongker):
     description = "+$8 each time you kong"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/fourker.jpg"
 
     def eval_score(self):
@@ -862,6 +915,7 @@ class DOWker(Mahjongker):
     description = "At the start of the next shop, you may give this to another player.  They must give you back $5"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/dowker.jpg"
 
     def eval_score(self):
@@ -873,6 +927,7 @@ class Comebacker(Mahjongker):
     description = "+$10 at the start of shop phase if you are in last place for total points"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/comebacker.jpg"
 
     def eval_score(self):
@@ -884,6 +939,7 @@ class Underdoker(Mahjongker):
     description = "+$5 whenever you place last in a round"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/underdoker.jpg"
 
     def eval_score(self):
@@ -895,6 +951,7 @@ class Compensaker(Mahjongker):
     description = "When you would draw 1 on your draw phase, instead draw 2"
     priority = 6 
     cost = RARE_MAHJONGKER_COST
+    sell_value = RARE_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/compensaker.jpg"
 
     def eval_score(self):
@@ -906,6 +963,7 @@ class Gronkowsker(Mahjongker):
     description = "On your first turn each round, add a wild tile of your choice to your hand instead of drawing"
     priority = 6 
     cost = RARE_MAHJONGKER_COST
+    sell_value = RARE_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/gronkowsker.jpg"
 
     def eval_score(self):
@@ -917,6 +975,7 @@ class Dumpsker(Mahjongker):
     description = "Once per round: when you would draw on your draw step, you may pay $3 to draw from the discard pile instead of the living wall"
     priority = 6 
     cost = RARE_MAHJONGKER_COST
+    sell_value = RARE_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/dumpsker.jpg"
 
     def eval_score(self):
@@ -928,6 +987,7 @@ class Copycatker(Mahjongker):
     description = "During scoring: choose one of your melds to become an exact copy of another player's meld"
     priority = 6 
     cost = RARE_MAHJONGKER_COST
+    sell_value = RARE_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/copycatker.jpg"
 
     def eval_score(self):
@@ -939,6 +999,7 @@ class Boomerangker(Mahjongker):
     description = "If this mahjonker is empty: set aside a tile face-up on this card.  After three turns, you must draw this tile during your draw step if able. You may not use this again until the start of your next turn"
     priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/boomerangker.jpg"
 
     def eval_score(self):
@@ -950,6 +1011,7 @@ class Doraker(Mahjongker):
     description = "At the start of the round, a random tile from your hand is selected.  That tile is worth an additional 10 points."
     priority = 1 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/doraker.jpg"
     selected_tile = []
 
@@ -965,6 +1027,7 @@ class AllforOneker(Mahjongker):
     description = "All winds are your seat wind and the same tile.  You do not score bonus points from the table wind."
     priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/allforoneker.jpg"
 
     def eval_score(self):
@@ -976,6 +1039,7 @@ class OneforAllker(Mahjongker):
     description = "All dragons are the same dragon"
     priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/oneforallker.jpg"
 
     def eval_score(self):
@@ -987,6 +1051,7 @@ class Pickgker(Mahjongker):
     description = "When you would gain an item, instead draw 3 and pick 1"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/pickgker.jpg"
 
     def eval_score(self):
@@ -998,6 +1063,7 @@ class Straightker(Mahjongker):
     description = "+30 pts for every two sequence melds that are in sequence (1-2-3, 4-5-6)"
     priority = 5 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/straightker.jpg"
 
     def eval_score(self, hand):
@@ -1027,6 +1093,7 @@ class Arthker(Mahjongker):
     description = "-1 max hand size. +30 pts"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/arthker.jpg"
 
     def eval_score(self):
@@ -1038,6 +1105,7 @@ class DuckDuckGooseker(Mahjongker):
     description = "Your triplets may contain one tile with a Rank difference of 1 (112 valid, 113 not valid)"
     priority = 6 
     cost = RARE_MAHJONGKER_COST
+    sell_value = RARE_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/duckduckgooseker.jpg"
 
     def eval_score(self):
@@ -1049,6 +1117,7 @@ class DebtCollectker(Mahjongker):
     description = "When you pong, take $2 from that player."
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/debtcollectker.jpg"
 
     def eval_score(self):
@@ -1060,6 +1129,7 @@ class Quaker(Mahjongker):
     description = "When you kong, all other players randomly discard a tile, then draw 1."
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/quaker.jpg"
 
     def eval_score(self):
@@ -1071,6 +1141,7 @@ class Anthonyker(Mahjongker):
     description = "Chi from player that goes after you."
     priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/anthonyker.jpg"
 
     def eval_score(self):
@@ -1082,6 +1153,7 @@ class Picker(Mahjongker):
     description = "Gain a free reroll each shop phase."
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/picker.jpg"
 
     def eval_score(self):
@@ -1093,6 +1165,7 @@ class Luckgker(Mahjongker):
     description = "Any time you would roll a dice, you may roll 2 and pick one to keep."
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/luckgker.jpg"
 
     def eval_score(self):
@@ -1104,6 +1177,7 @@ class Buffettker(Mahjongker):
     description = "For every $3 you have, +10 pts."
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/buffettker.jpg"
 
     def eval_score(self):
@@ -1115,6 +1189,7 @@ class Fuckgker(Mahjongker):
     description = "Whenever you take a tile from an opponent, this permanently gains 10 points. Current: 0"
     priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/fuckgker.jpg"
     point_value = 0
 
@@ -1127,6 +1202,7 @@ class Toker(Mahjongker):
     description = "Once per your turn, you may randomly discard a tile from your hand, and draw 1 tile. Gain $1."
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/toker.jpg"
 
     def eval_score(self):
@@ -1138,6 +1214,7 @@ class Emeraldker(Mahjongker):
     description = "Once per turn, you may use Controlled Chaos. Costs $3 per use."
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/emeraldker.jpg"
 
     def eval_score(self):
@@ -1149,6 +1226,7 @@ class Snipker(Mahjongker):
     description = "Once per turn, you may use Called Shot: Rank. Costs $3 per use."
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/snipker.jpg"
 
     def eval_score(self):
@@ -1160,6 +1238,7 @@ class Grenadeker(Mahjongker):
     description = "Once per turn, you may use Called Shot: Suit. Costs $3 per use."
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/grenadeker.jpg"
 
     def eval_score(self):
@@ -1171,6 +1250,7 @@ class Stepsisker(Mahjongker):
     description = "Each tile taken from an opponent is worth +10 pts"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/stepsisker.jpg"
 
     def eval_score(self):
@@ -1182,6 +1262,7 @@ class LarryEllisker(Mahjongker):
     description = "Up to once per turn you may pay $2 to scry 2."
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/larryellisker.jpg"
 
     def eval_score(self):
@@ -1193,6 +1274,7 @@ class Suckgker(Mahjongker):
     description = "Every time you are targeted by another player this mahjongker permanently gains +10 points. Current: 0"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/suckgker.jpg"
     point_value = 0
 
@@ -1205,6 +1287,7 @@ class Oracker(Mahjongker):
     description = "Each turn before you draw, guess the suit of the tile you’re about to draw.  If you get it right, gain $1."
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/oracker.jpg"
 
     def eval_score(self):
@@ -1216,6 +1299,7 @@ class Riggedker(Mahjongker):
     description = "Nothing for you is ever at random, you always select."
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/riggedker.jpg"
 
     def eval_score(self):
@@ -1227,6 +1311,7 @@ class Fibonaccker(Mahjongker):
     description = "If your hand contains 1, 1, 2, 3, 5, and 8, +50 points."
     priority = 5 
     cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/fibonaccker.jpg"
 
     def eval_score(self, hand):

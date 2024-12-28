@@ -3,6 +3,7 @@ import time
 import random
 from items import *
 from mahscorer import *
+from deck_modifiers import *
 
 # -------------------------------------------------------------
 # GLOBAL VARS
@@ -17,6 +18,11 @@ TRIPLET_UPGRADE_COST = 2
 HALF_FLUSH_UPGRADE_COST = 2
 FLUSH_UPGRADE_COST = 2
 AVATAR_UPGRADE_COST = 6
+SEQUENCE_UPGRADE_COSTS = [2,3,4,5,6]
+TRIPLET_UPGRADE_COSTS = [2,3,4,5,6]
+HALF_FLUSH_UPGRADE_COSTS = [2,3,4,5,6]
+FLUSH_UPGRADE_COSTS = [2,3,4,5,6]
+AVATAR_UPGRADE_COSTS = [6,9,12,15,18]
 # ITEM_COST = 3
 MAX_NUM_MAHJONGKERS = 5
 MAX_NUM_ITEMS = 2
@@ -26,6 +32,8 @@ HALF_FLUSH_UPGRADE_AMOUNT = 0.15
 FLUSH_UPGRADE_AMOUNT = 0.2
 SHOP_MAHJONGKER_RARITIES = ["common", "uncommon", "rare"]
 SHOP_MAHJONGKER_RARITY_PROBABILITIES = {1:[85, 15, 0], 2:[75, 23, 2], 3:[60, 30, 10], 4:[50, 35, 15], 5:[40, 40, 20]}
+START_MONEY = 2
+ROUND_UBI = [6,11,15,18,18]
 
 # hands
 sequence_hand_level = 0
@@ -39,7 +47,7 @@ half_flush_hand_mult = 1.3
 flush_hand_mult = 1.5
 
 # stats
-money = 0
+money = START_MONEY
 total_score = 0
 hand_size = 10
 money_text = ft.Text(money, size=80)
@@ -118,8 +126,11 @@ tot_score = 0
 shop_round = 1
 refresh_shop_button = []
 shop_row = []
+my_mahjongkers_shop_row = []
 item_row = []
+my_items_shop_row = []
 shop_mahjongker_text = ""
+shop_sell_mahjongker_text = ""
 shop_item_text = ""
 reroll_cost = 1
 reroll_item_cost = 1
@@ -128,9 +139,13 @@ hand_size_upgrade_button = []
 shop_selected_i = []
 item_selected = []
 sequence_button = []
+sequence_current_text = []
 triplet_button = []
+triplet_current_text = []
 half_flush_button = []
+half_flush_current_text = []
 flush_button = []
+flush_current_text = []
 avatar_button = []
 hand_upgrade_enabled = True
 
@@ -1546,6 +1561,7 @@ def main(page: ft.Page):
 
     def refresh_shop(e):
         global shop_row
+        global my_mahjongkers_shop_row
         global shop_round
         global refresh_shop_button
         global item_row
@@ -1553,6 +1569,13 @@ def main(page: ft.Page):
         global shop_selected_i
         global item_selected
         global my_mahjongkers
+        global money
+
+        refresh_shop_inventory()
+        # give UBI
+        money = money + ROUND_UBI[shop_round - 1]
+        refresh_money_text()
+
         shop_row.controls.clear()
         i = 0
         shop_selected_i = []
@@ -1645,10 +1668,10 @@ def main(page: ft.Page):
                 reroll_cost = 0
         shop_row.controls.append(ft.FloatingActionButton(text=f"${reroll_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_mahjongkers))
         item_row.controls.append(ft.FloatingActionButton(text=f"${reroll_item_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_items))
+        enable_hand_upgrade_buy()
         shop_round = min(5, shop_round + 1)
         refresh_shop_button.text = f"Refresh Shop Round {shop_round}"
         page.update()
-        enable_hand_upgrade_buy()
 
     def reroll_shop_mahjongkers(e):
         global my_mahjongkers
@@ -1764,6 +1787,12 @@ def main(page: ft.Page):
         shop_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
         page.update()
 
+    def handle_sell_shop_mahjongker_select(e):
+        global shop_sell_mahjongker_text
+        jonker_name = e.control.image.src.split("/")[2].split(".")[0]
+        shop_sell_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
+        page.update()
+
     def buy_mahjongker(e):
         global my_mahjongkers
         global shop_mahjongker_text
@@ -1787,6 +1816,62 @@ def main(page: ft.Page):
                 selected_container.content.value= "SOLD"
             else:
                 shop_mahjongker_text.value = "TOO POOR"
+        refresh_shop_inventory()
+        page.update()
+
+    def sell_mahjongker(e):
+        global my_mahjongkers
+        global shop_sell_mahjongker_text
+        global money
+        selected_container = []
+        if shop_sell_mahjongker_text.value != "":
+            mahjongker = all_mahjongkers_dict[shop_sell_mahjongker_text.value.lower()]
+            my_mahjongkers.remove(mahjongker)
+            money = money + mahjongker.sell_value
+            refresh_shop_inventory()
+            refresh_money_text()
+            shop_sell_mahjongker_text.value = ""
+        refresh_shop_inventory()
+        page.update()
+
+    def refresh_shop_inventory():
+        global my_mahjongkers
+        global my_mahjongkers_shop_row
+        my_mahjongkers_shop_row.controls.clear()
+        my_mahjongkers_shop_row_containers = []
+        for mahjongker in my_mahjongkers:
+            my_mahjongkers_shop_row_containers.append(
+                ft.Container(
+                    image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                    content=ft.Text(f"{mahjongker.name} - ${mahjongker.sell_value}", bgcolor="#000000", color=ft.colors.WHITE),
+                    border_radius=ft.border_radius.all(5),
+                    ink=True,
+                    on_click=handle_sell_shop_mahjongker_select,
+                    tooltip=ft.Tooltip(
+                        message=mahjongker.description,
+                        padding=20,
+                        border_radius=10,
+                        text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                        gradient=ft.LinearGradient(
+                            begin=ft.alignment.top_left,
+                            end=ft.alignment.Alignment(0.8, 1),
+                            colors=[
+                                "0xff1f005c",
+                                "0xff5b0060",
+                                "0xff870160",
+                                "0xffac255e",
+                                "0xffca485c",
+                                "0xffe16b5c",
+                                "0xfff39060",
+                                "0xffffb56b",
+                            ],
+                            tile_mode=ft.GradientTileMode.MIRROR,
+                        )
+                    )
+                )
+            )
+        for mahjongker_container in my_mahjongkers_shop_row_containers:
+            my_mahjongkers_shop_row.controls.append(mahjongker_container)
         page.update()
 
     def refresh_money_text():
@@ -1803,8 +1888,9 @@ def main(page: ft.Page):
         if money >= SEQUENCE_UPGRADE_COST:
             money = money - SEQUENCE_UPGRADE_COST
             # sequence_hand_mult = sequence_hand_mult * HAND_TYPE_UPGRADE_MULT
-            sequence_hand_mult = sequence_hand_mult + SEQUENCE_UPGRADE_AMOUNT
+            sequence_hand_mult = round(sequence_hand_mult + SEQUENCE_UPGRADE_AMOUNT, 2)
             refresh_money_text()
+            refresh_hand_mult_text()
             # disable_hand_upgrade_buy()
 
     def upgrade_triplet(e):
@@ -1813,8 +1899,9 @@ def main(page: ft.Page):
         if money >= TRIPLET_UPGRADE_COST:
             money = money - TRIPLET_UPGRADE_COST
             # triplet_hand_mult = triplet_hand_mult * HAND_TYPE_UPGRADE_MULT
-            triplet_hand_mult = triplet_hand_mult + TRIPLET_UPGRADE_AMOUNT
+            triplet_hand_mult = round(triplet_hand_mult + TRIPLET_UPGRADE_AMOUNT, 2)
             refresh_money_text()
+            refresh_hand_mult_text()
             # disable_hand_upgrade_buy()
 
     def upgrade_half_flush(e):
@@ -1823,8 +1910,9 @@ def main(page: ft.Page):
         if money >= HALF_FLUSH_UPGRADE_COST:
             money = money - HALF_FLUSH_UPGRADE_COST
             # half_flush_hand_mult = half_flush_hand_mult * HAND_TYPE_UPGRADE_MULT
-            half_flush_hand_mult = half_flush_hand_mult + HALF_FLUSH_UPGRADE_AMOUNT
+            half_flush_hand_mult = round(half_flush_hand_mult + HALF_FLUSH_UPGRADE_AMOUNT, 2)
             refresh_money_text()
+            refresh_hand_mult_text()
             # disable_hand_upgrade_buy()
 
     def upgrade_flush(e):
@@ -1833,8 +1921,9 @@ def main(page: ft.Page):
         if money >= FLUSH_UPGRADE_COST:
             money = money - FLUSH_UPGRADE_COST
             # flush_hand_mult = flush_hand_mult * HAND_TYPE_UPGRADE_MULT
-            flush_hand_mult = flush_hand_mult + FLUSH_UPGRADE_AMOUNT
+            flush_hand_mult = round(flush_hand_mult + FLUSH_UPGRADE_AMOUNT, 2)
             refresh_money_text()
+            refresh_hand_mult_text()
             # disable_hand_upgrade_buy()
 
     def upgrade_avatar(e):
@@ -1845,12 +1934,24 @@ def main(page: ft.Page):
         global flush_hand_mult
         if money >= AVATAR_UPGRADE_COST:
             money = money - AVATAR_UPGRADE_COST
-            sequence_hand_mult = sequence_hand_mult + SEQUENCE_UPGRADE_AMOUNT
-            triplet_hand_mult = triplet_hand_mult + TRIPLET_UPGRADE_AMOUNT
-            half_flush_hand_mult = half_flush_hand_mult + HALF_FLUSH_UPGRADE_AMOUNT
-            flush_hand_mult = flush_hand_mult + FLUSH_UPGRADE_AMOUNT
+            sequence_hand_mult = round(sequence_hand_mult + SEQUENCE_UPGRADE_AMOUNT, 2)
+            triplet_hand_mult = round(triplet_hand_mult + TRIPLET_UPGRADE_AMOUNT, 2)
+            half_flush_hand_mult = round(half_flush_hand_mult + HALF_FLUSH_UPGRADE_AMOUNT, 2)
+            flush_hand_mult = round(flush_hand_mult + FLUSH_UPGRADE_AMOUNT, 2)
             refresh_money_text()
+            refresh_hand_mult_text()
             # disable_hand_upgrade_buy()
+
+    def refresh_hand_mult_text():
+        global sequence_current_text
+        global triplet_current_text
+        global half_flush_current_text
+        global flush_current_text
+        sequence_current_text.value = f"+{sequence_hand_mult}"
+        triplet_current_text.value = f"+{triplet_hand_mult}"
+        half_flush_current_text.value = f"+{half_flush_hand_mult}"
+        flush_current_text.value = f"+{flush_hand_mult}"
+        page.update()
 
     def disable_hand_upgrade_buy():
         global sequence_button
@@ -1879,15 +1980,16 @@ def main(page: ft.Page):
         global flush_button
         global avatar_button
         global hand_upgrade_enabled
-        sequence_button.text = "${0}".format(SEQUENCE_UPGRADE_COST)
+        global shop_round
+        sequence_button.text = "${0}".format(SEQUENCE_UPGRADE_COSTS[shop_round - 1])
         sequence_button.on_click = upgrade_sequence
-        triplet_button.text = "${0}".format(TRIPLET_UPGRADE_COST)
+        triplet_button.text = "${0}".format(TRIPLET_UPGRADE_COSTS[shop_round - 1])
         triplet_button.on_click = upgrade_triplet
-        half_flush_button.text = "${0}".format(HALF_FLUSH_UPGRADE_COST)
+        half_flush_button.text = "${0}".format(HALF_FLUSH_UPGRADE_COSTS[shop_round - 1])
         half_flush_button.on_click = upgrade_half_flush
-        flush_button.text = "${0}".format(FLUSH_UPGRADE_COST)
+        flush_button.text = "${0}".format(FLUSH_UPGRADE_COSTS[shop_round - 1])
         flush_button.on_click = upgrade_flush
-        avatar_button.text = "${0}".format(AVATAR_UPGRADE_COST)
+        avatar_button.text = "${0}".format(AVATAR_UPGRADE_COSTS[shop_round - 1])
         avatar_button.on_click = upgrade_avatar
         hand_upgrade_enabled = True
         page.update()
@@ -2006,8 +2108,11 @@ def main(page: ft.Page):
         global rare_mahjongkers_row
         global rare_mahjongker_text
         global shop_row
+        global my_mahjongkers_shop_row
         global item_row
+        global my_items_shop_row
         global shop_mahjongker_text
+        global shop_sell_mahjongker_text
         global shop_item_text
         global reroll_cost
         global reroll_item_cost
@@ -2016,9 +2121,13 @@ def main(page: ft.Page):
         global shop_selected_i
         global item_selected
         global sequence_button
+        global sequence_current_text
         global triplet_button
+        global triplet_current_text
         global half_flush_button
+        global half_flush_current_text
         global flush_button
+        global flush_current_text
         global avatar_button
         global hand_upgrade_enabled
 
@@ -2501,6 +2610,16 @@ def main(page: ft.Page):
                 spacing=5,
                 run_spacing=5,
             )
+            my_mahjongkers_shop_row = ft.GridView(
+                # expand=1,
+                height=100,
+                width=500,
+                runs_count=1,
+                max_extent=95,
+                child_aspect_ratio=1.0,
+                spacing=5,
+                run_spacing=5,
+            )
             item_row = ft.GridView(
                 # expand=1,
                 height=100,
@@ -2511,15 +2630,30 @@ def main(page: ft.Page):
                 spacing=5,
                 run_spacing=5,
             )
+            my_items_shop_row = ft.GridView(
+                # expand=1,
+                height=100,
+                width=200,
+                runs_count=1,
+                max_extent=95,
+                child_aspect_ratio=1.0,
+                spacing=5,
+                run_spacing=5,
+            )
             refresh_shop_button = ft.ElevatedButton(text=f"Refresh Shop Round {shop_round}", on_click=refresh_shop)
             shop_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
+            shop_sell_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
             shop_item_text = ft.Text("", color=ft.colors.WHITE)
             shop_money_text = ft.Text(f"Money: {money}", size=30)
             hand_size_upgrade_button = ft.ElevatedButton(text=f"Upgrade Hand Size - ${HAND_SIZE_COSTS[hand_size_level]}", on_click=upgrade_hand_size)
             sequence_button = ft.ElevatedButton(text="x", on_click=do_nothing)
+            sequence_current_text = ft.Text(f"{sequence_hand_mult}")
             triplet_button = ft.ElevatedButton(text="x", on_click=do_nothing)
+            triplet_current_text = ft.Text(f"{triplet_hand_mult}")
             half_flush_button = ft.ElevatedButton(text="x", on_click=do_nothing)
+            half_flush_current_text = ft.Text(f"{half_flush_hand_mult}")
             flush_button = ft.ElevatedButton(text="x", on_click=do_nothing)
+            flush_current_text = ft.Text(f"{flush_hand_mult}")
             avatar_button = ft.ElevatedButton(text="x", on_click=do_nothing)
             shop_panel.content = ft.Column([
                 ft.Row([
@@ -2530,17 +2664,30 @@ def main(page: ft.Page):
                 ft.Divider(),
                 ft.Row([
                     ft.Text("Mahjongkers", size=20, color=ft.colors.WHITE),
-                    ]),
-                shop_row,
+                    ft.Text("Inventory", size=20, color=ft.colors.WHITE)],
+                    spacing=400),
                 ft.Row([
+                    shop_row,
+                    my_mahjongkers_shop_row],
+                    spacing=120),
+                ft.Row([ft.Row([
                     ft.ElevatedButton(text="Buy", on_click=buy_mahjongker),
                     shop_mahjongker_text
-                ]),
+                    ]),
+                    ft.Row([
+                    ft.ElevatedButton(text="Sell", on_click=sell_mahjongker),
+                    shop_sell_mahjongker_text
+                    ])],
+                    spacing=500
+                ),
                 ft.Divider(),
                 ft.Row([
                     ft.Text("Items ", size=20, color=ft.colors.WHITE),
                     ]),
-                item_row,
+                ft.Row([
+                    item_row,
+                    ft.Column([ft.Text("Inventory", size=10, color=ft.colors.WHITE), my_items_shop_row])],
+                    spacing=90),
                 ft.Row([
                     ft.ElevatedButton(text="Buy", on_click=buy_item),
                     shop_item_text
@@ -2560,36 +2707,48 @@ def main(page: ft.Page):
                     [ft.DataTable(
                     columns=[
                         ft.DataColumn(ft.Text("Hand")),
+                        ft.DataColumn(ft.Text("Amount")),
+                        ft.DataColumn(ft.Text("Current")),
                         ft.DataColumn(ft.Text("Cost")),
                     ],
                     rows=[
                         ft.DataRow(
                             cells=[
                                 ft.DataCell(ft.Text("Sequence")),
+                                ft.DataCell(ft.Text(f"+{SEQUENCE_UPGRADE_AMOUNT}", color=ft.colors.WHITE)),
+                                ft.DataCell(sequence_current_text),
                                 ft.DataCell(sequence_button)
                             ]
                         ),
                         ft.DataRow(
                             cells=[
                                 ft.DataCell(ft.Text("Triplet")),
+                                ft.DataCell(ft.Text(f"+{TRIPLET_UPGRADE_AMOUNT}", color=ft.colors.WHITE)),
+                                ft.DataCell(triplet_current_text),
                                 ft.DataCell(triplet_button)
                             ]
                         ),
                         ft.DataRow(
                             cells=[
                                 ft.DataCell(ft.Text("Half Flush")),
+                                ft.DataCell(ft.Text(f"+{HALF_FLUSH_UPGRADE_AMOUNT}", color=ft.colors.WHITE)),
+                                ft.DataCell(half_flush_current_text),
                                 ft.DataCell(half_flush_button)
                             ]
                         ),
                         ft.DataRow(
                             cells=[
                                 ft.DataCell(ft.Text("Flush")),
+                                ft.DataCell(ft.Text(f"+{FLUSH_UPGRADE_AMOUNT}", color=ft.colors.WHITE)),
+                                ft.DataCell(flush_current_text),
                                 ft.DataCell(flush_button)
                             ]
                         ),
                         ft.DataRow(
                             cells=[
                                 ft.DataCell(ft.Text("All")),
+                                ft.DataCell(ft.Text(f"+0.x", color=ft.colors.WHITE)),
+                                ft.DataCell(ft.Text(f"+y.z", color=ft.colors.WHITE)),
                                 ft.DataCell(avatar_button)
                             ]
                         ),
