@@ -149,6 +149,10 @@ flush_current_text = []
 avatar_button = []
 hand_upgrade_enabled = True
 
+zodiac_row = []
+zodiac_text = []
+trigram_row = []
+trigram_text = []
 initial_mahjongkers_row = []
 initial_mahjongker_text = ""
 uncommon_mahjongkers_row = []
@@ -1537,6 +1541,156 @@ def main(page: ft.Page):
         refresh_my_mahjongkers()
         refresh_rare_mahjongkers_empty()
 
+    # zodiac roll
+    def refresh_zodiacs(e):
+        global zodiac_row
+        zodiac_row.controls.clear()
+        i = 0
+        selected_i = []
+        while i < 3:
+            index = random.randint(0,len(all_zodiacs_list)-1)
+            if index not in selected_i: 
+                zodiac = all_zodiacs_list[index]
+                selected_i.append(index)
+                i = i+1
+
+        for i in selected_i:
+            zodiac = all_zodiacs_list[i]
+            zodiac_row.controls.append(
+                ft.Container(
+                        image=ft.DecorationImage(src=zodiac.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(zodiac.name, bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_zodiac_select,
+                        tooltip=ft.Tooltip(
+                            message=zodiac.description,
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        ),
+                        # tooltip=zodiacTooltip(zodiac=zodiac)
+                    )
+            )
+        zodiac_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_zodiacs))
+        page.update()
+
+    def refresh_zodiacs_empty():
+        global zodiac_row
+        zodiac_row.controls.clear()
+        for i in range(3):
+            zodiac_row.controls.append(
+                ft.Container(
+                    content=ft.Text("Empty", bgcolor="#000000",color=ft.colors.WHITE),
+                    image=ft.DecorationImage(src="/tiles/empty.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                    border_radius=ft.border_radius.all(5),
+                    ink=True,
+                    )
+                )
+        zodiac_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_zodiacs))
+        page.update()
+
+    def handle_zodiac_select(e):
+        global zodiac_text
+        zodiac_name = e.control.image.src.split("/")[2].split(".")[0]
+        zodiac_text.value = all_zodiacs_dict[zodiac_name].name
+        page.update()
+
+    def select_zodiac(e):
+        global my_mahjongkers
+        global rare_mahjongker_text
+        do_nothing()
+
+    # trigram roll
+    def refresh_trigrams(e):
+        global trigram_row
+        trigram_row.controls.clear()
+        i = 0
+        selected_i = []
+        while i < 3:
+            index = random.randint(0,len(all_trigrams_list)-1)
+            if index not in selected_i: 
+                trigram = all_trigrams_list[index]
+                selected_i.append(index)
+                i = i+1
+
+        for i in selected_i:
+            trigram = all_trigrams_list[i]
+            trigram_row.controls.append(
+                ft.Container(
+                        image=ft.DecorationImage(src=trigram.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(trigram.name, bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_trigram_select,
+                        tooltip=ft.Tooltip(
+                            message=trigram.description,
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        ),
+                        # tooltip=trigramTooltip(trigram=trigram)
+                    )
+            )
+        trigram_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_trigrams))
+        page.update()
+
+    def refresh_trigrams_empty():
+        global trigram_row
+        trigram_row.controls.clear()
+        for i in range(3):
+            trigram_row.controls.append(
+                ft.Container(
+                    content=ft.Text("Empty", bgcolor="#000000",color=ft.colors.WHITE),
+                    image=ft.DecorationImage(src="/tiles/empty.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                    border_radius=ft.border_radius.all(5),
+                    ink=True,
+                    )
+                )
+        trigram_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_trigrams))
+        page.update()
+
+    def handle_trigram_select(e):
+        global trigram_text
+        trigram_name = e.control.image.src.split("/")[2].split(".")[0]
+        trigram_text.value = all_trigrams_dict[trigram_name].name
+        page.update()
+
+    def select_trigram(e):
+        global my_mahjongkers
+        global rare_mahjongker_text
+        do_nothing()
+
     def roll_mahjongker(rarity):
         global my_mahjongkers
         global shop_selected_i
@@ -2101,6 +2255,10 @@ def main(page: ft.Page):
         global current_hand_panel
         # shop
         global refresh_shop_button
+        global zodiac_row
+        global zodiac_text
+        global trigram_row
+        global trigram_text
         global initial_mahjongkers_row
         global initial_mahjongker_text
         global uncommon_mahjongkers_row
@@ -2978,6 +3136,89 @@ def main(page: ft.Page):
 
             panel.controls.append(rare_mahjongker_panel)
 
+            # -------------------------------------------------------------
+            # free zodiac tab 
+            # -------------------------------------------------------------
+            zodiac_panel = ft.ExpansionPanel(
+                bgcolor=ft.colors.RED_500,
+                header=ft.ListTile(title=ft.Text(f"Zodiac Roll")),
+                can_tap_header=True
+            )
+
+            zodiac_row = ft.GridView(
+                # expand=1,
+                height=100,
+                width=400,
+                runs_count=1,
+                max_extent=95,
+                child_aspect_ratio=1.0,
+                spacing=5,
+                run_spacing=5,
+            )
+
+            # set up base row
+            for i in range(3):
+                zodiac_row.controls.append(
+                    ft.Container(
+                        content=ft.Text("Empty", bgcolor="#000000",color=ft.colors.WHITE),
+                        image=ft.DecorationImage(src="/tiles/empty.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        )
+                    )
+            zodiac_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_zodiacs))
+            zodiac_text = ft.Text("", color=ft.colors.WHITE)
+            zodiac_panel.content = ft.Column([
+                    zodiac_row,
+                    ft.Row([
+                        ft.ElevatedButton(text="Select", on_click=select_zodiac),
+                        rare_mahjongker_text
+                    ])
+                ])
+
+            panel.controls.append(zodiac_panel)
+            # -------------------------------------------------------------
+            # free trigram tab 
+            # -------------------------------------------------------------
+            trigram_panel = ft.ExpansionPanel(
+                bgcolor=ft.colors.RED_500,
+                header=ft.ListTile(title=ft.Text(f"Trigram Roll")),
+                can_tap_header=True
+            )
+
+            trigram_row = ft.GridView(
+                # expand=1,
+                height=100,
+                width=400,
+                runs_count=1,
+                max_extent=95,
+                child_aspect_ratio=1.0,
+                spacing=5,
+                run_spacing=5,
+            )
+
+            # set up base row
+            for i in range(3):
+                trigram_row.controls.append(
+                    ft.Container(
+                        content=ft.Text("Empty", bgcolor="#000000",color=ft.colors.WHITE),
+                        image=ft.DecorationImage(src="/tiles/empty.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        )
+                    )
+            trigram_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_trigrams))
+            trigram_text = ft.Text("", color=ft.colors.WHITE)
+            trigram_panel.content = ft.Column([
+                    trigram_row,
+                    ft.Row([
+                        ft.ElevatedButton(text="Select", on_click=select_trigram),
+                        rare_mahjongker_text
+                    ])
+                ])
+
+            panel.controls.append(trigram_panel)
+
             page.views.append(
                 ft.View(
                     "/shop",
@@ -2995,6 +3236,7 @@ def main(page: ft.Page):
                     scroll=ft.ScrollMode.AUTO
                 )
             )
+
             page.update()
 
 
