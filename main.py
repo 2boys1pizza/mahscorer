@@ -105,6 +105,7 @@ kingkongker_text = ft.Text("KingKongker value: 0", size=40)
 meldker_text = ft.Text("Meldker value: 0", size=40)
 fuckgker_text = ft.Text("Fuckgker value: 0", size=40)
 suckgker_text = ft.Text("Suckgker value: 0", size=40)
+lake_text = ft.Text("Lake value: 0", size=40)
 
 # scorer
 selected_tiles = []
@@ -114,6 +115,8 @@ seat_wind = all_tiles["wind"]["east"]
 hand_score_text = ft.Text(f"Score: 0", size=20)
 add_tiles_panel = []
 tile_radio = []
+modifier_radio = []
+seal_radio = []
 all_tile_grid = []
 selected_tiles_row = []
 all_tile_containers = []
@@ -121,6 +124,8 @@ other_scoring_panel = []
 scoring_tiles_row = []
 current_hand_panel = []
 tot_score = 0
+scored_money = 0
+lake_adjuster = []
 
 # shop
 shop_round = 1
@@ -134,7 +139,7 @@ shop_sell_mahjongker_text = ""
 shop_item_text = ""
 reroll_cost = 1
 reroll_item_cost = 1
-shop_money_text = ""
+shop_money_text = ft.Text("", color=ft.colors.WHITE)
 hand_size_upgrade_button = []
 shop_selected_i = []
 item_selected = []
@@ -1015,9 +1020,49 @@ def main(page: ft.Page):
         page.update()
 
     def handle_add_tile_select(e):
-        tile_suit = e.control.image.src.split("/")[2].split(".")[0].split("-")[0]
-        tile_rank = e.control.image.src.split("/")[2].split(".")[0].split("-")[1]
-        tile = all_tiles[tile_suit][tile_rank]
+        global lake_text
+        tile_name_split = e.control.image.src.split("/")[2].split(".")[0].split("-")
+        tile_suit = tile_name_split[0]
+        tile_rank = tile_name_split[1]
+        tile_modifier = "none"
+        tile_dict = all_tiles
+        tile_seal = "none"
+        bonus_points = 0
+        if len(tile_name_split) > 2:
+            if tile_name_split[2] == "gold":
+                tile_modifier = tile_name_split[2]
+                if len(tile_name_split) > 3:
+                    tile_seal = tile_name_split[3]
+            else:
+                tile_seal = tile_name_split[2]
+
+        if tile_modifier == "gold":
+            if tile_seal == "thunder":
+                tile_dict = all_tiles_gold_thunder
+            elif tile_seal == "sky":
+                tile_dict = all_tiles_gold_sky
+            elif tile_seal == "lake":
+                tile_dict = all_tiles_gold_lake
+                bonus_points = int(lake_text.value.split(" ")[2])
+            elif tile_seal == "mountain":
+                tile_dict = all_tiles_gold_mountain
+            else:
+                tile_dict = all_tiles_gold
+        else:
+            if tile_seal == "thunder":
+                tile_dict = all_tiles_thunder
+            elif tile_seal == "sky":
+                tile_dict = all_tiles_sky
+            elif tile_seal == "lake":
+                tile_dict = all_tiles_lake
+                bonus_points = int(lake_text.value.split(" ")[2])
+            elif tile_seal == "mountain":
+                tile_dict = all_tiles_mountain
+            else:
+                tile_dict = all_tiles
+
+        tile = tile_dict[tile_suit][tile_rank].copy()
+        tile.points = tile.points + bonus_points
         if len(selected_tiles) < 4:
             selected_tiles.append(tile)
         refresh_selected_tiles()
@@ -1025,19 +1070,87 @@ def main(page: ft.Page):
 
     def handle_remove_tile(e):
         global selected_tiles
+        tile_name_split = e.control.image.src.split("/")[2].split(".")[0].split("-")
         tile_suit = e.control.image.src.split("/")[2].split(".")[0].split("-")[0]
         tile_rank = e.control.image.src.split("/")[2].split(".")[0].split("-")[1]
-        tile = all_tiles[tile_suit][tile_rank]
-        selected_tiles.remove(tile)    
+        tile_modifier = "none"
+        tile_dict = all_tiles
+        tile_seal = "none"
+        if len(tile_name_split) > 2:
+            if tile_name_split[2] == "gold":
+                tile_modifier = tile_name_split[2]
+                if len(tile_name_split) > 3:
+                    tile_seal = tile_name_split[3]
+            else:
+                tile_seal = tile_name_split[2]
+
+        if tile_modifier == "gold":
+            if tile_seal == "thunder":
+                tile_dict = all_tiles_gold_thunder
+            elif tile_seal == "sky":
+                tile_dict = all_tiles_gold_sky
+            elif tile_seal == "lake":
+                tile_dict = all_tiles_gold_lake
+            elif tile_seal == "mountain":
+                tile_dict = all_tiles_gold_mountain
+            else:
+                tile_dict = all_tiles_gold
+        else:
+            if tile_seal == "thunder":
+                tile_dict = all_tiles_thunder
+            elif tile_seal == "sky":
+                tile_dict = all_tiles_sky
+            elif tile_seal == "lake":
+                tile_dict = all_tiles_lake
+            elif tile_seal == "mountain":
+                tile_dict = all_tiles_mountain
+            else:
+                tile_dict = all_tiles
+
+        tile = tile_dict[tile_suit][tile_rank].copy()
+        selected_tiles.remove(tile)
         refresh_selected_tiles()
         page.update()        
 
     def handle_tile_filter(e):
+        global lake_adjuster
+        # bamboo, dot, character, honor
+        # none, gold
+        # none, thunder, sky, lake, mountain
+        # modifier_radio
+        # seal_radio
+        lake_adjuster.visible = False
         all_tile_containers.clear()
         all_tile_grid.controls.clear()
+        tile_dict = all_tiles
+        if modifier_radio.value == "gold":
+            if seal_radio.value == "thunder":
+                tile_dict = all_tiles_gold_thunder
+            elif seal_radio.value == "sky":
+                tile_dict = all_tiles_gold_sky
+            elif seal_radio.value == "lake":
+                tile_dict = all_tiles_gold_lake
+                lake_adjuster.visible = True
+            elif seal_radio.value == "mountain":
+                tile_dict = all_tiles_gold_mountain
+            else:
+                tile_dict = all_tiles_gold
+        else:
+            if seal_radio.value == "thunder":
+                tile_dict = all_tiles_thunder
+            elif seal_radio.value == "sky":
+                tile_dict = all_tiles_sky
+            elif seal_radio.value == "lake":
+                tile_dict = all_tiles_lake
+                lake_adjuster.visible = True
+            elif seal_radio.value == "mountain":
+                tile_dict = all_tiles_mountain
+            else:
+                tile_dict = all_tiles
+
         if tile_radio.value == "honor":
-            for rank in all_tiles["dragon"].keys():
-                tile = all_tiles["dragon"][rank]
+            for rank in tile_dict["dragon"].keys():
+                tile = tile_dict["dragon"][rank].copy()
                 all_tile_containers.append(
                     ft.Container(
                         content=ft.Text(f"dragon-{tile.rank}", bgcolor="#000000",color=ft.colors.WHITE),
@@ -1047,8 +1160,8 @@ def main(page: ft.Page):
                         on_click=handle_add_tile_select,
                     )
                 )
-            for rank in all_tiles["wind"].keys():
-                tile = all_tiles["wind"][rank]
+            for rank in tile_dict["wind"].keys():
+                tile = tile_dict["wind"][rank].copy()
                 all_tile_containers.append(
                     ft.Container(
                         content=ft.Text(f"wind-{tile.rank}", bgcolor="#000000",color=ft.colors.WHITE),
@@ -1059,8 +1172,8 @@ def main(page: ft.Page):
                     )
                 )
         else:
-            for rank in all_tiles[tile_radio.value].keys():
-                tile = all_tiles[tile_radio.value][rank]
+            for rank in tile_dict[tile_radio.value].keys():
+                tile = tile_dict[tile_radio.value][rank].copy()
                 all_tile_containers.append(
                     ft.Container(
                         content=ft.Text(f"{tile.suit}-{tile.rank}", bgcolor="#000000",color=ft.colors.WHITE),
@@ -1272,21 +1385,28 @@ def main(page: ft.Page):
         global triplet_hand_mult
         global half_flush_hand_mult 
         global flush_hand_mult
+        global scored_money
         i = score(current_hand, table_wind, seat_wind, my_mahjongkers, sequence_hand_mult, triplet_hand_mult, half_flush_hand_mult, flush_hand_mult)
         buffetker_score = score_buffettker()
         tot_score = round((i[0] + buffetker_score) * i[1], 2)
-        hand_score_text.value =  f"Score: {i[0] + buffetker_score} x {i[1]} = {tot_score}"
+        scored_money = int(i[2])
+        hand_score_text.value =  f"Score: {i[0] + buffetker_score} x {i[1]} = {tot_score} | +${i[2]}"
         page.update()
 
     def add_to_total_score(e):
         global total_score
         global tot_score
+        global scored_money
+        global money
         total_score = round(total_score + tot_score, 2)
+        money = money + scored_money
         tot_score = 0
+        scored_money = 0
         hand_score_text.value =  f"Score: 0"
         score_text.value = str(total_score)
         current_hand.melds = []
         current_hand.eyes = []
+        refresh_money_text()
         refresh_current_hand()
 
     def score_buffettker():
@@ -1297,6 +1417,18 @@ def main(page: ft.Page):
             return int(money/3)*10
         else:
             return 0
+
+    def increment_lake_score(e):
+        global lake_text
+        point_value = int(lake_text.value.split(" ")[2]) + 10
+        lake_text.value = f"Lake value: {point_value}"
+        page.update()
+
+    def decrement_lake_score(e):
+        global lake_text
+        point_value = max(0, int(lake_text.value.split(" ")[2]) - 10)
+        lake_text.value = f"Lake value: {point_value}"
+        page.update()
 
     # -------------------------------------------------------------
     # SHOP FUNC
@@ -2247,12 +2379,16 @@ def main(page: ft.Page):
         global hand_score_text
         global add_tiles_panel
         global tile_radio
+        global modifier_radio
+        global seal_radio
         global all_tile_grid
         global selected_tiles_row
         global all_tile_containers
         global other_scoring_panel
         global scoring_tiles_row
         global current_hand_panel
+        global lake_text
+        global lake_adjuster
         # shop
         global refresh_shop_button
         global zodiac_row
@@ -2622,6 +2758,23 @@ def main(page: ft.Page):
             value="bamboo",
             on_change=handle_tile_filter)
 
+            modifier_radio = ft.RadioGroup(content=ft.Row([
+                ft.Radio(value="none", label="None"),
+                ft.Radio(value="gold", label="Gold"),
+            ]),
+            value="none",
+            on_change=handle_tile_filter)
+
+            seal_radio = ft.RadioGroup(content=ft.Row([
+                ft.Radio(value="none", label="None"),
+                ft.Radio(value="thunder", label="Thunder"),
+                ft.Radio(value="sky", label="Sky"),
+                ft.Radio(value="lake", label="Lake"),
+                ft.Radio(value="mountain", label="Mountain")   
+            ]),
+            value="none",
+            on_change=handle_tile_filter)
+
             all_tile_grid = ft.GridView(
                 # expand=1,
                 height=400,
@@ -2643,10 +2796,25 @@ def main(page: ft.Page):
                 spacing=5,
                 run_spacing=5,
             )
+            lake_adjuster = ft.Row([
+                lake_text,
+                ft.Column([
+                    ft.ElevatedButton(text="↑", on_click=increment_lake_score),
+                    ft.ElevatedButton(text="↓", on_click=decrement_lake_score)
+                    ])
+                ],
+                alignment=ft.MainAxisAlignment.CENTER,
+                visible=False)
 
             add_tiles_panel.content = ft.Column([
                     tile_radio,
-                    all_tile_grid,
+                    ft.Divider(),
+                    modifier_radio,
+                    ft.Divider(),
+                    seal_radio,
+                    ft.Row(
+                        [all_tile_grid, lake_adjuster],
+                        spacing=50),
                     selected_tiles_row,
                     ft.ElevatedButton(text="Add To Hand", on_click=add_selected_tiles_to_hand)
                 ])

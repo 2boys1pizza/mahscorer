@@ -5,6 +5,7 @@ from math import *
 def score(hand, table_wind, seat_wind, my_mahjongkers, sequence_hand_mult, triplet_hand_mult, half_flush_hand_mult, flush_hand_mult):
     points = 0
     mult = 1
+    money = 0
 
     # score hand.. needs some ordering to pick best hand? or do hands stack?
     if len(hand.melds) >= 3 and len(hand.eyes) >= 1:
@@ -20,23 +21,29 @@ def score(hand, table_wind, seat_wind, my_mahjongkers, sequence_hand_mult, tripl
     # score melds
     for meld in hand.melds: 
         if meld.typing != "none":
-            kong_mult = 1;
+            kong_mult = 1
+            thunder_mult = 1
             if len(meld.tiles) == 4:
-                kong_mult = 2;
+                kong_mult = 2
             for tile in meld.tiles:
+                if tile.seal == "thunder":
+                    thunder_mult = 2
+                if tile.modifier == "gold":
+                    money += 5 * kong_mult * thunder_mult
                 if tile.suit == "wind":
                     if tile.rank == table_wind.rank:
-                        points += tile.points * kong_mult
+                        points += tile.points * kong_mult * thunder_mult
                     if tile.rank == seat_wind.rank:
-                        points += tile.points * kong_mult
+                        points += tile.points * kong_mult * thunder_mult
                 else:
-                    points += tile.points * kong_mult
+                    points += tile.points * kong_mult * thunder_mult
                 # prio 1, tile jongkers
                 for mahjongker in my_mahjongkers:
                     if mahjongker.priority == 1:
                         evaluated_score = mahjongker.eval_score(tile)
-                        points += evaluated_score[0] * kong_mult
-                        mult += evaluated_score[1] * kong_mult
+                        points += evaluated_score[0] * kong_mult * thunder_mult
+                        mult += evaluated_score[1] * kong_mult * thunder_mult
+                thunder_mult = 1
             # prio 2, meld jongkers
             for mahjongker in my_mahjongkers:
                 if mahjongker.priority == 2:
@@ -88,7 +95,7 @@ def score(hand, table_wind, seat_wind, my_mahjongkers, sequence_hand_mult, tripl
             points += evaluated_score[0]
             mult += evaluated_score[1]
 
-    return (points, mult)
+    return (points, mult, money)
 
 # my_hand = Hand()
 # meld1 = Meld()

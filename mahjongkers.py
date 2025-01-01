@@ -204,7 +204,7 @@ class Mahjongker:
 # Bamonker
 class Bamonker(Mahjongker):
     name = "Bamonker"
-    description = "+15 pts for each bamboo meld. Once per turn, you may use Called Shot: Bamboo. Costs $2 per use."
+    description = "+15 pts for each bamboo meld. Once per turn, you may use Called Shot: Bamboo. Costs $3 per use."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -219,7 +219,7 @@ class Bamonker(Mahjongker):
 # Donker
 class Donker(Mahjongker):
     name = "Donker"
-    description = "+15 pts for each dot meld. Once per turn, you may use Called Shot: Dots. Costs $2 per use."
+    description = "+15 pts for each dot meld. Once per turn, you may use Called Shot: Dots. Costs $3 per use."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -234,7 +234,7 @@ class Donker(Mahjongker):
 # Chonker
 class Chonker(Mahjongker):
     name = "Chonker"
-    description = "+15 pts for each character meld. Once per turn, you may use Called Shot: Character. Costs $2 per use."
+    description = "+15 pts for each character meld. Once per turn, you may use Called Shot: Character. Costs $3 per use."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -570,7 +570,7 @@ class Gayker(Mahjongker):
 # Bumungker
 class Bumungker(Mahjongker):
     name = "Bumungker"
-    description = "+30 pts for a hand with only bamboos (excluding honors). Once per turn, you may use Called Shot: Bamboo. Costs $2 per use."
+    description = "+30 pts for a hand with only bamboos (excluding honors). Once per turn, you may use Called Shot: Bamboo. Costs $3 per use."
     priority = 5 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -591,7 +591,7 @@ class Bumungker(Mahjongker):
 # Dungker
 class Dungker(Mahjongker):
     name = "Dungker"
-    description = "+30 pts for a hand with only dots (excluding honors). Once per turn, you may use Called Shot: Dots. Costs $2 per use."
+    description = "+30 pts for a hand with only dots (excluding honors). Once per turn, you may use Called Shot: Dots. Costs $3 per use."
     priority = 5 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -612,7 +612,7 @@ class Dungker(Mahjongker):
 # Chungker
 class Chungker(Mahjongker):
     name = "Chungker"
-    description = "+30 pts for a hand with only characters (excluding honors). Once per turn, you may use Called Shot: Character. Costs $2 per use."
+    description = "+30 pts for a hand with only characters (excluding honors). Once per turn, you may use Called Shot: Character. Costs $3 per use."
     priority = 5 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -633,7 +633,7 @@ class Chungker(Mahjongker):
 # Bimingker
 class Bimingker(Mahjongker):
     name = "Bimingker"
-    description = "+0.15 mult for each bamboo meld. Once per turn, you may use Called Shot: Bamboo. Costs $2 per use."
+    description = "+0.15 mult for each bamboo meld. Once per turn, you may use Called Shot: Bamboo. Costs $3 per use."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -648,7 +648,7 @@ class Bimingker(Mahjongker):
 # Dingker
 class Dingker(Mahjongker):
     name = "Dingker"
-    description = "+0.15 mult for each dot meld. Once per turn, you may use Called Shot: Dots. Costs $2 per use."
+    description = "+0.15 mult for each dot meld. Once per turn, you may use Called Shot: Dots. Costs $3 per use."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -663,7 +663,7 @@ class Dingker(Mahjongker):
 # Chingker
 class Chingker(Mahjongker):
     name = "Chingker"
-    description = "+0.15 mult for each character meld. Once per turn, you may use Called Shot: Character. Costs $2 per use."
+    description = "+0.15 mult for each character meld. Once per turn, you may use Called Shot: Character. Costs $3 per use."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -1247,7 +1247,7 @@ class Grenadeker(Mahjongker):
 # Stepsisker
 class Stepsisker(Mahjongker):
     name = "Stepsisker"
-    description = "Each tile taken from an opponent is worth +10 pts"
+    description = "Each tile taken from an opponent is worth +10 pts when scored. (chi, pong, and kong do NOT count)"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
