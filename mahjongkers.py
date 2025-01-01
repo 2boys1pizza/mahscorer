@@ -960,7 +960,7 @@ class Compensaker(Mahjongker):
 # Gronkowsker
 class Gronkowsker(Mahjongker):
     name = "Gronkowsker"
-    description = "On your first turn each round, add a wild tile of your choice to your hand instead of drawing"
+    description = "On your first turn each round, add a tile of your choice to your hand instead of drawing"
     priority = 6 
     cost = RARE_MAHJONGKER_COST
     sell_value = RARE_MAHJONGKER_SELL_VALUE

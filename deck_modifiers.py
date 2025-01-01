@@ -97,42 +97,42 @@ class Zodiac_Cat(Zodiac):
 class Trigram_Sky(Trigram):
     name = "Sky"
     description = "[Seal] This tile can never be locked in. This tile is worth +15 points when scored."
-    img_src = "/zodiac/sky.jpg"
+    img_src = "/trigram/sky.jpg"
 
 class Trigram_Lake(Trigram):
     name = "Lake"
     description = "[Seal] This tile permanently gains +10 points when it scores."
-    img_src = "/zodiac/lake.jpg"
+    img_src = "/trigram/lake.jpg"
 
 class Trigram_Fire(Trigram):
     name = "Fire"
     description = "[Seal] When this tile is drawn, you may create a copy of it for this round by discarding another tile from your hand."
-    img_src = "/zodiac/fire.jpg"
+    img_src = "/trigram/fire.jpg"
 
 class Trigram_Thunder(Trigram):
     name = "Thunder"
     description = "[Seal] This tile scores twice."
-    img_src = "/zodiac/thunder.jpg"
+    img_src = "/trigram/thunder.jpg"
 
 class Trigram_Wind(Trigram):
     name = "Wind"
     description = "[Seal] When you lock this tile into a meld. All other players may create a copy of it in their hand. This copy does not have a seal, and is only worth 1 point."
-    img_src = "/zodiac/wind.jpg"
+    img_src = "/trigram/wind.jpg"
 
 class Trigram_Water(Trigram):
     name = "Water"
     description = "[Seal] When another player takes this tile, they must pay its owner $3."
-    img_src = "/zodiac/water.jpg"
+    img_src = "/trigram/water.jpg"
 
 class Trigram_Mountain(Trigram):
     name = "Mountain"
     description = "[Seal] This tile cannot be discarded. This tile is worth +15 points when scored."
-    img_src = "/zodiac/mountain.jpg"
+    img_src = "/trigram/mountain.jpg"
 
 class Trigram_Earth(Trigram):
     name = "Earth"
     description = "[Seal] Place a deed of ownership on a tile. Whenever a player scores this tile, they give the owner $3 at the next shop phase."
-    img_src = "/zodiac/earth.jpg"
+    img_src = "/trigram/earth.jpg"
 
 # --------------------------------------------------------------------------------------
 # ALL ZODIACS LIST

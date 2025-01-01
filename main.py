@@ -23,6 +23,8 @@ TRIPLET_UPGRADE_COSTS = [2,3,4,5,6]
 HALF_FLUSH_UPGRADE_COSTS = [2,3,4,5,6]
 FLUSH_UPGRADE_COSTS = [2,3,4,5,6]
 AVATAR_UPGRADE_COSTS = [6,9,12,15,18]
+ZODIAC_COST = 3
+TRIGRAM_COST = 3
 # ITEM_COST = 3
 MAX_NUM_MAHJONGKERS = 5
 MAX_NUM_ITEMS = 2
@@ -134,15 +136,21 @@ shop_row = []
 my_mahjongkers_shop_row = []
 item_row = []
 my_items_shop_row = []
+shop_zodiac_row = []
+shop_trigram_row = []
 shop_mahjongker_text = ""
 shop_sell_mahjongker_text = ""
 shop_item_text = ""
 reroll_cost = 1
 reroll_item_cost = 1
+current_zodiac_cost = 3
+current_trigram_cost = 3
 shop_money_text = ft.Text("", color=ft.colors.WHITE)
 hand_size_upgrade_button = []
 shop_selected_i = []
 item_selected = []
+zodiac_selected = []
+trigram_selected = []
 sequence_button = []
 sequence_current_text = []
 triplet_button = []
@@ -1861,6 +1869,9 @@ def main(page: ft.Page):
         # give UBI
         money = money + ROUND_UBI[shop_round - 1]
         refresh_money_text()
+        # reset zodiac/trigram cost
+        current_trigram_cost = TRIGRAM_COST
+        current_zodiac_cost = ZODIAC_COST
 
         shop_row.controls.clear()
         i = 0
@@ -2118,6 +2129,124 @@ def main(page: ft.Page):
             refresh_money_text()
             shop_sell_mahjongker_text.value = ""
         refresh_shop_inventory()
+        page.update()
+
+    def buy_zodiac(e):
+        global shop_zodiac_row
+        global money
+        global current_zodiac_cost
+        global zodiac_selected
+
+        if money >= current_zodiac_cost:
+            money = money - current_zodiac_cost
+            current_zodiac_cost = current_zodiac_cost + 1
+            refresh_money_text()
+        else:
+            return
+
+        shop_zodiac_row.controls.clear()
+        i = 0
+        zodiac_selected = []
+        while i < 3:
+            index = random.randint(0,len(all_zodiacs_list)-1)
+            if index not in zodiac_selected: 
+                zodiac = all_zodiacs_list[index]
+                zodiac_selected.append(index)
+                i = i+1
+
+        for i in zodiac_selected:
+            zodiac = all_zodiacs_list[i]
+            shop_zodiac_row.controls.append(
+                ft.Container(
+                        image=ft.DecorationImage(src=zodiac.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(zodiac.name, bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_zodiac_select,
+                        tooltip=ft.Tooltip(
+                            message=zodiac.description,
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        ),
+                        # tooltip=zodiacTooltip(zodiac=zodiac)
+                    )
+            )
+        shop_zodiac_row.controls.append(ft.FloatingActionButton(text=f"${current_zodiac_cost}", icon=ft.icons.REFRESH, on_click=buy_zodiac))
+        page.update()
+
+    def buy_trigram(e):
+        global shop_trigram_row
+        global money
+        global current_trigram_cost
+        global trigram_selected
+
+        if money >= current_trigram_cost:
+            money = money - current_trigram_cost
+            current_trigram_cost = current_trigram_cost + 1
+            refresh_money_text()
+        else:
+            return
+
+        shop_trigram_row.controls.clear()
+        i = 0
+        trigram_selected = []
+        while i < 3:
+            index = random.randint(0,len(all_trigrams_list)-1)
+            if index not in trigram_selected: 
+                trigram = all_trigrams_list[index]
+                trigram_selected.append(index)
+                i = i+1
+
+        for i in trigram_selected:
+            trigram = all_trigrams_list[i]
+            shop_trigram_row.controls.append(
+                ft.Container(
+                        image=ft.DecorationImage(src=trigram.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(trigram.name, bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_trigram_select,
+                        tooltip=ft.Tooltip(
+                            message=trigram.description,
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        ),
+                        # tooltip=trigramTooltip(trigram=trigram)
+                    )
+            )
+        shop_trigram_row.controls.append(ft.FloatingActionButton(text=f"${current_trigram_cost}", icon=ft.icons.REFRESH, on_click=buy_trigram))
         page.update()
 
     def refresh_shop_inventory():
@@ -2405,15 +2534,21 @@ def main(page: ft.Page):
         global my_mahjongkers_shop_row
         global item_row
         global my_items_shop_row
+        global shop_zodiac_row
+        global shop_trigram_row
         global shop_mahjongker_text
         global shop_sell_mahjongker_text
         global shop_item_text
         global reroll_cost
         global reroll_item_cost
+        global current_zodiac_cost
+        global current_trigram_cost
         global shop_money_text
         global hand_size_upgrade_button
         global shop_selected_i
         global item_selected
+        global zodiac_selected
+        global trigram_selected
         global sequence_button
         global sequence_current_text
         global triplet_button
@@ -2966,6 +3101,26 @@ def main(page: ft.Page):
                 spacing=5,
                 run_spacing=5,
             )
+            shop_zodiac_row = ft.GridView(
+                # expand=1,
+                height=100,
+                width=400,
+                runs_count=1,
+                max_extent=95,
+                child_aspect_ratio=1.0,
+                spacing=5,
+                run_spacing=5,
+            )
+            shop_trigram_row = ft.GridView(
+                # expand=1,
+                height=100,
+                width=400,
+                runs_count=1,
+                max_extent=95,
+                child_aspect_ratio=1.0,
+                spacing=5,
+                run_spacing=5,
+            )
             refresh_shop_button = ft.ElevatedButton(text=f"Refresh Shop Round {shop_round}", on_click=refresh_shop)
             shop_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
             shop_sell_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
@@ -3012,12 +3167,21 @@ def main(page: ft.Page):
                     ]),
                 ft.Row([
                     item_row,
-                    ft.Column([ft.Text("Inventory", size=10, color=ft.colors.WHITE), my_items_shop_row])],
+                    ft.Column([ft.Text("Inventory", size=20, color=ft.colors.WHITE), my_items_shop_row])],
                     spacing=90),
                 ft.Row([
                     ft.ElevatedButton(text="Buy", on_click=buy_item),
                     shop_item_text
                 ]),
+                ft.Divider(),
+                ft.Row([
+                    ft.Text("Zodiacs", size=20, color=ft.colors.WHITE),
+                    ft.Text("Trigrams", size=20, color=ft.colors.WHITE)],
+                    spacing=450),
+                ft.Row([
+                    shop_zodiac_row,
+                    shop_trigram_row],
+                    spacing=120),
                 ft.Divider(),
                 ft.Row([
                     ft.Text("Hand Size Upgrade (+1)", size=20, color=ft.colors.WHITE),
@@ -3173,6 +3337,95 @@ def main(page: ft.Page):
                         )
                     )
             item_row.controls.append(ft.FloatingActionButton(text=f"${reroll_item_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_items))
+
+            if zodiac_selected:
+                for i in zodiac_selected:
+                    zodiac = all_zodiacs_list[i]
+                    shop_zodiac_row.controls.append(
+                        ft.Container(
+                                image=ft.DecorationImage(src=zodiac.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                                content=ft.Text(f"{zodiac.name}", bgcolor="#000000", color=ft.colors.WHITE),
+                                border_radius=ft.border_radius.all(5),
+                                ink=True,
+                                on_click=handle_add_shop_zodiac_select,
+                                tooltip=ft.Tooltip(
+                                    message=f"${zodiac.cost} - {zodiac.description}",
+                                    padding=20,
+                                    border_radius=10,
+                                    text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                                    gradient=ft.LinearGradient(
+                                        begin=ft.alignment.top_left,
+                                        end=ft.alignment.Alignment(0.8, 1),
+                                        colors=[
+                                            "0xff1f005c",
+                                            "0xff5b0060",
+                                            "0xff870160",
+                                            "0xffac255e",
+                                            "0xffca485c",
+                                            "0xffe16b5c",
+                                            "0xfff39060",
+                                            "0xffffb56b",
+                                        ],
+                                        tile_mode=ft.GradientTileMode.MIRROR,
+                                    )
+                                )
+                            )
+                        )
+            else:
+                for i in range(3):
+                    shop_zodiac_row.controls.append(
+                        ft.Container(
+                            image=ft.DecorationImage(src="/jongker/sold.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                            border_radius=ft.border_radius.all(5),
+                            ink=True,
+                        )
+                    )
+            shop_zodiac_row.controls.append(ft.FloatingActionButton(text=f"${current_zodiac_cost}", icon=ft.icons.REFRESH, on_click=buy_zodiac))
+
+            if trigram_selected:
+                for i in trigram_selected:
+                    trigram = all_trigrams_list[i]
+                    shop_trigram_row.controls.append(
+                        ft.Container(
+                                image=ft.DecorationImage(src=trigram.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                                content=ft.Text(f"{trigram.name}", bgcolor="#000000", color=ft.colors.WHITE),
+                                border_radius=ft.border_radius.all(5),
+                                ink=True,
+                                on_click=handle_add_shop_trigram_select,
+                                tooltip=ft.Tooltip(
+                                    message=f"${trigram.cost} - {trigram.description}",
+                                    padding=20,
+                                    border_radius=10,
+                                    text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                                    gradient=ft.LinearGradient(
+                                        begin=ft.alignment.top_left,
+                                        end=ft.alignment.Alignment(0.8, 1),
+                                        colors=[
+                                            "0xff1f005c",
+                                            "0xff5b0060",
+                                            "0xff870160",
+                                            "0xffac255e",
+                                            "0xffca485c",
+                                            "0xffe16b5c",
+                                            "0xfff39060",
+                                            "0xffffb56b",
+                                        ],
+                                        tile_mode=ft.GradientTileMode.MIRROR,
+                                    )
+                                )
+                            )
+                        )
+            else:
+                for i in range(3):
+                    shop_trigram_row.controls.append(
+                        ft.Container(
+                            image=ft.DecorationImage(src="/jongker/sold.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                            border_radius=ft.border_radius.all(5),
+                            ink=True,
+                        )
+                    )
+            shop_trigram_row.controls.append(ft.FloatingActionButton(text=f"${current_trigram_cost}", icon=ft.icons.REFRESH, on_click=buy_trigram))
+
             panel.controls.append(shop_panel)
 
             # -------------------------------------------------------------
