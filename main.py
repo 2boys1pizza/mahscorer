@@ -3174,15 +3174,15 @@ def main(page: ft.Page):
                     shop_item_text
                 ]),
                 ft.Divider(),
-                ft.Row([
-                    ft.Text("Zodiacs", size=20, color=ft.colors.WHITE),
-                    ft.Text("Trigrams", size=20, color=ft.colors.WHITE)],
-                    spacing=450),
-                ft.Row([
-                    shop_zodiac_row,
-                    shop_trigram_row],
-                    spacing=120),
-                ft.Divider(),
+                # ft.Row([
+                #     ft.Text("Zodiacs", size=20, color=ft.colors.WHITE),
+                #     ft.Text("Trigrams", size=20, color=ft.colors.WHITE)],
+                #     spacing=450),
+                # ft.Row([
+                #     shop_zodiac_row,
+                #     shop_trigram_row],
+                #     spacing=120),
+                # ft.Divider(),
                 ft.Row([
                     ft.Text("Hand Size Upgrade (+1)", size=20, color=ft.colors.WHITE),
                     ]),

@@ -1323,12 +1323,12 @@ class Fibonaccker(Mahjongker):
                     ranks[tile.rank] = ranks[tile.rank] + 1
                 else:
                     ranks[tile.rank] = 1
-
-        for tile in hand.eyes[0].tiles:
-            if tile.rank in ranks:
-                ranks[tile.rank] = ranks[tile.rank] + 1
-            else:
-                ranks[tile.rank] = 1
+        if len(hand.eyes) > 0:           
+            for tile in hand.eyes[0].tiles:
+                if tile.rank in ranks:
+                    ranks[tile.rank] = ranks[tile.rank] + 1
+                else:
+                    ranks[tile.rank] = 1
 
         if "1" in ranks:
             if ranks["1"] < 2:
@@ -1349,6 +1349,83 @@ class Fibonaccker(Mahjongker):
             return (0, 0)
 
         return (50, 0)
+
+# Wokegker
+class Wokegker(Mahjongker):
+    name = "Wokegker"
+    description = "Gain +50 points if you have 3 different suits between your melds, excluding honors."
+    priority = 5 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/wokegker.jpg"
+
+    def eval_score(self, hand):
+        suits = set()
+        total_points = 0
+        for meld in hand.melds:
+            for tile in meld.tiles:
+                if tile.suit == "dot" or tile.suit == "bamboo" or tile.suit == "character":
+                    suits.add(tile.suit)
+        if len(hand.eyes) > 0:
+            for tile in hand.eyes[0].tiles:
+                if tile.suit == "dot" or tile.suit == "bamboo" or tile.suit == "character":
+                        suits.add(tile.suit)
+
+        if len(suits) >= 3: 
+            return (50, 0)
+        else:
+            return (0, 0)
+
+# Shardker
+class Shardker(Mahjongker):
+    name = "Shardker"
+    description = "Each round, your opening hand will have 2 honors innately."
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/shardker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Ponorker
+class Ponorker(Mahjongker):
+    name = "Ponorker"
+    description = "When you pong, draw the next honor tile from the living wall."
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/ponorker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Sonorker
+class Sonorker(Mahjongker):
+    name = "Sonorker"
+    description = "When you chi, draw the next honor tile from the living wall."
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/sonorker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Speedker
+class Speedker(Mahjongker):
+    name = "Speedker"
+    description = "Gain +30 pts if you mahjong.  Everytime you mahjong, this value permanently goes up by +15 pts."
+    priority = 3
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/speedker.jpg"
+    point_value = 15
+
+    def eval_score(self, eyes):
+        self.point_value = self.point_value + 15
+        return (self.point_value, 0)
+
 
 # --------------------------------------------------------------------------------------
 # MAHJONGKER LIST
@@ -1435,6 +1512,11 @@ all_mahjongkers_list.append(Oracker())
 # all_mahjongkers_list.append(Riggedker())
 all_mahjongkers_list.append(Oracker())
 all_mahjongkers_list.append(Fibonaccker())
+all_mahjongkers_list.append(Wokegker())
+all_mahjongkers_list.append(Shardker())
+all_mahjongkers_list.append(Ponorker())
+all_mahjongkers_list.append(Sonorker())
+all_mahjongkers_list.append(Speedker())
 
 # --------------------------------------------------------------------------------------
 # MAHJONGKER DICT
@@ -1520,6 +1602,11 @@ all_mahjongkers_dict["suckgker"] = Suckgker()
 all_mahjongkers_dict["oracker"] = Oracker()
 # all_mahjongkers_dict["riggedker"] = Riggedker()
 all_mahjongkers_dict["fibonaccker"] = Fibonaccker()
+all_mahjongkers_dict["wokegker"] = Wokegker()
+all_mahjongkers_dict["shardker"] = Shardker()
+all_mahjongkers_dict["ponorker"] = Ponorker()
+all_mahjongkers_dict["sonorker"] = Sonorker()
+all_mahjongkers_dict["speedker"] = Speedker()
 # ----------------------------------------------
 
 # --------------------------------------------------------------------------------------
