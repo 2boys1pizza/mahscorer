@@ -2,6 +2,7 @@ class Zodiac:
     name = ""
     description = ""
     img_src = ""
+    cost = 3
 
     def __repr__(self):
         return repr((self.name, self.description))
@@ -13,6 +14,7 @@ class Trigram:
     name = ""
     description = ""
     img_src = ""
+    cost = 3
 
     def __repr__(self):
         return repr((self.name, self.description))
@@ -26,12 +28,12 @@ class Trigram:
 
 class Zodiac_Rat(Zodiac):
     name = "Rat"
-    description = "Decrease 2 tiles rank by 1."
+    description = "Decrease 4 tiles rank by 1."
     img_src = "/zodiac/rat.jpg"
 
 class Zodiac_Ox(Zodiac):
     name = "Ox"
-    description = "Increase 2 tiles rank by 1."
+    description = "Increase 4 tiles rank by 1."
     img_src = "/zodiac/ox.jpg"
 
 class Zodiac_Tiger(Zodiac):
@@ -46,17 +48,17 @@ class Zodiac_Rabbit(Zodiac):
 
 class Zodiac_Dragon(Zodiac):
     name = "Dragon"
-    description = "Add 2 different honor tiles of your choice to the deck."
+    description = "Add 4 different honor tiles of your choice to the deck."
     img_src = "/zodiac/dragon.jpg"
 
 class Zodiac_Snake(Zodiac):
     name = "Snake"
-    description = "Remove 1 tile from the game."
+    description = "Remove 2 tiles from the game."
     img_src = "/zodiac/snake.jpg"
 
 class Zodiac_Horse(Zodiac):
     name = "Horse"
-    description = "Change 2 suited tiles to Characters."
+    description = "Change 4 suited tiles to Characters."
     img_src = "/zodiac/horse.jpg"
 
 class Zodiac_Goat(Zodiac):
@@ -66,7 +68,7 @@ class Zodiac_Goat(Zodiac):
 
 class Zodiac_Monkey(Zodiac):
     name = "Monkey"
-    description = "Change 2 suited tiles to Bamboo."
+    description = "Change 4 suited tiles to Bamboo."
     img_src = "/zodiac/monkey.jpg"
 
 class Zodiac_Rooster(Zodiac):
@@ -76,7 +78,7 @@ class Zodiac_Rooster(Zodiac):
 
 class Zodiac_Dog(Zodiac):
     name = "Dog"
-    description = "Change 2 suited tiles to Dots."
+    description = "Change 4 suited tiles to Dots."
     img_src = "/zodiac/dog.jpg"
 
 class Zodiac_Pig(Zodiac):
@@ -86,7 +88,7 @@ class Zodiac_Pig(Zodiac):
 
 class Zodiac_Cat(Zodiac):
     name = "Cat"
-    description = "Goldify a tile. A gold tile grants a player that scores it $5."
+    description = "Goldify 2 tiles. A gold tile grants a player that scores it $5."
     img_src = "/zodiac/cat.jpg"
 
 
@@ -101,7 +103,7 @@ class Trigram_Sky(Trigram):
 
 class Trigram_Lake(Trigram):
     name = "Lake"
-    description = "[Seal] This tile permanently gains +10 points when it scores."
+    description = "[Seal] When a player draws this tile, they must give this to its owner. The owner gives a tile of their choice back."
     img_src = "/trigram/lake.jpg"
 
 class Trigram_Fire(Trigram):
@@ -111,17 +113,17 @@ class Trigram_Fire(Trigram):
 
 class Trigram_Thunder(Trigram):
     name = "Thunder"
-    description = "[Seal] This tile scores twice."
+    description = "[Seal] This tile scores twice. If not scored by owner, the owner scores this tile as well."
     img_src = "/trigram/thunder.jpg"
 
 class Trigram_Wind(Trigram):
     name = "Wind"
-    description = "[Seal] When you lock this tile into a meld. All other players may create a copy of it in their hand. This copy does not have a seal, and is only worth 1 point."
+    description = "[Seal] When this tile is drawn, its owner's turn is next."
     img_src = "/trigram/wind.jpg"
 
 class Trigram_Water(Trigram):
     name = "Water"
-    description = "[Seal] When another player takes this tile, they must pay its owner $3."
+    description = "[Seal] When this tile is drawn, you pay its owner $2."
     img_src = "/trigram/water.jpg"
 
 class Trigram_Mountain(Trigram):
@@ -131,7 +133,7 @@ class Trigram_Mountain(Trigram):
 
 class Trigram_Earth(Trigram):
     name = "Earth"
-    description = "[Seal] Place a deed of ownership on a tile. Whenever a player scores this tile, they give the owner $3 at the next shop phase."
+    description = "[Seal] Place a deed of ownership on a tile. Whenever a player scores this tile, they give the owner $5 at the next shop phase."
     img_src = "/trigram/earth.jpg"
 
 # --------------------------------------------------------------------------------------
