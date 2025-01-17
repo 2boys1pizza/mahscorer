@@ -54,7 +54,11 @@ class Meld:
         print(f"Meld typing: {self.typing}")
 
     def determine_suit(self):
-        self.suit = sorted(self.tiles, key=lambda tile: tile.rank)[0].suit
+        if self.tiles[0].suit == self.tiles[1].suit and self.tiles[0].suit == self.tiles[2].suit:
+            self.suit = sorted(self.tiles, key=lambda tile: tile.rank)[0].suit
+        else:
+            self.suit = "none"
+        print(f"Meld suit: {self.suit}")
 
     def add_tile(self, tile):
         if len(self.tiles) < 4:
