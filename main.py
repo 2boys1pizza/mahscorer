@@ -2857,68 +2857,68 @@ def main(page: ft.Page):
                             ))
                         ],
                         alignment=ft.MainAxisAlignment.CENTER),
-                    ft.Divider(),
-                    ft.Row(
-                        [
-                            ft.DataTable(
-                                columns=[
-                                    ft.DataColumn(ft.Text("Hand")),
-                                    ft.DataColumn(ft.Text("Mult")),
-                                    ft.DataColumn(ft.Text("Adjust")),
-                                ],
-                                rows=[
-                                    ft.DataRow(
-                                        cells=[
-                                            ft.DataCell(ft.Text("Sequence")),
-                                            ft.DataCell(sequence_mult_text),
-                                            ft.DataCell(
-                                                ft.Row([
-                                                    ft.ElevatedButton(text="↑", on_click=increment_sequence_mult),
-                                                    ft.ElevatedButton(text="↓", on_click=decrement_sequence_mult)
-                                                    ])
-                                            )
-                                        ]
-                                    ),
-                                    ft.DataRow(
-                                        cells=[
-                                            ft.DataCell(ft.Text("Triplet")),
-                                            ft.DataCell(triplet_mult_text),
-                                            ft.DataCell(
-                                                ft.Row([
-                                                    ft.ElevatedButton(text="↑", on_click=increment_triplet_mult),
-                                                    ft.ElevatedButton(text="↓", on_click=decrement_triplet_mult)
-                                                    ])
-                                            )
-                                        ]
-                                    ),
-                                    ft.DataRow(
-                                        cells=[
-                                            ft.DataCell(ft.Text("Half Flush")),
-                                            ft.DataCell(half_flush_mult_text),
-                                            ft.DataCell(
-                                                ft.Row([
-                                                    ft.ElevatedButton(text="↑", on_click=increment_half_flush_mult),
-                                                    ft.ElevatedButton(text="↓", on_click=decrement_half_flush_mult)
-                                                    ])
-                                            )
-                                        ]
-                                    ),
-                                    ft.DataRow(
-                                        cells=[
-                                            ft.DataCell(ft.Text("Flush")),
-                                            ft.DataCell(flush_mult_text),
-                                            ft.DataCell(
-                                                ft.Row([
-                                                    ft.ElevatedButton(text="↑", on_click=increment_flush_mult),
-                                                    ft.ElevatedButton(text="↓", on_click=decrement_flush_mult)
-                                                    ])
-                                            )
-                                        ]
-                                    ),
-                                ]
-                            )],
-                            alignment=ft.MainAxisAlignment.CENTER,
-                            spacing=15), 
+                    # ft.Divider(),
+                    # ft.Row(
+                    #     [
+                    #         ft.DataTable(
+                    #             columns=[
+                    #                 ft.DataColumn(ft.Text("Hand")),
+                    #                 ft.DataColumn(ft.Text("Mult")),
+                    #                 ft.DataColumn(ft.Text("Adjust")),
+                    #             ],
+                    #             rows=[
+                    #                 ft.DataRow(
+                    #                     cells=[
+                    #                         ft.DataCell(ft.Text("Sequence")),
+                    #                         ft.DataCell(sequence_mult_text),
+                    #                         ft.DataCell(
+                    #                             ft.Row([
+                    #                                 ft.ElevatedButton(text="↑", on_click=increment_sequence_mult),
+                    #                                 ft.ElevatedButton(text="↓", on_click=decrement_sequence_mult)
+                    #                                 ])
+                    #                         )
+                    #                     ]
+                    #                 ),
+                    #                 ft.DataRow(
+                    #                     cells=[
+                    #                         ft.DataCell(ft.Text("Triplet")),
+                    #                         ft.DataCell(triplet_mult_text),
+                    #                         ft.DataCell(
+                    #                             ft.Row([
+                    #                                 ft.ElevatedButton(text="↑", on_click=increment_triplet_mult),
+                    #                                 ft.ElevatedButton(text="↓", on_click=decrement_triplet_mult)
+                    #                                 ])
+                    #                         )
+                    #                     ]
+                    #                 ),
+                    #                 ft.DataRow(
+                    #                     cells=[
+                    #                         ft.DataCell(ft.Text("Half Flush")),
+                    #                         ft.DataCell(half_flush_mult_text),
+                    #                         ft.DataCell(
+                    #                             ft.Row([
+                    #                                 ft.ElevatedButton(text="↑", on_click=increment_half_flush_mult),
+                    #                                 ft.ElevatedButton(text="↓", on_click=decrement_half_flush_mult)
+                    #                                 ])
+                    #                         )
+                    #                     ]
+                    #                 ),
+                    #                 ft.DataRow(
+                    #                     cells=[
+                    #                         ft.DataCell(ft.Text("Flush")),
+                    #                         ft.DataCell(flush_mult_text),
+                    #                         ft.DataCell(
+                    #                             ft.Row([
+                    #                                 ft.ElevatedButton(text="↑", on_click=increment_flush_mult),
+                    #                                 ft.ElevatedButton(text="↓", on_click=decrement_flush_mult)
+                    #                                 ])
+                    #                         )
+                    #                     ]
+                    #                 ),
+                    #             ]
+                    #         )],
+                    #         alignment=ft.MainAxisAlignment.CENTER,
+                    #         spacing=15), 
                         ft.Divider(),
                         ft.Column([
                             ft.Text("Hand Size", size=40),
@@ -3154,7 +3154,7 @@ def main(page: ft.Page):
                 ft.Radio(value="none", label="None"),
                 ft.Radio(value="thunder", label="Thunder"),
                 ft.Radio(value="sky", label="Sky"),
-                ft.Radio(value="lake", label="Lake"),
+                # ft.Radio(value="lake", label="Lake"),
                 ft.Radio(value="mountain", label="Mountain")   
             ]),
             value="none",

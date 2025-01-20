@@ -176,6 +176,36 @@ class Item_Sleight_Of_Han(Item):
     cost = 3
     img_src = "/items/sleight-of-han.jpg"
 
+class Item_Black_Eyed_Peas(Item):
+    name = "Black Eyed Peas"
+    description = "Combine two tiles of the same suit. Then split them down the middle. (3+7 -> 5,5)."
+    cost = 4
+    img_src = "/items/black-eyed-peas.jpg"
+
+class Item_Mutually_Assured_Destruction(Item):
+    name = "Mutually Assured Destruction"
+    description = "Select a player.  Randomly discard tiles up to your current hand size.  The chosen player must also randomly discard up to that many tiles as well. Both players draw the discarded amount back."
+    cost = 3
+    img_src = "/items/mutually-assured-destruction.jpg"
+
+class Item_Re_Suitbaru(Item):
+    name = "Re: Suitbaru"
+    description = "Reroll the suit of a tile in your hand."
+    cost = 2
+    img_src = "/items/re-suitbaru.jpg"
+
+class Item_Re_Sident_Evil(Item):
+    name = "Re: Sident Evil"
+    description = "Reroll an honor tile in your hand, within its category (dragon, wind)."
+    cost = 2
+    img_src = "/items/re-sident-evil.jpg"
+
+class Item_Re_Surrection(Item):
+    name = "Re: Surrection"
+    description = "Reroll the rank of a tile in your hand.  Pick low (1-3), mid (4-6), or high (7-9)."
+    cost = 2
+    img_src = "/items/re-surrection.jpg"
+
 # --------------------------------------------------------------------------------------
 # ALL ITEMS LIST
 # --------------------------------------------------------------------------------------
@@ -195,19 +225,24 @@ all_items_list.append(Item_Grave_Dig())
 all_items_list.append(Item_Literally_Gambling())
 all_items_list.append(Item_Mahjongkers_Dilemma())
 all_items_list.append(Item_Oracle())
-all_items_list.append(Item_Perpendicularity())
-all_items_list.append(Item_Power_Hour_Bamboo())
-all_items_list.append(Item_Power_Hour_Character())
-all_items_list.append(Item_Power_Hour_Dots())
+# all_items_list.append(Item_Perpendicularity())
+# all_items_list.append(Item_Power_Hour_Bamboo())
+# all_items_list.append(Item_Power_Hour_Character())
+# all_items_list.append(Item_Power_Hour_Dots())
 all_items_list.append(Item_Splitter())
 all_items_list.append(Item_Stun_Gun())
 all_items_list.append(Item_Take_2())
-all_items_list.append(Item_Trap_Card())
+# all_items_list.append(Item_Trap_Card())
 all_items_list.append(Item_Upheaval())
-all_items_list.append(Item_Weather_Vane())
+# all_items_list.append(Item_Weather_Vane())
 all_items_list.append(Item_Handmaxxing())
 all_items_list.append(Item_12_Inch())
 all_items_list.append(Item_Sleight_Of_Han())
+all_items_list.append(Item_Black_Eyed_Peas())
+all_items_list.append(Item_Mutually_Assured_Destruction())
+all_items_list.append(Item_Re_Suitbaru())
+all_items_list.append(Item_Re_Sident_Evil())
+all_items_list.append(Item_Re_Surrection())
 
 # --------------------------------------------------------------------------------------
 # ITEM DICT
@@ -226,19 +261,24 @@ all_items_dict["grave-dig"] = Item_Grave_Dig()
 all_items_dict["literally-gambling"] = Item_Literally_Gambling()
 all_items_dict["mahjongkers-dilemma"] = Item_Mahjongkers_Dilemma()
 all_items_dict["oracle"] = Item_Oracle()
-all_items_dict["perpendicularity"] = Item_Perpendicularity()
-all_items_dict["power-hour-bamboo"] = Item_Power_Hour_Bamboo()
-all_items_dict["power-hour-character"] = Item_Power_Hour_Character()
-all_items_dict["power-hour-dots"] = Item_Power_Hour_Dots()
+# all_items_dict["perpendicularity"] = Item_Perpendicularity()
+# all_items_dict["power-hour-bamboo"] = Item_Power_Hour_Bamboo()
+# all_items_dict["power-hour-character"] = Item_Power_Hour_Character()
+# all_items_dict["power-hour-dots"] = Item_Power_Hour_Dots()
 all_items_dict["splitter"] = Item_Splitter()
 all_items_dict["stun-gun"] = Item_Stun_Gun()
 all_items_dict["take-2"] = Item_Take_2()
-all_items_dict["trap-card"] = Item_Trap_Card()
+# all_items_dict["trap-card"] = Item_Trap_Card()
 all_items_dict["upheaval"] = Item_Upheaval()
-all_items_dict["weather-vane"] = Item_Weather_Vane()
+# all_items_dict["weather-vane"] = Item_Weather_Vane()
 all_items_dict["handmaxxing"] = Item_Handmaxxing()
 all_items_dict["12inch"] = Item_12_Inch()
 all_items_dict["sleight-of-han"] = Item_Sleight_Of_Han()
+all_items_dict["black-eyed-peas"] = Item_Black_Eyed_Peas()
+all_items_dict["mutually-assured-destruction"] = Item_Mutually_Assured_Destruction()
+all_items_dict["re-suitbaru"] = Item_Re_Suitbaru()
+all_items_dict["re-sident-evil"] = Item_Re_Sident_Evil()
+all_items_dict["re-surrection"] = Item_Re_Surrection()
 
 # --------------------------------------------------------------------------------------
 # ITEM NAME DICT
@@ -257,16 +297,21 @@ all_item_names_dict["Grave Dig"] = Item_Grave_Dig()
 all_item_names_dict["Literally Gambling"] = Item_Literally_Gambling()
 all_item_names_dict["Mahjongker's Dilemma"] = Item_Mahjongkers_Dilemma()
 all_item_names_dict["Oracle"] = Item_Oracle()
-all_item_names_dict["Perpendicularity"] = Item_Perpendicularity()
-all_item_names_dict["Power Hour: Bamboo"] = Item_Power_Hour_Bamboo()
-all_item_names_dict["Power Hour: Character"] = Item_Power_Hour_Character()
-all_item_names_dict["Power Hour: Dots"] = Item_Power_Hour_Dots()
+# all_item_names_dict["Perpendicularity"] = Item_Perpendicularity()
+# all_item_names_dict["Power Hour: Bamboo"] = Item_Power_Hour_Bamboo()
+# all_item_names_dict["Power Hour: Character"] = Item_Power_Hour_Character()
+# all_item_names_dict["Power Hour: Dots"] = Item_Power_Hour_Dots()
 all_item_names_dict["Splitter"] = Item_Splitter()
 all_item_names_dict["Stun Gun"] = Item_Stun_Gun()
 all_item_names_dict["Take 2"] = Item_Take_2()
-all_item_names_dict["Trap Card"] = Item_Trap_Card()
+# all_item_names_dict["Trap Card"] = Item_Trap_Card()
 all_item_names_dict["Upheaval"] = Item_Upheaval()
-all_item_names_dict["Weather Vane"] = Item_Weather_Vane()
+# all_item_names_dict["Weather Vane"] = Item_Weather_Vane()
 all_item_names_dict["Handmaxxing"] = Item_Handmaxxing()
 all_item_names_dict["12 Inch Barrel Revolver"] = Item_12_Inch()
 all_item_names_dict["Sleight Of Han"] = Item_Sleight_Of_Han()
+all_items_dict["Black Eyed Peas"] = Item_Black_Eyed_Peas()
+all_items_dict["Mutually Assured Destruction"] = Item_Mutually_Assured_Destruction()
+all_items_dict["Re: Suitbaru"] = Item_Re_Suitbaru()
+all_items_dict["Re: Sident Evil"] = Item_Re_Sident_Evil()
+all_items_dict["Re: Surrection"] = Item_Re_Surrection()

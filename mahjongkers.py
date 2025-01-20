@@ -875,7 +875,7 @@ class Salarymanker(Mahjongker):
     img_src = "/jongker/salarymanker.jpg"
 
     def eval_score(self):
-        return (0, 0)
+        return (0, 0, 4)
 
 # MealTicker
 class MealTicker(Mahjongker):
@@ -1430,6 +1430,28 @@ class Speedker(Mahjongker):
         self.point_value = self.point_value + 15
         return (self.point_value, 0)
 
+# Blackjackgker
+class Blackjackgker(Mahjongker):
+    name = "Blackjackgker"
+    description = "You may form a blackjack meld with tiles of the same suit that add up to 21. +15 pts for each of these melds."
+    priority = 2
+    cost = CONSISTENCY_MAHJONGKER_COST
+    sell_value = CONSISTENCY_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/blackjackgker.jpg"
+
+    def eval_score(self, meld):
+        total = 0
+        for tile in meld.tiles:
+            if tile.suit == "bamboo" or tile.suit == "dot" or tile.suit == "character":
+                total += int(tile.rank)
+            else:
+                return (0, 0)
+
+        if total == 21:
+            return (15, 0)
+        else:
+            return (0, 0)
+
 
 # --------------------------------------------------------------------------------------
 # MAHJONGKER LIST
@@ -1521,6 +1543,7 @@ all_mahjongkers_list.append(Shardker())
 all_mahjongkers_list.append(Ponorker())
 all_mahjongkers_list.append(Sonorker())
 all_mahjongkers_list.append(Speedker())
+all_mahjongkers_list.append(Blackjackgker())
 
 # --------------------------------------------------------------------------------------
 # MAHJONGKER DICT
@@ -1611,6 +1634,8 @@ all_mahjongkers_dict["shardker"] = Shardker()
 all_mahjongkers_dict["ponorker"] = Ponorker()
 all_mahjongkers_dict["sonorker"] = Sonorker()
 all_mahjongkers_dict["speedker"] = Speedker()
+all_mahjongkers_dict["blackjackgker"] = Blackjackgker()
+
 # ----------------------------------------------
 
 # --------------------------------------------------------------------------------------

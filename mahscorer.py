@@ -8,15 +8,15 @@ def score(hand, table_wind, seat_wind, my_mahjongkers, sequence_hand_mult, tripl
     money = 0
 
     # score hand.. needs some ordering to pick best hand? or do hands stack?
-    if len(hand.melds) >= 3 and len(hand.eyes) >= 1:
-        if hand.is_sequence:
-            mult = max(mult, sequence_hand_mult)
-        if hand.is_triplet:
-            mult = max(mult, triplet_hand_mult)
-        if hand.is_half_flush:
-            mult = max(mult, half_flush_hand_mult)
-        if hand.is_flush:
-            mult = max(mult, flush_hand_mult)
+    # if len(hand.melds) >= 3 and len(hand.eyes) >= 1:
+    #     if hand.is_sequence:
+    #         mult = max(mult, sequence_hand_mult)
+    #     if hand.is_triplet:
+    #         mult = max(mult, triplet_hand_mult)
+    #     if hand.is_half_flush:
+    #         mult = max(mult, half_flush_hand_mult)
+    #     if hand.is_flush:
+    #         mult = max(mult, flush_hand_mult)
             
     # score melds
     for meld in hand.melds: 
@@ -94,6 +94,8 @@ def score(hand, table_wind, seat_wind, my_mahjongkers, sequence_hand_mult, tripl
             evaluated_score = mahjongker.eval_score()
             points += evaluated_score[0]
             mult += evaluated_score[1]
+            if len(evaluated_score) > 2:
+                money += evaluated_score[2]
 
     return (points, mult, money)
 
