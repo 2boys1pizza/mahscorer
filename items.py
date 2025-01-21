@@ -53,7 +53,7 @@ class Item_Controlled_Chaos(Item):
 class Item_Disguise(Item):
     name = "Disguise"
     description = "Change the suit of a tile in your hand."
-    cost = 4
+    cost = 6
     img_src = "/items/disguise.jpg"
 
 class Item_Dumpster_Diver(Item):
@@ -149,7 +149,7 @@ class Item_Trap_Card(Item):
 class Item_Upheaval(Item):
     name = "Upheaval"
     description = "Change the rank of one of your tiles into rank of your choice."
-    cost = 4
+    cost = 6
     img_src = "/items/upheaval.jpg"
 
 class Item_Weather_Vane(Item):
@@ -161,7 +161,7 @@ class Item_Weather_Vane(Item):
 class Item_Handmaxxing(Item):
     name = "Handmaxxing"
     description = "Draw 4. Skip your draw phase for the rest of the round."
-    cost = 3
+    cost = 4
     img_src = "/items/handmaxxing.jpg"
 
 class Item_12_Inch(Item):

@@ -108,6 +108,7 @@ meldker_text = ft.Text("Meldker value: 0", size=40)
 fuckgker_text = ft.Text("Fuckgker value: 0", size=40)
 suckgker_text = ft.Text("Suckgker value: 0", size=40)
 lake_text = ft.Text("Lake value: 0", size=40)
+mahjong_mult_text = ft.Text("Mahjong Mult: 1.0 x", size=20)
 
 # scorer
 selected_tiles = []
@@ -128,6 +129,7 @@ current_hand_panel = []
 tot_score = 0
 scored_money = 0
 lake_adjuster = []
+mahjong_mult_adjuster = []
 
 # shop
 shop_round = 1
@@ -1231,6 +1233,10 @@ def main(page: ft.Page):
         refresh_current_hand()
 
     def refresh_current_hand():
+        global hand_score_text
+        global mahjong_mult_text
+        global mahjong_mult_adjuster
+
         current_hand_panel.content.controls.clear()
         for i, meld in enumerate(current_hand.melds):
             meld_grid = ft.GridView(
@@ -1279,7 +1285,7 @@ def main(page: ft.Page):
                 eye_grid
             ]))
 
-        global hand_score_text
+        current_hand_panel.content.controls.append(mahjong_mult_adjuster)
         current_hand_panel.content.controls.append(ft.Row([
             ft.ElevatedButton(text="Score Hand", on_click=score_hand),
             hand_score_text,
@@ -1398,7 +1404,9 @@ def main(page: ft.Page):
         global half_flush_hand_mult 
         global flush_hand_mult
         global scored_money
-        i = score(current_hand, table_wind, seat_wind, my_mahjongkers, sequence_hand_mult, triplet_hand_mult, half_flush_hand_mult, flush_hand_mult)
+        global mahjong_mult_text
+        mult = round(float(mahjong_mult_text.value.split(" ")[2]), 2)
+        i = score(current_hand, table_wind, seat_wind, my_mahjongkers, mult)
         buffetker_score = score_buffettker()
         tot_score = round((i[0] + buffetker_score) * i[1], 2)
         scored_money = int(i[2])
@@ -1440,6 +1448,18 @@ def main(page: ft.Page):
         global lake_text
         point_value = max(0, int(lake_text.value.split(" ")[2]) - 10)
         lake_text.value = f"Lake value: {point_value}"
+        page.update()
+
+    def increment_mahjong_mult(e):
+        global mahjong_mult_text
+        mult_value = round(float(mahjong_mult_text.value.split(" ")[2]) + 0.1, 2)
+        mahjong_mult_text.value = f"Mahjong Mult: {mult_value} x"
+        page.update()
+
+    def decrement_mahjong_mult(e):
+        global mahjong_mult_text
+        mult_value = round(max(1.0, float(mahjong_mult_text.value.split(" ")[2]) - 0.1), 2)
+        mahjong_mult_text.value = f"Mahjong Mult: {mult_value} x"
         page.update()
 
     # -------------------------------------------------------------
@@ -1864,6 +1884,7 @@ def main(page: ft.Page):
         global refresh_shop_button
         global item_row
         global reroll_cost
+        global reroll_item_cost
         global shop_selected_i
         global item_selected
         global my_mahjongkers
@@ -1967,6 +1988,7 @@ def main(page: ft.Page):
                     )
             )
         reroll_cost = 1
+        reroll_item_cost = 1
 
         # zodiacs
         shop_zodiac_row.controls.clear()
@@ -2766,6 +2788,8 @@ def main(page: ft.Page):
         global current_hand_panel
         global lake_text
         global lake_adjuster
+        global mahjong_mult_text
+        global mahjong_mult_adjuster
         # shop
         global refresh_shop_button
         global zodiac_row
@@ -3264,8 +3288,18 @@ def main(page: ft.Page):
                 can_tap_header=True
             )
 
+            mahjong_mult_adjuster = ft.Row([
+                mahjong_mult_text,
+                ft.Column([
+                    ft.ElevatedButton(text="↑", on_click=increment_mahjong_mult),
+                    ft.ElevatedButton(text="↓", on_click=decrement_mahjong_mult)
+                    ])
+                ],
+                alignment=ft.MainAxisAlignment.START)
+
             current_hand_panel.content = ft.Column([])
             refresh_current_hand()
+            
             panel.controls.append(current_hand_panel)
             
             page.views.append(

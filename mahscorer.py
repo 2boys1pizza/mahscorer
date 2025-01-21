@@ -2,9 +2,9 @@ from tiles import *
 from mahjongkers import *
 from math import *
 
-def score(hand, table_wind, seat_wind, my_mahjongkers, sequence_hand_mult, triplet_hand_mult, half_flush_hand_mult, flush_hand_mult):
+def score(hand, table_wind, seat_wind, my_mahjongkers, mahjong_mult):
     points = 0
-    mult = 1
+    mult = mahjong_mult
     money = 0
 
     # score hand.. needs some ordering to pick best hand? or do hands stack?

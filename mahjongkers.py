@@ -1285,14 +1285,14 @@ class Suckgker(Mahjongker):
     def eval_score(self):
         return (self.point_value, 0)
 
-# Oracker
-class Oracker(Mahjongker):
-    name = "Oracker"
+# JosephJoesker
+class JosephJoesker(Mahjongker):
+    name = "JosephJoesker"
     description = "Each turn before you draw, guess the suit of the tile you’re about to draw.  If you get it right, gain $1."
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
-    img_src = "/jongker/oracker.jpg"
+    img_src = "/jongker/josephjoekser.jpg"
 
     def eval_score(self):
         return (0, 0)
@@ -1534,9 +1534,9 @@ all_mahjongkers_list.append(Grenadeker())
 all_mahjongkers_list.append(Stepsisker())
 all_mahjongkers_list.append(LarryEllisker())
 all_mahjongkers_list.append(Suckgker())
-all_mahjongkers_list.append(Oracker())
+# all_mahjongkers_list.append(Oracker())
 # all_mahjongkers_list.append(Riggedker())
-all_mahjongkers_list.append(Oracker())
+all_mahjongkers_list.append(JosephJoesker())
 all_mahjongkers_list.append(Fibonaccker())
 all_mahjongkers_list.append(Wokegker())
 all_mahjongkers_list.append(Shardker())
@@ -1626,8 +1626,9 @@ all_mahjongkers_dict["grenadeker"] = Grenadeker()
 all_mahjongkers_dict["stepsisker"] = Stepsisker()
 all_mahjongkers_dict["larryellisker"] = LarryEllisker()
 all_mahjongkers_dict["suckgker"] = Suckgker()
-all_mahjongkers_dict["oracker"] = Oracker()
+# all_mahjongkers_dict["oracker"] = Oracker()
 # all_mahjongkers_dict["riggedker"] = Riggedker()
+all_mahjongkers_dict["josephjoekser"] = JosephJoesker()
 all_mahjongkers_dict["fibonaccker"] = Fibonaccker()
 all_mahjongkers_dict["wokegker"] = Wokegker()
 all_mahjongkers_dict["shardker"] = Shardker()
