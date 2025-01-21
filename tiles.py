@@ -1,6 +1,6 @@
 class Tile:
-    rank = "1" # 1-9, red, green, white, east, south, west, north
-    suit = "dot" # dot, bamboo, character, dragon, wind
+    rank = "1" # 1-9, red, green, white, east, south, west, north, bomb
+    suit = "dot" # dot, bamboo, character, dragon, wind, special
     points = 5 # 5 for regular, 15 for dragon, 20 for wind
     modifier = "none" # none, gold 
     seal = "none" # none, thunder, sky, lake, mountain
@@ -24,7 +24,7 @@ class Tile:
         return Tile(self.rank, self.suit, self.points, self.modifier, self.seal, self.img_src)
 
 # regular tiles
-all_tiles = {"dot":{}, "bamboo":{}, "character":{}, "dragon":{}, "wind":{}}
+all_tiles = {"dot":{}, "bamboo":{}, "character":{}, "dragon":{}, "wind":{}, "special":{}}
 
 for suit in ["dot", "bamboo", "character"]:
     for rank in range(1, 10):
@@ -36,8 +36,10 @@ for rank in ["red", "white", "green"]:
 for rank in ["east", "south", "west", "north"]:
     all_tiles["wind"][rank] = Tile(rank, "wind", 10, "none", "none", "/tiles/" + "wind" + "-" + rank + ".jpg")
 
+all_tiles["special"]["bomb"] = Tile("bomb", "special", 10, "none", "none", "/tiles/" + "special" + "-" + "bomb" + ".jpg")
+
 # thunder tiles
-all_tiles_thunder = {"dot":{}, "bamboo":{}, "character":{}, "dragon":{}, "wind":{}}
+all_tiles_thunder = {"dot":{}, "bamboo":{}, "character":{}, "dragon":{}, "wind":{}, "special":{}}
 
 for suit in ["dot", "bamboo", "character"]:
     for rank in range(1, 10):
@@ -49,8 +51,10 @@ for rank in ["red", "white", "green"]:
 for rank in ["east", "south", "west", "north"]:
     all_tiles_thunder["wind"][rank] = Tile(rank, "wind", 10, "none", "thunder", "/tiles/" + "wind" + "-" + rank + "-" + "thunder" + ".jpg")
 
+all_tiles_thunder["special"]["bomb"] = Tile("bomb", "special", 10, "none", "thunder", "/tiles/" + "special" + "-" + "bomb" + "-" + "thunder" + ".jpg")
+
 # sky tiles
-all_tiles_sky = {"dot":{}, "bamboo":{}, "character":{}, "dragon":{}, "wind":{}}
+all_tiles_sky = {"dot":{}, "bamboo":{}, "character":{}, "dragon":{}, "wind":{}, "special":{}}
 
 for suit in ["dot", "bamboo", "character"]:
     for rank in range(1, 10):
@@ -62,8 +66,10 @@ for rank in ["red", "white", "green"]:
 for rank in ["east", "south", "west", "north"]:
     all_tiles_sky["wind"][rank] = Tile(rank, "wind", 25, "none", "sky", "/tiles/" + "wind" + "-" + rank + "-" + "sky" + ".jpg")
 
+all_tiles_sky["special"]["bomb"] = Tile("bomb", "special", 10, "none", "sky", "/tiles/" + "special" + "-" + "bomb" + "-" + "sky" + ".jpg")
+
 # lake tiles
-all_tiles_lake = {"dot":{}, "bamboo":{}, "character":{}, "dragon":{}, "wind":{}}
+all_tiles_lake = {"dot":{}, "bamboo":{}, "character":{}, "dragon":{}, "wind":{}, "special":{}}
 
 for suit in ["dot", "bamboo", "character"]:
     for rank in range(1, 10):
@@ -76,7 +82,7 @@ for rank in ["east", "south", "west", "north"]:
     all_tiles_lake["wind"][rank] = Tile(rank, "wind", 10, "none", "lake", "/tiles/" + "wind" + "-" + rank + "-" + "lake" + ".jpg")
 
 # mountain tiles
-all_tiles_mountain = {"dot":{}, "bamboo":{}, "character":{}, "dragon":{}, "wind":{}}
+all_tiles_mountain = {"dot":{}, "bamboo":{}, "character":{}, "dragon":{}, "wind":{}, "special":{}}
 
 for suit in ["dot", "bamboo", "character"]:
     for rank in range(1, 10):
@@ -88,8 +94,10 @@ for rank in ["red", "white", "green"]:
 for rank in ["east", "south", "west", "north"]:
     all_tiles_mountain["wind"][rank] = Tile(rank, "wind", 25, "none", "mountain", "/tiles/" + "wind" + "-" + rank + "-" + "mountain" + ".jpg")
 
+all_tiles_mountain["special"]["bomb"] = Tile("bomb", "special", 10, "none", "mountain", "/tiles/" + "special" + "-" + "bomb" + "-" + "mountain" + ".jpg")
+
 # gold tiles
-all_tiles_gold = {"dot":{}, "bamboo":{}, "character":{}, "dragon":{}, "wind":{}}
+all_tiles_gold = {"dot":{}, "bamboo":{}, "character":{}, "dragon":{}, "wind":{}, "special":{}}
 
 for suit in ["dot", "bamboo", "character"]:
     for rank in range(1, 10):
@@ -101,8 +109,10 @@ for rank in ["red", "white", "green"]:
 for rank in ["east", "south", "west", "north"]:
     all_tiles_gold["wind"][rank] = Tile(rank, "wind", 10, "gold", "none", "/tiles/" + "wind" + "-" + rank + "-" + "gold" + ".jpg")
 
+all_tiles_gold["special"]["bomb"] = Tile("bomb", "special", 10, "gold", "none", "/tiles/" + "special" + "-" + "bomb" + "-" + "gold" + ".jpg")
+
 # golden thunder tiles
-all_tiles_gold_thunder = {"dot":{}, "bamboo":{}, "character":{}, "dragon":{}, "wind":{}}
+all_tiles_gold_thunder = {"dot":{}, "bamboo":{}, "character":{}, "dragon":{}, "wind":{}, "special":{}}
 
 for suit in ["dot", "bamboo", "character"]:
     for rank in range(1, 10):
@@ -114,8 +124,10 @@ for rank in ["red", "white", "green"]:
 for rank in ["east", "south", "west", "north"]:
     all_tiles_gold_thunder["wind"][rank] = Tile(rank, "wind", 10, "gold", "thunder", "/tiles/" + "wind" + "-" + rank + "-" + "gold" + "-" + "thunder" + ".jpg")
 
+all_tiles_gold_thunder["special"]["bomb"] = Tile("bomb", "special", 10, "gold", "thunder", "/tiles/" + "special" + "-" + "bomb" + "-" + "gold" + "-" + "thunder" + ".jpg")
+
 # golden sky tiles
-all_tiles_gold_sky = {"dot":{}, "bamboo":{}, "character":{}, "dragon":{}, "wind":{}}
+all_tiles_gold_sky = {"dot":{}, "bamboo":{}, "character":{}, "dragon":{}, "wind":{}, "special":{}}
 
 for suit in ["dot", "bamboo", "character"]:
     for rank in range(1, 10):
@@ -127,8 +139,10 @@ for rank in ["red", "white", "green"]:
 for rank in ["east", "south", "west", "north"]:
     all_tiles_gold_sky["wind"][rank] = Tile(rank, "wind", 25, "gold", "sky", "/tiles/" + "wind" + "-" + rank + "-" + "gold" + "-" + "sky" + ".jpg")
 
+all_tiles_gold_sky["special"]["bomb"] = Tile("bomb", "special", 10, "gold", "sky", "/tiles/" + "special" + "-" + "bomb" + "-" + "gold" + "-" + "sky" + ".jpg")
+
 # golden lake tiles
-all_tiles_gold_lake = {"dot":{}, "bamboo":{}, "character":{}, "dragon":{}, "wind":{}}
+all_tiles_gold_lake = {"dot":{}, "bamboo":{}, "character":{}, "dragon":{}, "wind":{}, "special":{}}
 
 for suit in ["dot", "bamboo", "character"]:
     for rank in range(1, 10):
@@ -141,7 +155,7 @@ for rank in ["east", "south", "west", "north"]:
     all_tiles_gold_lake["wind"][rank] = Tile(rank, "wind", 10, "gold", "lake", "/tiles/" + "wind" + "-" + rank + "-" + "gold" + "-" + "lake" + ".jpg")
 
 # golden mountain tiles
-all_tiles_gold_mountain = {"dot":{}, "bamboo":{}, "character":{}, "dragon":{}, "wind":{}}
+all_tiles_gold_mountain = {"dot":{}, "bamboo":{}, "character":{}, "dragon":{}, "wind":{}, "special":{}}
 
 for suit in ["dot", "bamboo", "character"]:
     for rank in range(1, 10):
@@ -152,3 +166,5 @@ for rank in ["red", "white", "green"]:
 
 for rank in ["east", "south", "west", "north"]:
     all_tiles_gold_mountain["wind"][rank] = Tile(rank, "wind", 25, "gold", "mountain", "/tiles/" + "wind" + "-" + rank + "-" + "gold" + "-" + "mountain" + ".jpg")
+
+all_tiles_gold_mountain["special"]["bomb"] = Tile("bomb", "special", 10, "gold", "mountain", "/tiles/" + "special" + "-" + "bomb" + "-" + "gold" + "-" + "mountain" + ".jpg")

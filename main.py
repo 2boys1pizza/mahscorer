@@ -1128,7 +1128,7 @@ def main(page: ft.Page):
 
     def handle_tile_filter(e):
         global lake_adjuster
-        # bamboo, dot, character, honor
+        # bamboo, dot, character, honor, special
         # none, gold
         # none, thunder, sky, lake, mountain
         # modifier_radio
@@ -3162,7 +3162,8 @@ def main(page: ft.Page):
                 ft.Radio(value="bamboo", label="Bamboo"),
                 ft.Radio(value="dot", label="Dot"),
                 ft.Radio(value="character", label="Character"),
-                ft.Radio(value="honor", label="Honor")      
+                ft.Radio(value="honor", label="Honor"),
+                ft.Radio(value="special", label="Special")
             ]),
             value="bamboo",
             on_change=handle_tile_filter)
