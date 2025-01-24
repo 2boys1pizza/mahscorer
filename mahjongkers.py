@@ -253,7 +253,7 @@ class Chonker(Mahjongker):
 # Dragonker
 class Dragonker(Mahjongker):
     name = "Dragonker"
-    description = "+30 pts for each dragon meld. Once per draw phase, you may instead draw the next dragon in the deck. Costs $3 per use."
+    description = "+20 pts for each dragon meld. Once each turn you may pay $2 to use Called Shot: Dragon."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -261,14 +261,14 @@ class Dragonker(Mahjongker):
 
     def eval_score(self, meld):
         if meld.suit == "dragon":
-            return (30, 0)
+            return (20, 0)
         else:
             return (0, 0)
 
 # Winker
 class Winker(Mahjongker):
     name = "Winker"
-    description = "+30 pts for each wind meld. Once per draw phase, you may instead draw the next wind in the deck. Costs $3 per use."
+    description = "+30 pts for each wind meld. Once each turn you may pay $2 to use Called Shot: Wind."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -1030,8 +1030,8 @@ class AllforOneker(Mahjongker):
     name = "AllforOneker"
     description = "All winds are your seat wind and the same tile.  You do not score bonus points from the table wind."
     priority = 6 
-    cost = UNCOMMON_MAHJONGKER_COST
-    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
+    cost = CONSISTENCY_MAHJONGKER_COST
+    sell_value = CONSISTENCY_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/allforoneker.jpg"
 
     def eval_score(self):
@@ -1042,8 +1042,8 @@ class OneforAllker(Mahjongker):
     name = "OneforAllker"
     description = "All dragons are the same dragon"
     priority = 6 
-    cost = UNCOMMON_MAHJONGKER_COST
-    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
+    cost = CONSISTENCY_MAHJONGKER_COST
+    sell_value = CONSISTENCY_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/oneforallker.jpg"
 
     def eval_score(self):
@@ -1452,6 +1452,18 @@ class Blackjackgker(Mahjongker):
         else:
             return (0, 0)
 
+# Chairker
+class Chairker(Mahjongker):
+    name = "Chairker"
+    description = "Choose an additional seat wind for yourself after drawing your opening hand."
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/chairker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
 
 # --------------------------------------------------------------------------------------
 # MAHJONGKER LIST
@@ -1466,8 +1478,8 @@ all_mahjongkers_list.append(Winker())
 # all_mahjongkers_list.append(MahMahMahjonker())
 # all_mahjongkers_list.append(Milwaunker())
 # all_mahjongkers_list.append(Kohlker())
-all_mahjongkers_list.append(Windker())
-all_mahjongkers_list.append(Draker())
+# all_mahjongkers_list.append(Windker())
+# all_mahjongkers_list.append(Draker())
 all_mahjongkers_list.append(Evenker())
 all_mahjongkers_list.append(Oddker())
 all_mahjongkers_list.append(AYCker())
@@ -1486,9 +1498,9 @@ all_mahjongkers_list.append(Gayker())
 all_mahjongkers_list.append(Bumungker())
 all_mahjongkers_list.append(Dungker())
 all_mahjongkers_list.append(Chungker())
-all_mahjongkers_list.append(Bimingker())
-all_mahjongkers_list.append(Dingker())
-all_mahjongkers_list.append(Chingker())
+# all_mahjongkers_list.append(Bimingker())
+# all_mahjongkers_list.append(Dingker())
+# all_mahjongkers_list.append(Chingker())
 all_mahjongkers_list.append(Hoardker())
 all_mahjongkers_list.append(Meldker())
 # all_mahjongkers_list.append(Snakeker())
@@ -1544,6 +1556,7 @@ all_mahjongkers_list.append(Ponorker())
 all_mahjongkers_list.append(Sonorker())
 all_mahjongkers_list.append(Speedker())
 all_mahjongkers_list.append(Blackjackgker())
+all_mahjongkers_list.append(Chairker())
 
 # --------------------------------------------------------------------------------------
 # MAHJONGKER DICT
@@ -1558,8 +1571,8 @@ all_mahjongkers_dict["sequencker"] = Sequencker()
 all_mahjongkers_dict["mahmahmahjonker"] = MahMahMahjonker()
 all_mahjongkers_dict["milwaunker"] = Milwaunker()
 all_mahjongkers_dict["kohlker"] = Kohlker()
-all_mahjongkers_dict["windker"] = Windker()
-all_mahjongkers_dict["draker"] = Draker()
+# all_mahjongkers_dict["windker"] = Windker()
+# all_mahjongkers_dict["draker"] = Draker()
 all_mahjongkers_dict["evenker"] = Evenker()
 all_mahjongkers_dict["oddker"] = Oddker()
 all_mahjongkers_dict["aycker"] = AYCker()
@@ -1578,9 +1591,9 @@ all_mahjongkers_dict["gayker"] = Gayker()
 all_mahjongkers_dict["bumungker"] = Bumungker()
 all_mahjongkers_dict["dungker"] = Dungker()
 all_mahjongkers_dict["chungker"] = Chungker()
-all_mahjongkers_dict["bimingker"] = Bimingker()
-all_mahjongkers_dict["dingker"] = Dingker()
-all_mahjongkers_dict["chingker"] = Chingker()
+# all_mahjongkers_dict["bimingker"] = Bimingker()
+# all_mahjongkers_dict["dingker"] = Dingker()
+# all_mahjongkers_dict["chingker"] = Chingker()
 all_mahjongkers_dict["hoardker"] = Hoardker()
 all_mahjongkers_dict["meldker"] = Meldker()
 # all_mahjongkers_dict["snakeker"] = Snakeker()
@@ -1636,6 +1649,7 @@ all_mahjongkers_dict["ponorker"] = Ponorker()
 all_mahjongkers_dict["sonorker"] = Sonorker()
 all_mahjongkers_dict["speedker"] = Speedker()
 all_mahjongkers_dict["blackjackgker"] = Blackjackgker()
+all_mahjongkers_dict["chairker"] = Chairker()
 
 # ----------------------------------------------
 

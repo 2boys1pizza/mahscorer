@@ -22,25 +22,25 @@ class Item_Bag(Item):
 
 class Item_Called_Shot_Dragon(Item):
     name = "Called Shot: Dragon"
-    description = "Choose a player and name a dragon tile. If that player has that tile, they must give it to you. Give them back a tile of your choice from your hand."
+    description = "Choose a player. If that player has a dragon tile, they must give it to you. You give them back a tile of your choice from your hand."
     cost = 2
     img_src = "/items/called-shot-dragon.jpg"
 
 class Item_Called_Shot_Wind(Item):
     name = "Called Shot: Wind"
-    description = "Choose a player and name a wind tile. If that player has that tile, they must give it to you. Give them back a tile of your choice from your hand."
+    description = "Choose a player. If that player has a wind tile, they must give it to you. You give them back a tile of your choice from your hand."
     cost = 2
     img_src = "/items/called-shot-wind.jpg"
 
 class Item_Called_Shot_Rank(Item):
     name = "Called Shot: Rank"
-    description = "Choose a player and name a rank. If that player has a tile of that rank, they must give it to you. Give them back a tile of your choice from your hand."
+    description = "Choose a player and name a group, low(1-3), mid(4-6), or high(7-9). If that player has a tile within that group, they must give you a tile matching that rank. You give them back a tile of your choice from your hand."
     cost = 2
     img_src = "/items/called-shot-rank.jpg"
 
 class Item_Called_Shot_Suit(Item):
     name = "Called Shot: Suit"
-    description = "Choose a player and name a suit. If that player has a tile of that suit, they must give it to you. Give them back a tile of your choice from your hand."
+    description = "Choose a player and name a suit. If that player has a tile with that suit they must give you a tile matching that suit. You give them back a tile of your choice from your hand."
     cost = 2
     img_src = "/items/called-shot-suit.jpg"
 
@@ -310,8 +310,8 @@ all_item_names_dict["Upheaval"] = Item_Upheaval()
 all_item_names_dict["Handmaxxing"] = Item_Handmaxxing()
 all_item_names_dict["12 Inch Barrel Revolver"] = Item_12_Inch()
 all_item_names_dict["Sleight Of Han"] = Item_Sleight_Of_Han()
-all_items_dict["Black Eyed Peas"] = Item_Black_Eyed_Peas()
-all_items_dict["Mutually Assured Destruction"] = Item_Mutually_Assured_Destruction()
-all_items_dict["Re: Suitbaru"] = Item_Re_Suitbaru()
-all_items_dict["Re: Sident Evil"] = Item_Re_Sident_Evil()
-all_items_dict["Re: Surrection"] = Item_Re_Surrection()
+all_item_names_dict["Black Eyed Peas"] = Item_Black_Eyed_Peas()
+all_item_names_dict["Mutually Assured Destruction"] = Item_Mutually_Assured_Destruction()
+all_item_names_dict["Re: Suitbaru"] = Item_Re_Suitbaru()
+all_item_names_dict["Re: Sident Evil"] = Item_Re_Sident_Evil()
+all_item_names_dict["Re: Surrection"] = Item_Re_Surrection()

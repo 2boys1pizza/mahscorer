@@ -33,7 +33,7 @@ TRIPLET_UPGRADE_AMOUNT = 0.15
 HALF_FLUSH_UPGRADE_AMOUNT = 0.15
 FLUSH_UPGRADE_AMOUNT = 0.2
 SHOP_MAHJONGKER_RARITIES = ["common", "uncommon", "rare"]
-SHOP_MAHJONGKER_RARITY_PROBABILITIES = {1:[85, 15, 0], 2:[75, 23, 2], 3:[60, 30, 10], 4:[50, 35, 15], 5:[40, 40, 20]}
+SHOP_MAHJONGKER_RARITY_PROBABILITIES = {1:[90, 10, 0], 2:[75, 23, 2], 3:[60, 30, 10], 4:[50, 35, 15], 5:[40, 40, 20]}
 START_MONEY = 2
 ROUND_UBI = [6,11,15,18,18]
 
@@ -1905,7 +1905,7 @@ def main(page: ft.Page):
         shop_row.controls.clear()
         i = 0
         shop_selected_i = []
-        while i < 3:
+        while i < 5:
             rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_RARITY_PROBABILITIES[int(shop_round)])[0]
             print(rarity_roll)
             mahjongker = roll_mahjongker(rarity_roll)
@@ -2106,7 +2106,7 @@ def main(page: ft.Page):
             shop_row.controls.clear()
             i = 0
             shop_selected_i = []
-            while i < 3:
+            while i < 5:
                 rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_RARITY_PROBABILITIES[int(shop_round)])[0]
                 mahjongker = roll_mahjongker(rarity_roll)
                 shop_selected_i.append(all_mahjongkers_list.index(mahjongker))
@@ -3349,7 +3349,7 @@ def main(page: ft.Page):
             shop_row = ft.GridView(
                 # expand=1,
                 height=100,
-                width=400,
+                width=600,
                 runs_count=1,
                 max_extent=95,
                 child_aspect_ratio=1.0,
@@ -3430,24 +3430,11 @@ def main(page: ft.Page):
                     ft.TextField(label="Shop Round", hint_text=shop_round, on_change=adjust_shop_round)
                 ]),
                 ft.Divider(),
+                ft.Text("Mahjongkers", size=20, color=ft.colors.WHITE),
+                shop_row,
                 ft.Row([
-                    ft.Text("Mahjongkers", size=20, color=ft.colors.WHITE),
-                    ft.Text("Inventory", size=20, color=ft.colors.WHITE)],
-                    spacing=400),
-                ft.Row([
-                    shop_row,
-                    my_mahjongkers_shop_row],
-                    spacing=120),
-                ft.Row([ft.Row([
                     ft.ElevatedButton(text="Buy", on_click=buy_mahjongker),
-                    shop_mahjongker_text
-                    ]),
-                    ft.Row([
-                    ft.ElevatedButton(text="Sell", on_click=sell_mahjongker),
-                    shop_sell_mahjongker_text
-                    ])],
-                    spacing=500
-                ),
+                    shop_mahjongker_text]),
                 ft.Divider(),
                 ft.Row([
                     ft.Text("Items ", size=20, color=ft.colors.WHITE),
@@ -3579,7 +3566,7 @@ def main(page: ft.Page):
                             )
                         )
             else:
-                for i in range(3):
+                for i in range(5):
                     shop_row.controls.append(
                         ft.Container(
                             image=ft.DecorationImage(src="/jongker/sold.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),

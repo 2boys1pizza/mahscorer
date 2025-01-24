@@ -136,6 +136,11 @@ class Trigram_Earth(Trigram):
     description = "[Seal] Place a deed of ownership on a tile. Whenever a player scores this tile, they give the owner $5 at the next shop phase."
     img_src = "/trigram/earth.jpg"
 
+class Trigram_Yang(Trigram):
+    name = "Yang"
+    description = "Take ownership of a sealed tile."
+    img_src = "/trigram/yang.jpg"
+
 # --------------------------------------------------------------------------------------
 # ALL ZODIACS LIST
 # --------------------------------------------------------------------------------------
@@ -185,6 +190,7 @@ all_trigrams_list.append(Trigram_Wind())
 all_trigrams_list.append(Trigram_Water())
 all_trigrams_list.append(Trigram_Mountain())
 all_trigrams_list.append(Trigram_Earth())
+all_trigrams_list.append(Trigram_Yang())
 
 # --------------------------------------------------------------------------------------
 # TRIGRAMS DICT
@@ -198,3 +204,4 @@ all_trigrams_dict["wind"] = Trigram_Wind()
 all_trigrams_dict["water"] = Trigram_Water()
 all_trigrams_dict["mountain"] = Trigram_Mountain()
 all_trigrams_dict["earth"] = Trigram_Earth()
+all_trigrams_dict["yang"] = Trigram_Yang()
