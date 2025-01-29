@@ -130,7 +130,7 @@ class Item_Splitter(Item):
 
 class Item_Stun_Gun(Item):
     name = "Stun Gun"
-    description = "Choose a player.  One random tile for that player is disabled until the end of their next turn.  It still counts towards hand size but otherwise does not exist, e.g. it cannot be used to pong, chi, or mahjong."
+    description = "Choose a player. They cannot act until the end of their next turn."
     cost = 1
     img_src = "/items/stun-gun.jpg"
 
@@ -206,6 +206,24 @@ class Item_Re_Surrection(Item):
     cost = 2
     img_src = "/items/re-surrection.jpg"
 
+class Item_Piggy_Bank(Item):
+    name = "Piggy Bank"
+    description = "This item gains $1 if empty. Pick break or wait. If wait, the next piggy bank you get is worth 2x.  If break, get the value of the piggy bank and then set it back to 0."
+    cost = 2
+    img_src = "/items/piggy-bank.jpg"
+
+class Item_Pivoter(Item):
+    name = "Pivoter"
+    description = "Discard a random tile in your hand.  The next time you draw you get a copy of the drawn tile."
+    cost = 2
+    img_src = "/items/pivoter.jpg"
+
+class Item_Well_Laid_Plans(Item):
+    name = "Well Laid Plans"
+    description = "Draw a tile and then place a tile from your hand on top of the deck."
+    cost = 2
+    img_src = "/items/well-laid-plans.jpg"
+
 # --------------------------------------------------------------------------------------
 # ALL ITEMS LIST
 # --------------------------------------------------------------------------------------
@@ -243,6 +261,9 @@ all_items_list.append(Item_Mutually_Assured_Destruction())
 all_items_list.append(Item_Re_Suitbaru())
 all_items_list.append(Item_Re_Sident_Evil())
 all_items_list.append(Item_Re_Surrection())
+all_items_list.append(Item_Piggy_Bank())
+all_items_list.append(Item_Pivoter())
+all_items_list.append(Item_Well_Laid_Plans())
 
 # --------------------------------------------------------------------------------------
 # ITEM DICT
@@ -279,6 +300,9 @@ all_items_dict["mutually-assured-destruction"] = Item_Mutually_Assured_Destructi
 all_items_dict["re-suitbaru"] = Item_Re_Suitbaru()
 all_items_dict["re-sident-evil"] = Item_Re_Sident_Evil()
 all_items_dict["re-surrection"] = Item_Re_Surrection()
+all_items_dict["piggy-bank"] = Item_Piggy_Bank()
+all_items_dict["pivoter"] = Item_Pivoter()
+all_items_dict["well-laid-plans"] = Item_Well_Laid_Plans()
 
 # --------------------------------------------------------------------------------------
 # ITEM NAME DICT
@@ -315,3 +339,6 @@ all_item_names_dict["Mutually Assured Destruction"] = Item_Mutually_Assured_Dest
 all_item_names_dict["Re: Suitbaru"] = Item_Re_Suitbaru()
 all_item_names_dict["Re: Sident Evil"] = Item_Re_Sident_Evil()
 all_item_names_dict["Re: Surrection"] = Item_Re_Surrection()
+all_item_names_dict["Piggy Bank"] = Item_Piggy_Bank()
+all_item_names_dict["Pivoter"] = Item_Pivoter()
+all_item_names_dict["Well Laid Plans"] = Item_Well_Laid_Plans()

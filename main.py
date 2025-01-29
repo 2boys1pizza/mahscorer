@@ -107,8 +107,12 @@ kingkongker_text = ft.Text("KingKongker value: 0", size=40)
 meldker_text = ft.Text("Meldker value: 0", size=40)
 fuckgker_text = ft.Text("Fuckgker value: 0", size=40)
 suckgker_text = ft.Text("Suckgker value: 0", size=40)
+speedker_text = ft.Text("Speedker value: 30", size=40)
+empressker_text = ft.Text("Empressker value: 0", size=40)
+laobanker_text = ft.Text("Laobanker value: 0", size=40)
 lake_text = ft.Text("Lake value: 0", size=40)
-mahjong_mult_text = ft.Text("Mahjong Mult: 1.0 x", size=20)
+mahjong_pts_text = ft.Text("Mahjong Pts: 0 pts", size=20)
+mahjong_money_text = ft.Text("Mahjong Money: $ 0", size=20)
 
 # scorer
 selected_tiles = []
@@ -129,7 +133,8 @@ current_hand_panel = []
 tot_score = 0
 scored_money = 0
 lake_adjuster = []
-mahjong_mult_adjuster = []
+mahjong_pts_adjuster = []
+mahjong_money_adjuster = []
 
 # shop
 shop_round = 1
@@ -650,6 +655,156 @@ def main(page: ft.Page):
         suckgker_text.value = f"Suckgker value: {suckgker.point_value}"
         page.update()
 
+    def handle_speedker_select(e):
+        global my_mahjongker_text
+        global my_jongkers_panel
+        global speedker_text
+        # Add UI to increase/decrease value of ayceker
+        speedker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "speedker":
+                speedker = mahjongker
+                break
+        speedker_text.value = f"speedker value: {speedker.point_value}"
+        upgrade_row = ft.Row([
+            speedker_text,
+            ft.Column([
+                ft.ElevatedButton(text="↑", on_click=increment_speedker_score),
+                ft.ElevatedButton(text="↓", on_click=decrement_speedker_score)
+                ])
+            ],
+            alignment=ft.MainAxisAlignment.CENTER)
+        if len(my_jongkers_panel.content.controls) >= 3:
+            my_jongkers_panel.content.controls[1] = upgrade_row
+        else:
+            my_jongkers_panel.content.controls.insert(1, upgrade_row)
+
+        jonker_name = e.control.image.src.split("/")[2].split(".")[0]
+        my_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
+        page.update()
+
+    def increment_speedker_score(e):
+        global speedker_text
+        speedker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "speedker":
+                speedker = mahjongker
+                break
+        speedker.point_value = speedker.point_value + 15
+        speedker_text.value = f"speedker value: {speedker.point_value}"
+        page.update()
+
+    def decrement_speedker_score(e):
+        global speedker_text
+        speedker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "speedker":
+                speedker = mahjongker
+                break
+        speedker.point_value = max(0, speedker.point_value - 15)
+        speedker_text.value = f"speedker value: {speedker.point_value}"
+        page.update()
+
+    def handle_empressker_select(e):
+        global my_mahjongker_text
+        global my_jongkers_panel
+        global empressker_text
+        # Add UI to increase/decrease value of ayceker
+        empressker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "empressker":
+                empressker = mahjongker
+                break
+        empressker_text.value = f"empressker value: {empressker.point_value}"
+        upgrade_row = ft.Row([
+            empressker_text,
+            ft.Column([
+                ft.ElevatedButton(text="↑", on_click=increment_empressker_score),
+                ft.ElevatedButton(text="↓", on_click=decrement_empressker_score)
+                ])
+            ],
+            alignment=ft.MainAxisAlignment.CENTER)
+        if len(my_jongkers_panel.content.controls) >= 3:
+            my_jongkers_panel.content.controls[1] = upgrade_row
+        else:
+            my_jongkers_panel.content.controls.insert(1, upgrade_row)
+
+        jonker_name = e.control.image.src.split("/")[2].split(".")[0]
+        my_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
+        page.update()
+
+    def increment_empressker_score(e):
+        global empressker_text
+        empressker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "empressker":
+                empressker = mahjongker
+                break
+        empressker.point_value = empressker.point_value + 7
+        empressker_text.value = f"empressker value: {empressker.point_value}"
+        page.update()
+
+    def decrement_empressker_score(e):
+        global empressker_text
+        empressker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "empressker":
+                empressker = mahjongker
+                break
+        empressker.point_value = max(0, empressker.point_value - 7)
+        empressker_text.value = f"empressker value: {empressker.point_value}"
+        page.update()
+
+    def handle_laobanker_select(e):
+        global my_mahjongker_text
+        global my_jongkers_panel
+        global laobanker_text
+        # Add UI to increase/decrease value of ayceker
+        laobanker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "laobanker":
+                laobanker = mahjongker
+                break
+        laobanker_text.value = f"laobanker value: {laobanker.point_value}"
+        upgrade_row = ft.Row([
+            laobanker_text,
+            ft.Column([
+                ft.ElevatedButton(text="↑", on_click=increment_laobanker_score),
+                ft.ElevatedButton(text="↓", on_click=decrement_laobanker_score)
+                ])
+            ],
+            alignment=ft.MainAxisAlignment.CENTER)
+        if len(my_jongkers_panel.content.controls) >= 3:
+            my_jongkers_panel.content.controls[1] = upgrade_row
+        else:
+            my_jongkers_panel.content.controls.insert(1, upgrade_row)
+
+        jonker_name = e.control.image.src.split("/")[2].split(".")[0]
+        my_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
+        page.update()
+
+    def increment_laobanker_score(e):
+        global laobanker_text
+        laobanker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "laobanker":
+                laobanker = mahjongker
+                break
+        laobanker.point_value = laobanker.point_value + 5
+        laobanker_text.value = f"laobanker value: {laobanker.point_value}"
+        page.update()
+
+    def decrement_laobanker_score(e):
+        global laobanker_text
+        laobanker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "laobanker":
+                laobanker = mahjongker
+                break
+        laobanker.point_value = max(0, laobanker.point_value - 5)
+        laobanker_text.value = f"laobanker value: {laobanker.point_value}"
+        page.update()
+
     def apply_mahjongker_filter(e):
         global filtered_mahjongkers_list
         global mahjongker_filter
@@ -857,6 +1012,99 @@ def main(page: ft.Page):
                         border_radius=ft.border_radius.all(5),
                         ink=True,
                         on_click=handle_suckgker_select,
+                        tooltip=ft.Tooltip(
+                            message=mahjongker.description,
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        )
+                    )
+                )
+            elif mahjongker.name == "Speedker":
+                my_mahjongkers_containers.append(
+                    ft.Container(
+                        image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(mahjongker.name, bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_speedker_select,
+                        tooltip=ft.Tooltip(
+                            message=mahjongker.description,
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        )
+                    )
+                )
+            elif mahjongker.name == "Empressker":
+                my_mahjongkers_containers.append(
+                    ft.Container(
+                        image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(mahjongker.name, bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_empressker_select,
+                        tooltip=ft.Tooltip(
+                            message=mahjongker.description,
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        )
+                    )
+                )
+            elif mahjongker.name == "Laobanker":
+                my_mahjongkers_containers.append(
+                    ft.Container(
+                        image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(mahjongker.name, bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_laobanker_select,
                         tooltip=ft.Tooltip(
                             message=mahjongker.description,
                             padding=20,
@@ -1234,8 +1482,10 @@ def main(page: ft.Page):
 
     def refresh_current_hand():
         global hand_score_text
-        global mahjong_mult_text
-        global mahjong_mult_adjuster
+        global mahjong_pts_text
+        global mahjong_pts_adjuster
+        global mahjong_money_text
+        global mahjong_money_adjuster
 
         current_hand_panel.content.controls.clear()
         for i, meld in enumerate(current_hand.melds):
@@ -1285,7 +1535,9 @@ def main(page: ft.Page):
                 eye_grid
             ]))
 
-        current_hand_panel.content.controls.append(mahjong_mult_adjuster)
+        current_hand_panel.content.controls.append(mahjong_pts_adjuster)
+        current_hand_panel.content.controls.append(mahjong_money_adjuster)
+
         current_hand_panel.content.controls.append(ft.Row([
             ft.ElevatedButton(text="Score Hand", on_click=score_hand),
             hand_score_text,
@@ -1404,13 +1656,14 @@ def main(page: ft.Page):
         global half_flush_hand_mult 
         global flush_hand_mult
         global scored_money
-        global mahjong_mult_text
-        mult = round(float(mahjong_mult_text.value.split(" ")[2]), 2)
-        i = score(current_hand, table_wind, seat_wind, my_mahjongkers, mult)
+        global mahjong_pts_text
+        mahj_pts = int(mahjong_pts_text.value.split(" ")[2])
+        mahj_money = int(mahjong_money_text.value.split(" ")[3])
+        i = score(current_hand, table_wind, seat_wind, my_mahjongkers, mahj_pts, mahj_money)
         buffetker_score = score_buffettker()
-        tot_score = round((i[0] + buffetker_score) * i[1], 2)
-        scored_money = int(i[2])
-        hand_score_text.value =  f"Score: {i[0] + buffetker_score} x {i[1]} = {tot_score} | +${i[2]}"
+        tot_score = round((i[0] + buffetker_score), 2)
+        scored_money = int(i[1])
+        hand_score_text.value =  f"Score: {tot_score} | +${i[1]}"
         page.update()
 
     def add_to_total_score(e):
@@ -1418,6 +1671,8 @@ def main(page: ft.Page):
         global tot_score
         global scored_money
         global money
+        global mahjong_pts_text
+        global mahjong_money_text
         total_score = round(total_score + tot_score, 2)
         money = money + scored_money
         tot_score = 0
@@ -1426,6 +1681,8 @@ def main(page: ft.Page):
         score_text.value = str(total_score)
         current_hand.melds = []
         current_hand.eyes = []
+        mahjong_pts_text.value = f"Mahjong Pts: 0 pts"
+        mahjong_money_text.value = f"Mahjong Money: $ 0"
         refresh_money_text()
         refresh_current_hand()
 
@@ -1450,16 +1707,28 @@ def main(page: ft.Page):
         lake_text.value = f"Lake value: {point_value}"
         page.update()
 
-    def increment_mahjong_mult(e):
-        global mahjong_mult_text
-        mult_value = round(float(mahjong_mult_text.value.split(" ")[2]) + 0.1, 2)
-        mahjong_mult_text.value = f"Mahjong Mult: {mult_value} x"
+    def increment_mahjong_pts(e):
+        global mahjong_pts_text
+        pts_value = int(mahjong_pts_text.value.split(" ")[2]) + 10
+        mahjong_pts_text.value = f"Mahjong Pts: {pts_value} pts"
         page.update()
 
-    def decrement_mahjong_mult(e):
-        global mahjong_mult_text
-        mult_value = round(max(1.0, float(mahjong_mult_text.value.split(" ")[2]) - 0.1), 2)
-        mahjong_mult_text.value = f"Mahjong Mult: {mult_value} x"
+    def decrement_mahjong_pts(e):
+        global mahjong_pts_text
+        pts_value = max(0, int(mahjong_pts_text.value.split(" ")[2]) - 10)
+        mahjong_pts_text.value = f"Mahjong Pts: {pts_value} pts"
+        page.update()
+
+    def increment_mahjong_money(e):
+        global mahjong_money_text
+        money_value = int(mahjong_money_text.value.split(" ")[3]) + 1
+        mahjong_money_text.value = f"Mahjong Money: $ {money_value}"
+        page.update()
+
+    def decrement_mahjong_money(e):
+        global mahjong_money_text
+        money_value = max(0, int(mahjong_money_text.value.split(" ")[3]) - 1)
+        mahjong_money_text.value = f"Mahjong Money: $ {money_value}"
         page.update()
 
     # -------------------------------------------------------------
@@ -2788,8 +3057,10 @@ def main(page: ft.Page):
         global current_hand_panel
         global lake_text
         global lake_adjuster
-        global mahjong_mult_text
-        global mahjong_mult_adjuster
+        global mahjong_pts_text
+        global mahjong_pts_adjuster
+        global mahjong_money_text
+        global mahjong_money_adjuster
         # shop
         global refresh_shop_button
         global zodiac_row
@@ -3289,11 +3560,20 @@ def main(page: ft.Page):
                 can_tap_header=True
             )
 
-            mahjong_mult_adjuster = ft.Row([
-                mahjong_mult_text,
+            mahjong_pts_adjuster = ft.Row([
+                mahjong_pts_text,
                 ft.Column([
-                    ft.ElevatedButton(text="↑", on_click=increment_mahjong_mult),
-                    ft.ElevatedButton(text="↓", on_click=decrement_mahjong_mult)
+                    ft.ElevatedButton(text="↑", on_click=increment_mahjong_pts),
+                    ft.ElevatedButton(text="↓", on_click=decrement_mahjong_pts)
+                    ])
+                ],
+                alignment=ft.MainAxisAlignment.START)
+
+            mahjong_money_adjuster = ft.Row([
+                mahjong_money_text,
+                ft.Column([
+                    ft.ElevatedButton(text="↑", on_click=increment_mahjong_money),
+                    ft.ElevatedButton(text="↓", on_click=decrement_mahjong_money)
                     ])
                 ],
                 alignment=ft.MainAxisAlignment.START)

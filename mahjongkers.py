@@ -988,7 +988,7 @@ class Dumpsker(Mahjongker):
 # Copycatker
 class Copycatker(Mahjongker):
     name = "Copycatker"
-    description = "During scoring: choose one of your melds to become an exact copy of another player's meld"
+    description = "At the start of the round, become a copy of another player's mahjongker."
     priority = 6 
     cost = RARE_MAHJONGKER_COST
     sell_value = RARE_MAHJONGKER_SELL_VALUE
@@ -1302,8 +1302,8 @@ class Riggedker(Mahjongker):
     name = "Riggedker"
     description = "Nothing for you is ever at random, you always select."
     priority = 6 
-    cost = COMMON_MAHJONGKER_COST
-    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/riggedker.jpg"
 
     def eval_score(self):
@@ -1419,7 +1419,7 @@ class Sonorker(Mahjongker):
 # Speedker
 class Speedker(Mahjongker):
     name = "Speedker"
-    description = "Gain +30 pts if you mahjong.  Everytime you mahjong, this value permanently goes up by +15 pts."
+    description = "Gain +30 pts if you mahjong first.  Everytime you mahjong first, this value permanently goes up by +15 pts."
     priority = 3
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -1464,6 +1464,202 @@ class Chairker(Mahjongker):
     def eval_score(self):
         return (0, 0)
 
+# AngelInvesker
+class AngelInvesker(Mahjongker):
+    name = "AngelInvesker"
+    description = "At the start of the round, choose a player to give $3 to. Any time that player earns money this round, you also gain $2."
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/angelinvesker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Triker
+class Triker(Mahjongker):
+    name = "Triker"
+    description = "Trigrams all cost $1 less for you. Trigram rerolls always cost $3."
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/triker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Emporerker
+class Emporerker(Mahjongker):
+    name = "Emporerker"
+    description = "Zodiacs all cost $1 less for you. Zodiac rerolls always cost $3."
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/emporerker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Empressker
+class Empressker(Mahjongker):
+    name = "Empressker"
+    description = "For every Zodiac you get this gains +7 pts permanently. Current: 0"
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/empressker.jpg"
+    point_value = 0
+
+    def eval_score(self):
+        return (self.point_value, 0)
+
+# Laobanker
+class Laobanker(Mahjongker):
+    name = "Laobanker"
+    description = "For every seal you place, this gains +5 pts permanently. Current: 0"
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/laobanker.jpg"
+    point_value = 0
+
+    def eval_score(self):
+        return (self.point_value, 0)
+
+# Huntker
+class Huntker(Mahjongker):
+    name = "Huntker"
+    description = "Randomly select another player at the start of each round.  Each time you target that player with an item or effect, get $1."
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/huntker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Gourmetker
+class Gourmetker(Mahjongker):
+    name = "Gourmetker"
+    description = "A seal is randomly selected each at the start of each round. When you chi a tile, add this seal to it."
+    priority = 6 
+    cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/gourmetker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Specialker
+class Specialker(Mahjongker):
+    name = "Specialker"
+    description = "Worth +5 pts each time a special tile is scored by ANY player this round."
+    priority = 6 
+    cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/specialker.jpg"
+    point_value = 0
+
+    def eval_score(self):
+        return (self.point_value, 0)
+
+# Spoilker
+class Spoilker(Mahjongker):
+    name = "Spoilker"
+    description = "Worth 50 - the number of discarded tiles pts at the end of the round."
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/spoilker.jpg"
+    point_value = 0
+
+    def eval_score(self):
+        return (self.point_value, 0)
+
+# Harbingker
+class Harbingker(Mahjongker):
+    name = "Harbingker"
+    description = "Whenever an event is drawn, instead draw 2 and you pick one to resolve.  Add 1 event tile to the deck permanently."
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/harbingker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# GoGoGaker
+class GoGoGaker(Mahjongker):
+    name = "GoGoGaker"
+    description = "Whenever you chi, pong, or kong you get a random item."
+    priority = 6 
+    cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/gogogaker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# DejaVuker
+class DejaVuker(Mahjongker):
+    name = "DejaVuker"
+    description = "You must start each round with one random tile from each meld you scored last round."
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/dejavuker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Coilker
+class Coilker(Mahjongker):
+    name = "Coilker"
+    description = "Whenever a random tile is picked, you may have it randomly pick again up to twice."
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/coilker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Donnerker
+class Donnerker(Mahjongker):
+    name = "Donnerker"
+    description = "At the start of each round, eat another random mahjongker and this mahjongker permanently gains 5 x C points where C is the Cost of the eaten mahjongker."
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/donnerker.jpg"
+    point_value = 0
+
+    def eval_score(self):
+        return (self.point_value, 0)
+
+# Trashker
+class Trashker(Mahjongker):
+    name = "Trashker"
+    description = "When you would draw from the living wall, you may instead draw the most recently discarded tile."
+    priority = 6 
+    cost = CONSISTENCY_MAHJONGKER_COST
+    sell_value = CONSISTENCY_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/trashker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Trapker
+class Trapker(Mahjongker):
+    name = "Trapker"
+    description = "After drawing your opening hand, name a tile.  The first 2 times another player draws that tile, they MUST discard it for their end of turn."
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/trapker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
 
 # --------------------------------------------------------------------------------------
 # MAHJONGKER LIST
@@ -1547,7 +1743,7 @@ all_mahjongkers_list.append(Stepsisker())
 all_mahjongkers_list.append(LarryEllisker())
 all_mahjongkers_list.append(Suckgker())
 # all_mahjongkers_list.append(Oracker())
-# all_mahjongkers_list.append(Riggedker())
+all_mahjongkers_list.append(Riggedker())
 all_mahjongkers_list.append(JosephJoesker())
 all_mahjongkers_list.append(Fibonaccker())
 all_mahjongkers_list.append(Wokegker())
@@ -1557,6 +1753,22 @@ all_mahjongkers_list.append(Sonorker())
 all_mahjongkers_list.append(Speedker())
 all_mahjongkers_list.append(Blackjackgker())
 all_mahjongkers_list.append(Chairker())
+all_mahjongkers_list.append(AngelInvesker())
+all_mahjongkers_list.append(Triker())
+all_mahjongkers_list.append(Emporerker())
+all_mahjongkers_list.append(Empressker())
+all_mahjongkers_list.append(Laobanker())
+all_mahjongkers_list.append(Huntker())
+all_mahjongkers_list.append(Gourmetker())
+all_mahjongkers_list.append(Specialker())
+all_mahjongkers_list.append(Spoilker())
+all_mahjongkers_list.append(Harbingker())
+all_mahjongkers_list.append(GoGoGaker())
+all_mahjongkers_list.append(DejaVuker())
+all_mahjongkers_list.append(Coilker())
+all_mahjongkers_list.append(Donnerker())
+all_mahjongkers_list.append(Trashker())
+all_mahjongkers_list.append(Trapker())
 
 # --------------------------------------------------------------------------------------
 # MAHJONGKER DICT
@@ -1640,7 +1852,7 @@ all_mahjongkers_dict["stepsisker"] = Stepsisker()
 all_mahjongkers_dict["larryellisker"] = LarryEllisker()
 all_mahjongkers_dict["suckgker"] = Suckgker()
 # all_mahjongkers_dict["oracker"] = Oracker()
-# all_mahjongkers_dict["riggedker"] = Riggedker()
+all_mahjongkers_dict["riggedker"] = Riggedker()
 all_mahjongkers_dict["josephjoekser"] = JosephJoesker()
 all_mahjongkers_dict["fibonaccker"] = Fibonaccker()
 all_mahjongkers_dict["wokegker"] = Wokegker()
@@ -1650,6 +1862,23 @@ all_mahjongkers_dict["sonorker"] = Sonorker()
 all_mahjongkers_dict["speedker"] = Speedker()
 all_mahjongkers_dict["blackjackgker"] = Blackjackgker()
 all_mahjongkers_dict["chairker"] = Chairker()
+all_mahjongkers_dict["angelinvesker"] = AngelInvesker()
+all_mahjongkers_dict["triker"] = Triker()
+all_mahjongkers_dict["emporerker"] = Emporerker()
+all_mahjongkers_dict["empressker"] = Empressker()
+all_mahjongkers_dict["laobanker"] = Laobanker()
+all_mahjongkers_dict["huntker"] = Huntker()
+all_mahjongkers_dict["gourmetker"] = Gourmetker()
+all_mahjongkers_dict["specialker"] = Specialker()
+all_mahjongkers_dict["spoilker"] = Spoilker()
+all_mahjongkers_dict["harbingker"] = Harbingker()
+all_mahjongkers_dict["gogogaker"] = GoGoGaker()
+all_mahjongkers_dict["dejavuker"] = DejaVuker()
+all_mahjongkers_dict["coilker"] = Coilker()
+all_mahjongkers_dict["donnerker"] = Donnerker()
+all_mahjongkers_dict["trashker"] = Trashker()
+all_mahjongkers_dict["trapker"] = Trapker()
+
 
 # ----------------------------------------------
 

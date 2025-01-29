@@ -2,10 +2,9 @@ from tiles import *
 from mahjongkers import *
 from math import *
 
-def score(hand, table_wind, seat_wind, my_mahjongkers, mahjong_mult):
-    points = 0
-    mult = mahjong_mult
-    money = 0
+def score(hand, table_wind, seat_wind, my_mahjongkers, mahjong_pts, mahjong_money):
+    points = mahjong_pts
+    money = mahjong_money
 
     # score hand.. needs some ordering to pick best hand? or do hands stack?
     # if len(hand.melds) >= 3 and len(hand.eyes) >= 1:
@@ -106,7 +105,7 @@ def score(hand, table_wind, seat_wind, my_mahjongkers, mahjong_mult):
             if len(evaluated_score) > 2:
                 money += evaluated_score[2]
 
-    return (points, mult, money)
+    return (points, money)
 
 # my_hand = Hand()
 # meld1 = Meld()
