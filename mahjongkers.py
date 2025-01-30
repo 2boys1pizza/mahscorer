@@ -1292,7 +1292,7 @@ class JosephJoesker(Mahjongker):
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
-    img_src = "/jongker/josephjoekser.jpg"
+    img_src = "/jongker/josephjoesker.jpg"
 
     def eval_score(self):
         return (0, 0)
@@ -1424,7 +1424,7 @@ class Speedker(Mahjongker):
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/speedker.jpg"
-    point_value = 15
+    point_value = 30
 
     def eval_score(self, eyes):
         self.point_value = self.point_value + 15
@@ -1571,7 +1571,7 @@ class Spoilker(Mahjongker):
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/spoilker.jpg"
-    point_value = 0
+    point_value = 50
 
     def eval_score(self):
         return (self.point_value, 0)
@@ -1657,6 +1657,18 @@ class Trapker(Mahjongker):
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/trapker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Sprayker
+class Sprayker(Mahjongker):
+    name = "Sprayker"
+    description = "Whenever you use a Called Shot, you may choose a second player to target."
+    priority = 6 
+    cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/sprayker.jpg"
 
     def eval_score(self):
         return (0, 0)
@@ -1853,7 +1865,7 @@ all_mahjongkers_dict["larryellisker"] = LarryEllisker()
 all_mahjongkers_dict["suckgker"] = Suckgker()
 # all_mahjongkers_dict["oracker"] = Oracker()
 all_mahjongkers_dict["riggedker"] = Riggedker()
-all_mahjongkers_dict["josephjoekser"] = JosephJoesker()
+all_mahjongkers_dict["josephjoesker"] = JosephJoesker()
 all_mahjongkers_dict["fibonaccker"] = Fibonaccker()
 all_mahjongkers_dict["wokegker"] = Wokegker()
 all_mahjongkers_dict["shardker"] = Shardker()

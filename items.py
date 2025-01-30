@@ -208,7 +208,7 @@ class Item_Re_Surrection(Item):
 
 class Item_Piggy_Bank(Item):
     name = "Piggy Bank"
-    description = "This item gains $1 if empty. Pick break or wait. If wait, the next piggy bank you get is worth 2x.  If break, get the value of the piggy bank and then set it back to 0."
+    description = "Worth $1. Pick break or wait. If wait, the next piggy bank you get is worth double. If break, get the value of the piggy bank, then reset back to $1."
     cost = 2
     img_src = "/items/piggy-bank.jpg"
 
@@ -220,7 +220,7 @@ class Item_Pivoter(Item):
 
 class Item_Well_Laid_Plans(Item):
     name = "Well Laid Plans"
-    description = "Draw a tile and then place a tile from your hand on top of the deck."
+    description = "Draw a tile and then place a tile from your hand on top of either wall."
     cost = 2
     img_src = "/items/well-laid-plans.jpg"
 
