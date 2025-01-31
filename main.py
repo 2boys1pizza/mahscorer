@@ -24,7 +24,7 @@ HALF_FLUSH_UPGRADE_COSTS = [2,3,4,5,6]
 FLUSH_UPGRADE_COSTS = [2,3,4,5,6]
 AVATAR_UPGRADE_COSTS = [6,9,12,15,18]
 ZODIAC_COST = 3
-TRIGRAM_COST = 3
+TRIGRAM_COST = 2
 # ITEM_COST = 3
 MAX_NUM_MAHJONGKERS = 5
 MAX_NUM_ITEMS = 2
@@ -112,6 +112,7 @@ speedker_text = ft.Text("Speedker value: 30", size=40)
 empressker_text = ft.Text("Empressker value: 0", size=40)
 laobanker_text = ft.Text("Laobanker value: 0", size=40)
 spoilker_text = ft.Text("Spoilker value: 50", size=40)
+donnerker_text = ft.Text("Donnerker value: 0", size=40)
 lake_text = ft.Text("Lake value: 0", size=40)
 mahjong_pts_text = ft.Text("Mahjong Pts: 0 pts", size=20)
 mahjong_money_text = ft.Text("Mahjong Money: $ 0", size=20)
@@ -155,9 +156,9 @@ shop_trigram_text = ""
 reroll_cost = 1
 reroll_item_cost = 1
 reroll_zodiac_cost = 3
-reroll_trigram_cost = 3
+reroll_trigram_cost = 2
 current_zodiac_cost = 3
-current_trigram_cost = 3
+current_trigram_cost = 2
 shop_money_text = ft.Text("", color=ft.colors.WHITE)
 hand_size_upgrade_button = []
 shop_selected_i = []
@@ -866,6 +867,56 @@ def main(page: ft.Page):
         spoilker_text.value = f"Spoilker value: {spoilker.point_value}"
         page.update()
 
+    def handle_donnerker_select(e):
+        global my_mahjongker_text
+        global my_jongkers_panel
+        global donnerker_text
+        # Add UI to increase/decrease value of ayceker
+        donnerker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Donnerker":
+                donnerker = mahjongker
+                break
+        donnerker_text.value = f"Donnerker value: {donnerker.point_value}"
+        upgrade_row = ft.Row([
+            donnerker_text,
+            ft.Column([
+                ft.ElevatedButton(text="↑", on_click=increment_donnerker_score),
+                ft.ElevatedButton(text="↓", on_click=decrement_donnerker_score)
+                ])
+            ],
+            alignment=ft.MainAxisAlignment.CENTER)
+        if len(my_jongkers_panel.content.controls) >= 3:
+            my_jongkers_panel.content.controls[1] = upgrade_row
+        else:
+            my_jongkers_panel.content.controls.insert(1, upgrade_row)
+
+        jonker_name = e.control.image.src.split("/")[2].split(".")[0]
+        my_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
+        page.update()
+
+    def increment_donnerker_score(e):
+        global donnerker_text
+        donnerker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Donnerker":
+                donnerker = mahjongker
+                break
+        donnerker.point_value = donnerker.point_value + 15
+        donnerker_text.value = f"Donnerker value: {donnerker.point_value}"
+        page.update()
+
+    def decrement_donnerker_score(e):
+        global donnerker_text
+        donnerker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Donnerker":
+                donnerker = mahjongker
+                break
+        donnerker.point_value = max(0, donnerker.point_value - 15)
+        donnerker_text.value = f"Donnerker value: {donnerker.point_value}"
+        page.update()
+
     def apply_mahjongker_filter(e):
         global filtered_mahjongkers_list
         global mahjongker_filter
@@ -1197,6 +1248,37 @@ def main(page: ft.Page):
                         border_radius=ft.border_radius.all(5),
                         ink=True,
                         on_click=handle_spoilker_select,
+                        tooltip=ft.Tooltip(
+                            message=mahjongker.description,
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        )
+                    )
+                )
+            elif mahjongker.name == "Donnerker":
+                my_mahjongkers_containers.append(
+                    ft.Container(
+                        image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(mahjongker.name, bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_donnerker_select,
                         tooltip=ft.Tooltip(
                             message=mahjongker.description,
                             padding=20,
@@ -1801,13 +1883,13 @@ def main(page: ft.Page):
 
     def increment_mahjong_pts(e):
         global mahjong_pts_text
-        pts_value = int(mahjong_pts_text.value.split(" ")[2]) + 10
+        pts_value = int(mahjong_pts_text.value.split(" ")[2]) + 5
         mahjong_pts_text.value = f"Mahjong Pts: {pts_value} pts"
         page.update()
 
     def decrement_mahjong_pts(e):
         global mahjong_pts_text
-        pts_value = max(0, int(mahjong_pts_text.value.split(" ")[2]) - 10)
+        pts_value = max(0, int(mahjong_pts_text.value.split(" ")[2]) - 5)
         mahjong_pts_text.value = f"Mahjong Pts: {pts_value} pts"
         page.update()
 
@@ -2240,10 +2322,12 @@ def main(page: ft.Page):
 
     def refresh_shop(e):
         global shop_row
+        global shop_info_column
         global my_mahjongkers_shop_row
         global shop_round
         global refresh_shop_button
         global item_row
+        global item_info_column
         global reroll_cost
         global reroll_item_cost
         global shop_selected_i
@@ -2256,6 +2340,7 @@ def main(page: ft.Page):
         global reroll_trigram_cost
         global shop_zodiac_row
         global shop_trigram_row
+        global trigram_info_column
 
         money = money + ROUND_UBI[shop_round]
         shop_round = min(5, shop_round + 1)
@@ -2267,6 +2352,7 @@ def main(page: ft.Page):
         current_zodiac_cost = ZODIAC_COST
 
         shop_row.controls.clear()
+        shop_info_column.controls.clear()
         i = 0
         shop_selected_i = []
         while i < 5:
@@ -2308,9 +2394,11 @@ def main(page: ft.Page):
                         )
                     )
             )
+            shop_info_column.controls.append(ft.Text(f"${mahjongker.cost} - {mahjongker.name} : {mahjongker.description}", color=ft.colors.WHITE, size=20))
 
         # items
         item_row.controls.clear()
+        item_info_column.controls.clear()
         i = 0
         item_selected = []
         while i < 3:
@@ -2351,58 +2439,60 @@ def main(page: ft.Page):
                         )
                     )
             )
+            item_info_column.controls.append(ft.Text(f"${item.cost} - {item.name} : {item.description}", color=ft.colors.WHITE, size=20))
         reroll_cost = 1
         reroll_item_cost = 1
 
         # zodiacs
-        shop_zodiac_row.controls.clear()
-        reroll_zodiac_cost = ZODIAC_COST
-        i = 0
-        zodiac_selected = []
-        while i < 3:
-            random_i = random.randint(0,len(all_zodiacs_list)-1)
-            zodiac = all_zodiacs_list[random_i]
-            if zodiac not in zodiac_selected: 
-                zodiac_selected.append(zodiac)
-                i = i+1
+        # shop_zodiac_row.controls.clear()
+        # reroll_zodiac_cost = ZODIAC_COST
+        # i = 0
+        # zodiac_selected = []
+        # while i < 3:
+        #     random_i = random.randint(0,len(all_zodiacs_list)-1)
+        #     zodiac = all_zodiacs_list[random_i]
+        #     if zodiac not in zodiac_selected: 
+        #         zodiac_selected.append(zodiac)
+        #         i = i+1
 
-        for zodiac in zodiac_selected:
-            shop_zodiac_row.controls.append(
-                ft.Container(
-                        image=ft.DecorationImage(src=zodiac.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
-                        content=ft.Text(f"{zodiac.name} - ${zodiac.cost}", bgcolor="#000000", color=ft.colors.WHITE),
-                        border_radius=ft.border_radius.all(5),
-                        ink=True,
-                        on_click=handle_add_shop_zodiac_select,
-                        tooltip=ft.Tooltip(
-                            message=f"${zodiac.cost} - {zodiac.description}",
-                            padding=20,
-                            border_radius=10,
-                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
-                            gradient=ft.LinearGradient(
-                                begin=ft.alignment.top_left,
-                                end=ft.alignment.Alignment(0.8, 1),
-                                colors=[
-                                    "0xff1f005c",
-                                    "0xff5b0060",
-                                    "0xff870160",
-                                    "0xffac255e",
-                                    "0xffca485c",
-                                    "0xffe16b5c",
-                                    "0xfff39060",
-                                    "0xffffb56b",
-                                ],
-                                tile_mode=ft.GradientTileMode.MIRROR,
-                            )
-                        )
-                    )
-            )
+        # for zodiac in zodiac_selected:
+        #     shop_zodiac_row.controls.append(
+        #         ft.Container(
+        #                 image=ft.DecorationImage(src=zodiac.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+        #                 content=ft.Text(f"{zodiac.name} - ${zodiac.cost}", bgcolor="#000000", color=ft.colors.WHITE),
+        #                 border_radius=ft.border_radius.all(5),
+        #                 ink=True,
+        #                 on_click=handle_add_shop_zodiac_select,
+        #                 tooltip=ft.Tooltip(
+        #                     message=f"${zodiac.cost} - {zodiac.description}",
+        #                     padding=20,
+        #                     border_radius=10,
+        #                     text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+        #                     gradient=ft.LinearGradient(
+        #                         begin=ft.alignment.top_left,
+        #                         end=ft.alignment.Alignment(0.8, 1),
+        #                         colors=[
+        #                             "0xff1f005c",
+        #                             "0xff5b0060",
+        #                             "0xff870160",
+        #                             "0xffac255e",
+        #                             "0xffca485c",
+        #                             "0xffe16b5c",
+        #                             "0xfff39060",
+        #                             "0xffffb56b",
+        #                         ],
+        #                         tile_mode=ft.GradientTileMode.MIRROR,
+        #                     )
+        #                 )
+        #             )
+        #     )
 
-        shop_zodiac_row.controls.append(ft.FloatingActionButton(text=f"${reroll_zodiac_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_zodiacs))
+        # shop_zodiac_row.controls.append(ft.FloatingActionButton(text=f"${reroll_zodiac_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_zodiacs))
 
         # trigrams
         reroll_trigram_cost = TRIGRAM_COST
         shop_trigram_row.controls.clear()
+        trigram_info_column.controls.clear()
         i = 0
         trigram_selected = []
         while i < 3:
@@ -2443,12 +2533,14 @@ def main(page: ft.Page):
                         )
                     )
             )
+            trigram_info_column.controls.append(ft.Text(f"${trigram.cost} - {trigram.name} : {trigram.description}", color=ft.colors.WHITE, size=20))
 
         shop_trigram_row.controls.append(ft.FloatingActionButton(text=f"${reroll_trigram_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_trigrams))
 
-        for mahjongker in my_mahjongkers:
-            if mahjongker.name == "Picker":
-                reroll_cost = 0
+        # Picker disabled for comp shop
+        # for mahjongker in my_mahjongkers:
+        #     if mahjongker.name == "Picker":
+        #         reroll_cost = 0
         shop_row.controls.append(ft.FloatingActionButton(text=f"${reroll_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_mahjongkers))
         item_row.controls.append(ft.FloatingActionButton(text=f"${reroll_item_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_items))
         enable_hand_upgrade_buy()
@@ -2458,6 +2550,7 @@ def main(page: ft.Page):
     def reroll_shop_mahjongkers(e):
         global my_mahjongkers
         global shop_round
+        global shop_info_column
         global reroll_cost
         global shop_row
         global shop_selected_i
@@ -2467,6 +2560,7 @@ def main(page: ft.Page):
             refresh_money_text()
             reroll_cost += 1
             shop_row.controls.clear()
+            shop_info_column.controls.clear()
             i = 0
             shop_selected_i = []
             while i < 5:
@@ -2508,6 +2602,7 @@ def main(page: ft.Page):
                             )
                         )
                 )
+                shop_info_column.controls.append(ft.Text(f"${mahjongker.cost} - {mahjongker.name} : {mahjongker.description}", color=ft.colors.WHITE, size=20))
             shop_row.controls.append(ft.FloatingActionButton(text=f"${reroll_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_mahjongkers))
             page.update()
 
@@ -2515,11 +2610,15 @@ def main(page: ft.Page):
         global reroll_item_cost
         global money
         global item_row
+        global item_info_column
         if money >= reroll_item_cost:
             money = money - reroll_item_cost
             refresh_money_text()
             reroll_item_cost += 1
             item_row.controls.clear()
+            item_info_column.controls.clear()
+        else:
+            return
         i = 0
         item_selected = []
         while i < 3:
@@ -2560,6 +2659,7 @@ def main(page: ft.Page):
                         )
                     )
             )
+            item_info_column.controls.append(ft.Text(f"${item.cost} - {item.name} : {item.description}", color=ft.colors.WHITE, size=20))
 
         item_row.controls.append(ft.FloatingActionButton(text=f"${reroll_item_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_items))
         page.update()
@@ -2621,11 +2721,15 @@ def main(page: ft.Page):
         global reroll_trigram_cost
         global money
         global shop_trigram_row
+        global trigram_info_column
         if money >= reroll_trigram_cost:
             money = money - reroll_trigram_cost
             refresh_money_text()
             reroll_trigram_cost += 1
             shop_trigram_row.controls.clear()
+            trigram_info_column.controls.clear()
+        else:
+            return
         i = 0
         trigram_selected = []
         while i < 3:
@@ -2666,6 +2770,7 @@ def main(page: ft.Page):
                         )
                     )
             )
+            trigram_info_column.controls.append(ft.Text(f"${trigram.cost} - {trigram.name} : {trigram.description}", color=ft.colors.WHITE, size=20))
 
         shop_trigram_row.controls.append(ft.FloatingActionButton(text=f"${reroll_trigram_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_trigrams))
         page.update()
@@ -2799,8 +2904,10 @@ def main(page: ft.Page):
         global money
         global current_trigram_cost
         global trigram_selected
+        global shop_trigram_text
 
         selected_container = []
+        if len(shop_trigram_text.value) == 0: return
         trigram = all_trigrams_dict[shop_trigram_text.value.lower()]
         if money >= trigram.cost:
             money = money - trigram.cost
@@ -3162,6 +3269,7 @@ def main(page: ft.Page):
         global zodiac_row
         global zodiac_text
         global trigram_row
+        global trigram_info_column
         global trigram_text
         global initial_mahjongkers_row
         global initial_mahjongker_text
@@ -3170,8 +3278,10 @@ def main(page: ft.Page):
         global rare_mahjongkers_row
         global rare_mahjongker_text
         global shop_row
+        global shop_info_column
         global my_mahjongkers_shop_row
         global item_row
+        global item_info_column
         global my_items_shop_row
         global shop_zodiac_row
         global shop_trigram_row
@@ -3740,6 +3850,9 @@ def main(page: ft.Page):
                 spacing=5,
                 run_spacing=5,
             )
+
+            shop_info_column = ft.Column()
+
             my_mahjongkers_shop_row = ft.GridView(
                 # expand=1,
                 height=100,
@@ -3760,6 +3873,9 @@ def main(page: ft.Page):
                 spacing=5,
                 run_spacing=5,
             )
+
+            item_info_column = ft.Column()
+
             my_items_shop_row = ft.GridView(
                 # expand=1,
                 height=100,
@@ -3780,6 +3896,7 @@ def main(page: ft.Page):
                 spacing=5,
                 run_spacing=5,
             )
+            
             shop_trigram_row = ft.GridView(
                 # expand=1,
                 height=100,
@@ -3790,6 +3907,9 @@ def main(page: ft.Page):
                 spacing=5,
                 run_spacing=5,
             )
+
+            trigram_info_column = ft.Column()
+
             refresh_shop_button = ft.ElevatedButton(text=f"Refresh Shop Round {shop_round + 1}", on_click=refresh_shop)
             shop_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
             shop_sell_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
@@ -3797,7 +3917,8 @@ def main(page: ft.Page):
             shop_money_text = ft.Text(f"Money: {money}", size=30)
             shop_zodiac_text = ft.Text("", color=ft.colors.WHITE)
             shop_trigram_text = ft.Text("", color=ft.colors.WHITE)
-            hand_size_upgrade_button = ft.ElevatedButton(text=f"Upgrade Hand Size - ${HAND_SIZE_COSTS[hand_size_level]}", on_click=upgrade_hand_size)
+            # hand_size_upgrade_button = ft.ElevatedButton(text=f"Upgrade Hand Size - ${HAND_SIZE_COSTS[hand_size_level]}", on_click=upgrade_hand_size)
+            hand_size_upgrade_button = ft.ElevatedButton(text=f"Upgrade Hand Size - $ Check your own app!")
             sequence_button = ft.ElevatedButton(text="x", on_click=do_nothing)
             sequence_current_text = ft.Text(f"{sequence_hand_mult}")
             triplet_button = ft.ElevatedButton(text="x", on_click=do_nothing)
@@ -3819,34 +3940,38 @@ def main(page: ft.Page):
                 ft.Row([
                     ft.ElevatedButton(text="Buy", on_click=buy_mahjongker),
                     shop_mahjongker_text]),
+                shop_info_column,
                 ft.Divider(),
                 ft.Row([
                     ft.Text("Items ", size=20, color=ft.colors.WHITE),
                     ]),
                 ft.Row([
                     item_row,
-                    ft.Column([ft.Text("Inventory", size=20, color=ft.colors.WHITE), my_items_shop_row])],
+                    # ft.Column([ft.Text("Inventory", size=20, color=ft.colors.WHITE), my_items_shop_row])],
+                    ],
                     spacing=90),
                 ft.Row([
                     ft.ElevatedButton(text="Buy", on_click=buy_item),
                     shop_item_text
                 ]),
+                item_info_column,
                 ft.Divider(),
                 ft.Row([
-                    ft.Text("Zodiacs", size=20, color=ft.colors.WHITE),
+                    # ft.Text("Zodiacs", size=20, color=ft.colors.WHITE),
                     ft.Text("Trigrams", size=20, color=ft.colors.WHITE)],
                     spacing=450),
                 ft.Row([
-                    shop_zodiac_row,
+                    # shop_zodiac_row,
                     shop_trigram_row],
                     spacing=120),
                 ft.Row([
-                    ft.Row([ft.ElevatedButton(text="Buy", on_click=buy_zodiac),
-                        shop_zodiac_text]),
+                    # ft.Row([ft.ElevatedButton(text="Buy", on_click=buy_zodiac),
+                    #     shop_zodiac_text]),
                     ft.Row([ft.ElevatedButton(text="Buy", on_click=buy_trigram),
                         shop_trigram_text]),
                     ],
                     spacing=450),
+                trigram_info_column,
                 ft.Divider(),
                 ft.Row([
                     ft.Text("Hand Size Upgrade (+1)", size=20, color=ft.colors.WHITE),
@@ -3949,6 +4074,7 @@ def main(page: ft.Page):
                                 )
                             )
                         )
+                    shop_info_column.controls.append(ft.Text(f"${mahjongker.cost} - {mahjongker.name} : {mahjongker.description}", color=ft.colors.WHITE, size=20))
             else:
                 for i in range(5):
                     shop_row.controls.append(
@@ -3992,6 +4118,7 @@ def main(page: ft.Page):
                             )
                         )
                     )
+                    item_info_column.controls.append(ft.Text(f"${item.cost} - {item.name} : {item.description}", color=ft.colors.WHITE, size=20))
             else:
                 for i in range(3):
                     item_row.controls.append(
@@ -4003,48 +4130,48 @@ def main(page: ft.Page):
                     )
             item_row.controls.append(ft.FloatingActionButton(text=f"${reroll_item_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_items))
 
-            if zodiac_selected:
-                for zodiac in zodiac_selected:
-                    shop_zodiac_row.controls.append(
-                        ft.Container(
-                                image=ft.DecorationImage(src=zodiac.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
-                                content=ft.Text(f"{zodiac.name}", bgcolor="#000000", color=ft.colors.WHITE),
-                                border_radius=ft.border_radius.all(5),
-                                ink=True,
-                                on_click=handle_add_shop_zodiac_select,
-                                tooltip=ft.Tooltip(
-                                    message=f"${zodiac.cost} - {zodiac.description}",
-                                    padding=20,
-                                    border_radius=10,
-                                    text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
-                                    gradient=ft.LinearGradient(
-                                        begin=ft.alignment.top_left,
-                                        end=ft.alignment.Alignment(0.8, 1),
-                                        colors=[
-                                            "0xff1f005c",
-                                            "0xff5b0060",
-                                            "0xff870160",
-                                            "0xffac255e",
-                                            "0xffca485c",
-                                            "0xffe16b5c",
-                                            "0xfff39060",
-                                            "0xffffb56b",
-                                        ],
-                                        tile_mode=ft.GradientTileMode.MIRROR,
-                                    )
-                                )
-                            )
-                        )
-            else:
-                for i in range(3):
-                    shop_zodiac_row.controls.append(
-                        ft.Container(
-                            image=ft.DecorationImage(src="/jongker/sold.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
-                            border_radius=ft.border_radius.all(5),
-                            ink=True,
-                        )
-                    )
-            shop_zodiac_row.controls.append(ft.FloatingActionButton(text=f"${current_zodiac_cost}", icon=ft.icons.REFRESH, on_click=buy_zodiac))
+            # if zodiac_selected:
+                # for zodiac in zodiac_selected:
+            #         shop_zodiac_row.controls.append(
+            #             ft.Container(
+            #                     image=ft.DecorationImage(src=zodiac.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+            #                     content=ft.Text(f"{zodiac.name}", bgcolor="#000000", color=ft.colors.WHITE),
+            #                     border_radius=ft.border_radius.all(5),
+            #                     ink=True,
+            #                     on_click=handle_add_shop_zodiac_select,
+            #                     tooltip=ft.Tooltip(
+            #                         message=f"${zodiac.cost} - {zodiac.description}",
+            #                         padding=20,
+            #                         border_radius=10,
+            #                         text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+            #                         gradient=ft.LinearGradient(
+            #                             begin=ft.alignment.top_left,
+            #                             end=ft.alignment.Alignment(0.8, 1),
+            #                             colors=[
+            #                                 "0xff1f005c",
+            #                                 "0xff5b0060",
+            #                                 "0xff870160",
+            #                                 "0xffac255e",
+            #                                 "0xffca485c",
+            #                                 "0xffe16b5c",
+            #                                 "0xfff39060",
+            #                                 "0xffffb56b",
+            #                             ],
+            #                             tile_mode=ft.GradientTileMode.MIRROR,
+            #                         )
+            #                     )
+            #                 )
+            #             )
+            # else:
+            #     for i in range(3):
+            #         shop_zodiac_row.controls.append(
+            #             ft.Container(
+            #                 image=ft.DecorationImage(src="/jongker/sold.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+            #                 border_radius=ft.border_radius.all(5),
+            #                 ink=True,
+            #             )
+            #         )
+            # shop_zodiac_row.controls.append(ft.FloatingActionButton(text=f"${current_zodiac_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_zodiacs))
 
             if trigram_selected:
                 for trigram in trigram_selected:
@@ -4078,6 +4205,7 @@ def main(page: ft.Page):
                                 )
                             )
                         )
+                    trigram_info_column.controls.append(ft.Text(f"${trigram.cost} - {trigram.name} : {trigram.description}", color=ft.colors.WHITE, size=20))
             else:
                 for i in range(3):
                     shop_trigram_row.controls.append(
@@ -4087,7 +4215,7 @@ def main(page: ft.Page):
                             ink=True,
                         )
                     )
-            shop_trigram_row.controls.append(ft.FloatingActionButton(text=f"${current_trigram_cost}", icon=ft.icons.REFRESH, on_click=buy_trigram))
+            shop_trigram_row.controls.append(ft.FloatingActionButton(text=f"${current_trigram_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_trigrams))
 
             panel.controls.append(shop_panel)
 

@@ -16,7 +16,7 @@ class Item:
 
 class Item_Bag(Item):
     name = "Bag"
-    description = "Put a tile face-up on this bag. Draw another tile. On your turn you may draw this tile back instead of drawing from the wall."
+    description = "Put a tile face-up on this bag. Draw another tile. On your turn you may draw this tile instead of drawing from the walls. Bag holds tiles between rounds.  You may discard bag at any time and shuffle its tile back into the living wall"
     cost = 2
     img_src = "/items/bag.jpg"
 
