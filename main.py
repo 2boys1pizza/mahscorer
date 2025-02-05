@@ -113,6 +113,12 @@ empressker_text = ft.Text("Empressker value: 0", size=40)
 laobanker_text = ft.Text("Laobanker value: 0", size=40)
 spoilker_text = ft.Text("Spoilker value: 50", size=40)
 donnerker_text = ft.Text("Donnerker value: 0", size=40)
+doraker_text = ft.Text("Doraker value: 0", size=40)
+odiumker_text = ft.Text("Odiumker value: 0", size=40)
+bamenker_text = ft.Text("Bamenker value: 0", size=40)
+denker_text = ft.Text("Denker value: 0", size=40)
+chenker_text = ft.Text("Chenker value: 0", size=40)
+tanavastker_text = ft.Text("Tanavastker value: 0", size=40)
 lake_text = ft.Text("Lake value: 0", size=40)
 mahjong_pts_text = ft.Text("Mahjong Pts: 0 pts", size=20)
 mahjong_money_text = ft.Text("Mahjong Money: $ 0", size=20)
@@ -917,6 +923,306 @@ def main(page: ft.Page):
         donnerker_text.value = f"Donnerker value: {donnerker.point_value}"
         page.update()
 
+    def handle_doraker_select(e):
+        global my_mahjongker_text
+        global my_jongkers_panel
+        global doraker_text
+        # Add UI to increase/decrease value of ayceker
+        doraker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Doraker":
+                doraker = mahjongker
+                break
+        doraker_text.value = f"Doraker value: {doraker.point_value}"
+        upgrade_row = ft.Row([
+            doraker_text,
+            ft.Column([
+                ft.ElevatedButton(text="↑", on_click=increment_doraker_score),
+                ft.ElevatedButton(text="↓", on_click=decrement_doraker_score)
+                ])
+            ],
+            alignment=ft.MainAxisAlignment.CENTER)
+        if len(my_jongkers_panel.content.controls) >= 3:
+            my_jongkers_panel.content.controls[1] = upgrade_row
+        else:
+            my_jongkers_panel.content.controls.insert(1, upgrade_row)
+
+        jonker_name = e.control.image.src.split("/")[2].split(".")[0]
+        my_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
+        page.update()
+
+    def increment_doraker_score(e):
+        global doraker_text
+        doraker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Doraker":
+                doraker = mahjongker
+                break
+        doraker.point_value = doraker.point_value + 15
+        doraker_text.value = f"Doraker value: {doraker.point_value}"
+        page.update()
+
+    def decrement_doraker_score(e):
+        global doraker_text
+        doraker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Doraker":
+                doraker = mahjongker
+                break
+        doraker.point_value = max(0, doraker.point_value - 15)
+        doraker_text.value = f"Doraker value: {doraker.point_value}"
+        page.update()
+
+    def handle_odiumker_select(e):
+        global my_mahjongker_text
+        global my_jongkers_panel
+        global odiumker_text
+        # Add UI to increase/decrease value of ayceker
+        odiumker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Odiumker":
+                odiumker = mahjongker
+                break
+        odiumker_text.value = f"Odiumker value: {odiumker.point_value}"
+        upgrade_row = ft.Row([
+            odiumker_text,
+            ft.Column([
+                ft.ElevatedButton(text="↑", on_click=increment_odiumker_score),
+                ft.ElevatedButton(text="↓", on_click=decrement_odiumker_score)
+                ])
+            ],
+            alignment=ft.MainAxisAlignment.CENTER)
+        if len(my_jongkers_panel.content.controls) >= 3:
+            my_jongkers_panel.content.controls[1] = upgrade_row
+        else:
+            my_jongkers_panel.content.controls.insert(1, upgrade_row)
+
+        jonker_name = e.control.image.src.split("/")[2].split(".")[0]
+        my_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
+        page.update()
+
+    def increment_odiumker_score(e):
+        global odiumker_text
+        odiumker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Odiumker":
+                odiumker = mahjongker
+                break
+        odiumker.point_value = odiumker.point_value + 3
+        odiumker_text.value = f"Odiumker value: {odiumker.point_value}"
+        page.update()
+
+    def decrement_odiumker_score(e):
+        global odiumker_text
+        odiumker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Odiumker":
+                odiumker = mahjongker
+                break
+        odiumker.point_value = max(0, odiumker.point_value - 3)
+        odiumker_text.value = f"Odiumker value: {odiumker.point_value}"
+        page.update()
+
+    def handle_bamenker_select(e):
+        global my_mahjongker_text
+        global my_jongkers_panel
+        global bamenker_text
+        # Add UI to increase/decrease value of ayceker
+        bamenker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Bamenker":
+                bamenker = mahjongker
+                break
+        bamenker_text.value = f"Bamenker value: {bamenker.point_value}"
+        upgrade_row = ft.Row([
+            bamenker_text,
+            ft.Column([
+                ft.ElevatedButton(text="↑", on_click=increment_bamenker_score),
+                ft.ElevatedButton(text="↓", on_click=decrement_bamenker_score)
+                ])
+            ],
+            alignment=ft.MainAxisAlignment.CENTER)
+        if len(my_jongkers_panel.content.controls) >= 3:
+            my_jongkers_panel.content.controls[1] = upgrade_row
+        else:
+            my_jongkers_panel.content.controls.insert(1, upgrade_row)
+
+        jonker_name = e.control.image.src.split("/")[2].split(".")[0]
+        my_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
+        page.update()
+
+    def increment_bamenker_score(e):
+        global bamenker_text
+        bamenker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Bamenker":
+                bamenker = mahjongker
+                break
+        bamenker.point_value = bamenker.point_value + 7
+        bamenker_text.value = f"Bamenker value: {bamenker.point_value}"
+        page.update()
+
+    def decrement_bamenker_score(e):
+        global bamenker_text
+        bamenker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Bamenker":
+                bamenker = mahjongker
+                break
+        bamenker.point_value = max(0, bamenker.point_value - 7)
+        bamenker_text.value = f"Bamenker value: {bamenker.point_value}"
+        page.update()
+
+    def handle_denker_select(e):
+        global my_mahjongker_text
+        global my_jongkers_panel
+        global denker_text
+        # Add UI to increase/decrease value of ayceker
+        denker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Denker":
+                denker = mahjongker
+                break
+        denker_text.value = f"Denker value: {denker.point_value}"
+        upgrade_row = ft.Row([
+            denker_text,
+            ft.Column([
+                ft.ElevatedButton(text="↑", on_click=increment_denker_score),
+                ft.ElevatedButton(text="↓", on_click=decrement_denker_score)
+                ])
+            ],
+            alignment=ft.MainAxisAlignment.CENTER)
+        if len(my_jongkers_panel.content.controls) >= 3:
+            my_jongkers_panel.content.controls[1] = upgrade_row
+        else:
+            my_jongkers_panel.content.controls.insert(1, upgrade_row)
+
+        jonker_name = e.control.image.src.split("/")[2].split(".")[0]
+        my_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
+        page.update()
+
+    def increment_denker_score(e):
+        global denker_text
+        denker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Denker":
+                denker = mahjongker
+                break
+        denker.point_value = denker.point_value + 7
+        denker_text.value = f"Denker value: {denker.point_value}"
+        page.update()
+
+    def decrement_denker_score(e):
+        global denker_text
+        denker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Denker":
+                denker = mahjongker
+                break
+        denker.point_value = max(0, denker.point_value - 7)
+        denker_text.value = f"Denker value: {denker.point_value}"
+        page.update()
+
+    def handle_chenker_select(e):
+        global my_mahjongker_text
+        global my_jongkers_panel
+        global chenker_text
+        # Add UI to increase/decrease value of ayceker
+        chenker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Chenker":
+                chenker = mahjongker
+                break
+        chenker_text.value = f"Chenker value: {chenker.point_value}"
+        upgrade_row = ft.Row([
+            chenker_text,
+            ft.Column([
+                ft.ElevatedButton(text="↑", on_click=increment_chenker_score),
+                ft.ElevatedButton(text="↓", on_click=decrement_chenker_score)
+                ])
+            ],
+            alignment=ft.MainAxisAlignment.CENTER)
+        if len(my_jongkers_panel.content.controls) >= 3:
+            my_jongkers_panel.content.controls[1] = upgrade_row
+        else:
+            my_jongkers_panel.content.controls.insert(1, upgrade_row)
+
+        jonker_name = e.control.image.src.split("/")[2].split(".")[0]
+        my_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
+        page.update()
+
+    def increment_chenker_score(e):
+        global chenker_text
+        chenker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Chenker":
+                chenker = mahjongker
+                break
+        chenker.point_value = chenker.point_value + 7
+        chenker_text.value = f"Chenker value: {chenker.point_value}"
+        page.update()
+
+    def decrement_chenker_score(e):
+        global chenker_text
+        chenker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Chenker":
+                chenker = mahjongker
+                break
+        chenker.point_value = max(0, chenker.point_value - 7)
+        chenker_text.value = f"Chenker value: {chenker.point_value}"
+        page.update()
+
+    def handle_tanavastker_select(e):
+        global my_mahjongker_text
+        global my_jongkers_panel
+        global tanavastker_text
+        # Add UI to increase/decrease value of ayceker
+        tanavastker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Tanavastker":
+                tanavastker = mahjongker
+                break
+        tanavastker_text.value = f"Tanavastker value: {tanavastker.point_value}"
+        upgrade_row = ft.Row([
+            tanavastker_text,
+            ft.Column([
+                ft.ElevatedButton(text="↑", on_click=increment_tanavastker_score),
+                ft.ElevatedButton(text="↓", on_click=decrement_tanavastker_score)
+                ])
+            ],
+            alignment=ft.MainAxisAlignment.CENTER)
+        if len(my_jongkers_panel.content.controls) >= 3:
+            my_jongkers_panel.content.controls[1] = upgrade_row
+        else:
+            my_jongkers_panel.content.controls.insert(1, upgrade_row)
+
+        jonker_name = e.control.image.src.split("/")[2].split(".")[0]
+        my_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
+        page.update()
+
+    def increment_tanavastker_score(e):
+        global tanavastker_text
+        tanavastker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Tanavastker":
+                tanavastker = mahjongker
+                break
+        tanavastker.point_value = tanavastker.point_value + 10
+        tanavastker_text.value = f"Tanavastker value: {tanavastker.point_value}"
+        page.update()
+
+    def decrement_tanavastker_score(e):
+        global tanavastker_text
+        tanavastker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Tanavastker":
+                tanavastker = mahjongker
+                break
+        tanavastker.point_value = max(0, tanavastker.point_value - 10)
+        tanavastker_text.value = f"Tanavastker value: {tanavastker.point_value}"
+        page.update()
+
     def apply_mahjongker_filter(e):
         global filtered_mahjongkers_list
         global mahjongker_filter
@@ -1279,6 +1585,192 @@ def main(page: ft.Page):
                         border_radius=ft.border_radius.all(5),
                         ink=True,
                         on_click=handle_donnerker_select,
+                        tooltip=ft.Tooltip(
+                            message=mahjongker.description,
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        )
+                    )
+                )
+            elif mahjongker.name == "Doraker":
+                my_mahjongkers_containers.append(
+                    ft.Container(
+                        image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(mahjongker.name, bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_doraker_select,
+                        tooltip=ft.Tooltip(
+                            message=mahjongker.description,
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        )
+                    )
+                )
+            elif mahjongker.name == "Odiumker":
+                my_mahjongkers_containers.append(
+                    ft.Container(
+                        image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(mahjongker.name, bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_odiumker_select,
+                        tooltip=ft.Tooltip(
+                            message=mahjongker.description,
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        )
+                    )
+                )
+            elif mahjongker.name == "Bamenker":
+                my_mahjongkers_containers.append(
+                    ft.Container(
+                        image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(mahjongker.name, bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_bamenker_select,
+                        tooltip=ft.Tooltip(
+                            message=mahjongker.description,
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        )
+                    )
+                )
+            elif mahjongker.name == "Denker":
+                my_mahjongkers_containers.append(
+                    ft.Container(
+                        image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(mahjongker.name, bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_denker_select,
+                        tooltip=ft.Tooltip(
+                            message=mahjongker.description,
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        )
+                    )
+                )
+            elif mahjongker.name == "Chenker":
+                my_mahjongkers_containers.append(
+                    ft.Container(
+                        image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(mahjongker.name, bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_chenker_select,
+                        tooltip=ft.Tooltip(
+                            message=mahjongker.description,
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        )
+                    )
+                )
+            elif mahjongker.name == "Tanavastker":
+                my_mahjongkers_containers.append(
+                    ft.Container(
+                        image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(mahjongker.name, bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_tanavastker_select,
                         tooltip=ft.Tooltip(
                             message=mahjongker.description,
                             padding=20,
@@ -1915,15 +2407,15 @@ def main(page: ft.Page):
         i = 0
         selected_i = []
         while i < 3:
-            index = random.randint(0,len(common_mahjongkers_list)-1)
+            index = random.randint(0,len(initial_mahjongkers_list)-1)
             if index not in selected_i: 
-                mahjongker = common_mahjongkers_list[index]
+                mahjongker = initial_mahjongkers_list[index]
                 if mahjongker not in my_mahjongkers:
                     selected_i.append(index)
                     i = i+1
 
         for i in selected_i:
-            mahjongker = common_mahjongkers_list[i]
+            mahjongker = initial_mahjongkers_list[i]
             initial_mahjongkers_row.controls.append(
                 ft.Container(
                         image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
@@ -1987,6 +2479,86 @@ def main(page: ft.Page):
         initial_mahjongker_text.value = ""
         refresh_my_mahjongkers()
         refresh_initial_mahjongkers_empty()
+
+    # common mahjongker roll
+    def refresh_common_mahjongkers(e):
+        global common_mahjongkers_row
+        common_mahjongkers_row.controls.clear()
+        i = 0
+        selected_i = []
+        while i < 3:
+            index = random.randint(0,len(common_mahjongkers_list)-1)
+            if index not in selected_i: 
+                mahjongker = common_mahjongkers_list[index]
+                if mahjongker not in my_mahjongkers:
+                    selected_i.append(index)
+                    i = i+1
+
+        for i in selected_i:
+            mahjongker = common_mahjongkers_list[i]
+            common_mahjongkers_row.controls.append(
+                ft.Container(
+                        image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(mahjongker.name, bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_add_common_mahjongker_select,
+                        tooltip=ft.Tooltip(
+                            message=mahjongker.description,
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        ),
+                        # tooltip=MahjongkerTooltip(mahjongker=mahjongker)
+                    )
+            )
+        common_mahjongkers_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_common_mahjongkers))
+        page.update()
+
+    def refresh_common_mahjongkers_empty():
+        global common_mahjongkers_row
+        common_mahjongkers_row.controls.clear()
+        for i in range(3):
+            common_mahjongkers_row.controls.append(
+                ft.Container(
+                    content=ft.Text("Empty", bgcolor="#000000",color=ft.colors.WHITE),
+                    image=ft.DecorationImage(src="/tiles/empty.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                    border_radius=ft.border_radius.all(5),
+                    ink=True,
+                    )
+                )
+        common_mahjongkers_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_common_mahjongkers))
+        page.update()
+
+    def handle_add_common_mahjongker_select(e):
+        global common_mahjongker_text
+        jonker_name = e.control.image.src.split("/")[2].split(".")[0]
+        common_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
+        page.update()
+
+    def add_common_mahjongker(e):
+        global my_mahjongkers
+        global common_mahjongker_text
+        if common_mahjongker_text.value != "":
+            my_mahjongkers.append(all_mahjongkers_dict[common_mahjongker_text.value.lower()])
+        common_mahjongker_text.value = ""
+        refresh_my_mahjongkers()
+        refresh_common_mahjongkers_empty()
 
     # uncommon mahjongker roll
     def refresh_uncommon_mahjongkers(e):
@@ -3273,6 +3845,8 @@ def main(page: ft.Page):
         global trigram_text
         global initial_mahjongkers_row
         global initial_mahjongker_text
+        global common_mahjongkers_row
+        global common_mahjongker_text
         global uncommon_mahjongkers_row
         global uncommon_mahjongker_text
         global rare_mahjongkers_row
@@ -4220,12 +4794,12 @@ def main(page: ft.Page):
             panel.controls.append(shop_panel)
 
             # -------------------------------------------------------------
-            # common mahjongker tab 
+            # initial mahjongker tab 
             # -------------------------------------------------------------
 
             first_mahjongker_panel = ft.ExpansionPanel(
-                bgcolor=ft.colors.BLUE_500,
-                header=ft.ListTile(title=ft.Text(f"Common Mahjongker Roll")),
+                bgcolor=ft.colors.ORANGE_500,
+                header=ft.ListTile(title=ft.Text(f"Initial Mahjongker Roll")),
                 can_tap_header=True
             )
 
@@ -4261,6 +4835,50 @@ def main(page: ft.Page):
                 ])
 
             panel.controls.append(first_mahjongker_panel)
+
+            # -------------------------------------------------------------
+            # common mahjongker tab 
+            # -------------------------------------------------------------
+
+            first_mahjongker_panel = ft.ExpansionPanel(
+                bgcolor=ft.colors.BLUE_500,
+                header=ft.ListTile(title=ft.Text(f"Common Mahjongker Roll")),
+                can_tap_header=True
+            )
+
+            common_mahjongkers_row = ft.GridView(
+                # expand=1,
+                height=100,
+                width=400,
+                runs_count=1,
+                max_extent=95,
+                child_aspect_ratio=1.0,
+                spacing=5,
+                run_spacing=5,
+            )
+
+            # set up base row
+            for i in range(3):
+                common_mahjongkers_row.controls.append(
+                    ft.Container(
+                        content=ft.Text("Empty", bgcolor="#000000",color=ft.colors.WHITE),
+                        image=ft.DecorationImage(src="/tiles/empty.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        )
+                    )
+            common_mahjongkers_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_common_mahjongkers))
+            common_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
+            first_mahjongker_panel.content = ft.Column([
+                    common_mahjongkers_row,
+                    ft.Row([
+                        ft.ElevatedButton(text="Select", on_click=add_common_mahjongker),
+                        common_mahjongker_text
+                    ])
+                ])
+
+            panel.controls.append(first_mahjongker_panel)
+
 
             # -------------------------------------------------------------
             # uncommon mahjongker tab 

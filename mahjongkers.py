@@ -130,7 +130,7 @@ class Hand:
             if meld.typing == "sequence":
                 continue
             elif meld.typing == "triplet":
-                if meld.suit == "dragon" or meld.suit == "wind":
+                if meld.suit == "dragon" or meld.suit == "wind" or meld.suit == "special":
                     continue
                 else:
                     self.is_sequence = False
@@ -150,13 +150,13 @@ class Hand:
         current_suit = "none"
         for meld in self.melds:
             if current_suit == "none":
-                if meld.suit == "dragon" or meld.suit == "wind":
+                if meld.suit == "dragon" or meld.suit == "wind" or meld.suit == "special":
                     self.is_flush = False
                 else:
                     current_suit = meld.suit
             elif meld.suit == current_suit:
                 continue
-            elif meld.suit == "dragon" or meld.suit == "wind":
+            elif meld.suit == "dragon" or meld.suit == "wind" or meld.suit == "special":
                 self.is_flush = False
             else:
                 self.is_flush = False
@@ -164,7 +164,7 @@ class Hand:
                 break
         if self.is_flush and self.eyes[0].suit != current_suit:
             self.is_flush = False
-        if self.is_half_flush and self.eyes[0].suit != "dragon" and self.eyes[0].suit != "wind" and self.eyes[0].suit != current_suit:
+        if self.is_half_flush and self.eyes[0].suit != "dragon" and self.eyes[0].suit != "wind" and self.eyes[0].suit != "special" and self.eyes[0].suit != current_suit:
             self.is_half_flush = False
 
         print(f"Sequence: {self.is_sequence}")
@@ -412,10 +412,10 @@ class Oddker(Mahjongker):
 # AYCker
 class AYCker(Mahjongker):
     name = "AYCker"
-    description = "This Mahjongker gains +15 pts on chi (stacking) Current: 0"
+    description = "This Mahjongker gains +10 pts on chi (stacking) Current: 0"
     priority = 6 
-    cost = UNCOMMON_MAHJONGKER_COST
-    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/aycker.jpg"
     point_value = 0
 
@@ -425,10 +425,10 @@ class AYCker(Mahjongker):
 # Pingker
 class Pingker(Mahjongker):
     name = "Pingker"
-    description = "This Mahjongker gains +20 pts on pong (stacking) Current: 0"
+    description = "This Mahjongker gains +10 pts on pong (stacking) Current: 0"
     priority = 6 
-    cost = UNCOMMON_MAHJONGKER_COST
-    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/pingker.jpg"
     point_value = 0
 
@@ -438,10 +438,10 @@ class Pingker(Mahjongker):
 # KingKongker
 class KingKongker(Mahjongker):
     name = "KingKongker"
-    description = "This Mahjongker gains +40 pts on kong (stacking) Current: 0"
+    description = "This Mahjongker gains +20 pts on kong (stacking) Current: 0"
     priority = 6 
-    cost = UNCOMMON_MAHJONGKER_COST
-    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/kingkongker.jpg"
     point_value = 0
 
@@ -562,14 +562,30 @@ class Neenjaker(Mahjongker):
 # Gayker
 class Gayker(Mahjongker):
     name = "Gayker"
-    description = "Sequences can loop (912)"
-    priority = 6 
+    description = "Sequences can loop (912). +15 pts for a looped sequence."
+    priority = 2 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/gayker.jpg"
 
-    def eval_score(self):
-        return (0, 0)
+    def eval_score(self, meld):
+        ranks_low = []
+        ranks_high = []
+        for tile in meld.tiles:
+            if tile.suit != "wind" and tile.suit != "dragon" and tile.suit != "special":
+                if int(tile.rank) >= 4 and int(tile.rank) <= 6:
+                    return (0, 0)
+                else:
+                    if int(tile.rank) < 4:
+                        ranks_low.append(int(tile.rank))
+                    else:
+                        ranks_high.append(int(tile.rank))
+            else:
+                return (0, 0)
+        if len(ranks_low) > 0 and len(ranks_high) > 0:
+            return (15, 0)
+        else:
+            return (0, 0)
 
 # Bumungker
 class Bumungker(Mahjongker):
@@ -583,10 +599,10 @@ class Bumungker(Mahjongker):
     def eval_score(self, hand):
         all_bamboos = True
         for meld in hand.melds:
-            if meld.suit != "bamboo" and meld.suit != "dragon" and meld.suit != "wind":
+            if meld.suit != "bamboo" and meld.suit != "dragon" and meld.suit != "wind" and meld.suit != "special":
                 all_bamboos = False
-        if hand.eyes and hand.eyes[0].suit != "bamboo" and hand.eyes[0].suit != "dragon" and hand.eyes[0].suit != "wind":
-            all_chars = False
+        if hand.eyes and hand.eyes[0].suit != "bamboo" and hand.eyes[0].suit != "dragon" and hand.eyes[0].suit != "wind" and hand.eyes[0].suit != "special":
+            all_bamboos = False
         if all_bamboos:
             return (30, 0)
         else:
@@ -604,10 +620,10 @@ class Dungker(Mahjongker):
     def eval_score(self, hand):
         all_dots = True
         for meld in hand.melds:
-            if meld.suit != "dot" and meld.suit != "dragon" and meld.suit != "wind":
+            if meld.suit != "dot" and meld.suit != "dragon" and meld.suit != "wind" and meld.suit != "special":
                 all_dots = False
-        if hand.eyes and hand.eyes[0].suit != "dot" and hand.eyes[0].suit != "dragon" and hand.eyes[0].suit != "wind":
-            all_chars = False
+        if hand.eyes and hand.eyes[0].suit != "dot" and hand.eyes[0].suit != "dragon" and hand.eyes[0].suit != "wind" and hand.eyes[0].suit != "special":
+            all_dots = False
         if all_dots:
             return (30, 0)
         else:
@@ -625,9 +641,9 @@ class Chungker(Mahjongker):
     def eval_score(self, hand):
         all_chars = True
         for meld in hand.melds:
-            if meld.suit != "character" and meld.suit != "dragon" and meld.suit != "wind":
+            if meld.suit != "character" and meld.suit != "dragon" and meld.suit != "wind" and meld.suit != "special":
                 all_chars = False
-        if hand.eyes and hand.eyes[0].suit != "character" and hand.eyes[0].suit != "dragon" and hand.eyes[0].suit != "wind":
+        if hand.eyes and hand.eyes[0].suit != "character" and hand.eyes[0].suit != "dragon" and hand.eyes[0].suit != "wind" and hand.eyes[0].suit != "special":
             all_chars = False
         if all_chars:
             return (30, 0)
@@ -725,10 +741,10 @@ class Snakeker(Mahjongker):
 # Seeker
 class Seeker(Mahjongker):
     name = "Seeker"
-    description = "You may pong your eyes at any time"
+    description = "You may pong your eyes at any time."
     priority = 6 
-    cost = UNCOMMON_MAHJONGKER_COST
-    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/seeker.jpg"
 
     def eval_score(self):
@@ -737,7 +753,7 @@ class Seeker(Mahjongker):
 # LeeSinker
 class LeeSinker(Mahjongker):
     name = "LeeSinker"
-    description = "You can mahjong without eyes.  The eye tiles are not considered for determining your hand type. -30 base points if you mahjong this way"
+    description = "You can mahjong without eyes. -20 pts if you mahjong this way."
     priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
@@ -746,7 +762,7 @@ class LeeSinker(Mahjongker):
 
     def eval_score(self):
         if active:
-            return (-30, 0)
+            return (-20, 0)
         else:
             return (0, 0)
 
@@ -768,10 +784,10 @@ class SeeingDoubker(Mahjongker):
 # Seequenker
 class Seequenker(Mahjongker):
     name = "Seequenker"
-    description = "Your eyes can be a sequence"
+    description = "Your eyes can be a sequence."
     priority = 6 
-    cost = UNCOMMON_MAHJONGKER_COST
-    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/seequenker.jpg"
 
     def eval_score(self):
@@ -789,7 +805,7 @@ class Highker(Mahjongker):
     def eval_score(self, meld):
         high = True
         for tile in meld.tiles:
-            if tile.suit != "wind" and tile.suit != "dragon":
+            if tile.suit != "wind" and tile.suit != "dragon" and tile.suit != "special":
                 if int(tile.rank) <= 5:
                     high = False
                     return (0, 0)
@@ -812,7 +828,7 @@ class Lowker(Mahjongker):
     def eval_score(self, meld):
         low = True
         for tile in meld.tiles:
-            if tile.suit != "wind" and tile.suit != "dragon":
+            if tile.suit != "wind" and tile.suit != "dragon" and tile.suit != "special":
                 if int(tile.rank) >= 5:
                     low = False
                     return (0, 0)
@@ -1012,26 +1028,23 @@ class Boomerangker(Mahjongker):
 # Doraker
 class Doraker(Mahjongker):
     name = "Doraker"
-    description = "At the start of the round, a random tile from your hand is selected.  That tile is worth an additional 10 points."
-    priority = 1 
+    description = "At the start of the round, a random tile from your hand is selected.  This mahjongker permanently gains +15 pts if you score this tile this round. Currently: 0"
+    priority = 6
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/doraker.jpg"
-    selected_tile = []
+    point_value = 0
 
     def eval_score(self, tile):
-        if tile.suit == selected_tile.suit and tile.rank == selected_tile.rank:
-            return (10, 0)
-        else:
-            return (0, 0)
+        return point_value
 
 # AllforOneker - needs special scoring check
 class AllforOneker(Mahjongker):
     name = "AllforOneker"
-    description = "All winds are your seat wind and the same tile.  You do not score bonus points from the table wind."
+    description = "All winds are the east wind."
     priority = 6 
-    cost = CONSISTENCY_MAHJONGKER_COST
-    sell_value = CONSISTENCY_MAHJONGKER_SELL_VALUE
+    cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/allforoneker.jpg"
 
     def eval_score(self):
@@ -1312,7 +1325,7 @@ class Riggedker(Mahjongker):
 # Fibonaccker
 class Fibonaccker(Mahjongker):
     name = "Fibonaccker"
-    description = "If your hand contains 1, 1, 2, 3, 5, and 8, +50 points."
+    description = "If your hand contains 1, 2, 3, 5, and 8, +50 points."
     priority = 5 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -1334,10 +1347,7 @@ class Fibonaccker(Mahjongker):
                 else:
                     ranks[tile.rank] = 1
 
-        if "1" in ranks:
-            if ranks["1"] < 2:
-                return (0, 0)
-        else: 
+        if "1" not in ranks:
             return (0, 0)
 
         if "2" not in ranks:
@@ -1395,7 +1405,7 @@ class Shardker(Mahjongker):
 # Ponorker
 class Ponorker(Mahjongker):
     name = "Ponorker"
-    description = "When you pong, draw the next honor tile from the living wall."
+    description = "When you pong, draw the next two honor tiles from the living wall. Discard 2 tiles."
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -1407,7 +1417,7 @@ class Ponorker(Mahjongker):
 # Sonorker
 class Sonorker(Mahjongker):
     name = "Sonorker"
-    description = "When you chi, draw the next honor tile from the living wall."
+    description = "When you chi, draw the next two honor tiles from the living wall. Discard 2 tiles."
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -1433,7 +1443,7 @@ class Speedker(Mahjongker):
 # Blackjackgker
 class Blackjackgker(Mahjongker):
     name = "Blackjackgker"
-    description = "You may form a blackjack meld with tiles of the same suit that add up to 21. +15 pts for each of these melds."
+    description = "You may form a blackjack meld with tiles of the same suit that add up to 21."
     priority = 6
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -1569,7 +1579,7 @@ class Spoilker(Mahjongker):
 # Harbingker
 class Harbingker(Mahjongker):
     name = "Harbingker"
-    description = "Whenever an event is drawn, instead draw 2 and you pick one to resolve.  Add 1 event tile to the deck permanently."
+    description = "Whenever an event is drawn, instead draw 2 and you pick one to resolve."
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -1675,6 +1685,215 @@ class Vanillaker(Mahjongker):
     def eval_score(self, hand):
         return (20, 0)     
 
+# NoReservaker
+class NoReservaker(Mahjongker):
+    name = "NoReservaker"
+    description = "You may chi from all players."
+    priority = 6 
+    cost = RARE_MAHJONGKER_COST
+    sell_value = RARE_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/noreservaker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Bamanker
+class Bamanker(Mahjongker):
+    name = "Bamanker"
+    description = "Gain +5 pts for each scored bamboo tile."
+    priority = 1 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/bamanker.jpg"
+
+    def eval_score(self, tile):
+        if tile.suit == "bamboo":
+            return (5, 0)
+        return (0, 0)
+
+# Danker
+class Danker(Mahjongker):
+    name = "Danker"
+    description = "Gain +5 pts for each scored dots tile."
+    priority = 1 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/danker.jpg"
+
+    def eval_score(self, tile):
+        if tile.suit == "dot":
+            return (5, 0)
+        return (0, 0)
+
+# Chanker
+class Chanker(Mahjongker):
+    name = "Chanker"
+    description = "Gain +5 pts for each scored char tile."
+    priority = 1 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/chanker.jpg"
+
+    def eval_score(self, tile):
+        if tile.suit == "character":
+            return (5, 0)
+        return (0, 0)
+
+# Miniker
+class Miniker(Mahjongker):
+    name = "Miniker"
+    description = "Worth 5x pts of the rank of the lowest rank tile scored."
+    priority = 5 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/miniker.jpg"
+
+    def eval_score(self, hand):
+        ranks = []
+        for meld in hand.melds:
+            if meld.suit != "dragon" and meld.suit != "wind" and meld.suit != "special":
+                for tile in meld.tiles:
+                    ranks.append(int(tile.rank))
+        if hand.eyes and hand.eyes[0].suit != "dragon" and hand.eyes[0].suit != "wind" and hand.eyes[0].suit != "special":
+            for tile in hand.eyes[0]:
+                ranks.append(int(tile.rank))
+        ranks.sort()
+        if len(ranks) > 0:
+            return (ranks[0] * 5, 0)
+        else:
+            return (0, 0)
+
+# Honker
+class Honker(Mahjongker):
+    name = "Honker"
+    description = "Gain +15 pts for each honor meld."
+    priority = 2 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/honker.jpg"
+
+    def eval_score(self, meld):
+        if meld.suit == "dragon" or meld.suit == "wind" or meld.suit == "special":
+            return (15, 0)
+        return (0, 0)
+
+# Eatker
+class Eatker(Mahjongker):
+    name = "Eatker"
+    description = "Gain +15 pts for each sequence meld."
+    priority = 2 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/eatker.jpg"
+
+    def eval_score(self, meld):
+        if meld.typing == "sequence":
+            return (15, 0)
+        return (0, 0)
+
+# Sameker
+class Sameker(Mahjongker):
+    name = "Sameker"
+    description = "Gain +15 pts for each sequence meld."
+    priority = 2 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/sameker.jpg"
+
+    def eval_score(self, meld):
+        if meld.typing == "triplet":
+            return (15, 0)
+        return (0, 0)
+
+# Odiumker
+class Odiumker(Mahjongker):
+    name = "Odiumker"
+    description = "This mahjongker permanently gains +3 pts each time you discard an honor tile. Current: 0"
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/odiumker.jpg"
+    point_value = 0
+
+    def eval_score(self):
+        return (self.point_value, 0)
+
+# Bamenker
+class Bamenker(Mahjongker):
+    name = "Bamenker"
+    description = "This mahjongker permanently gains +7 pts each time you score a bamboo meld. Current: 0"
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/bamenker.jpg"
+    point_value = 0
+
+    def eval_score(self):
+        return (self.point_value, 0)
+
+# Denker
+class Denker(Mahjongker):
+    name = "Denker"
+    description = "This mahjongker permanently gains +7 pts each time you score a dots meld. Current: 0"
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/denker.jpg"
+    point_value = 0
+
+    def eval_score(self):
+        return (self.point_value, 0)
+
+# Chenker
+class Chenker(Mahjongker):
+    name = "Chenker"
+    description = "This mahjongker permanently gains +7 pts each time you score a char meld. Current: 0"
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/chenker.jpg"
+    point_value = 0
+
+    def eval_score(self):
+        return (self.point_value, 0)
+
+# Tanavastker
+class Tanavastker(Mahjongker):
+    name = "Tanavastker"
+    description = "This mahjongker permanently gains +7 pts each time you score an honor meld. Current: 0"
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/tanavastker.jpg"
+    point_value = 0
+
+    def eval_score(self):
+        return (self.point_value, 0)
+
+# Recykler
+class Recykler(Mahjongker):
+    name = "Recykler"
+    description = "When you manually reveal a meld, draw the most recently discarded honor tile."
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/recykler.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
+# Fardker
+class Fardker(Mahjongker):
+    name = "Fardker"
+    description = "All winds score for you. Do not score bonus points for the table wind."
+    priority = 6 
+    cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/fardker.jpg"
+
+    def eval_score(self):
+        return (0, 0)
+
 # --------------------------------------------------------------------------------------
 # MAHJONGKER LIST
 # --------------------------------------------------------------------------------------
@@ -1699,7 +1918,7 @@ all_mahjongkers_list.append(Gapker())
 all_mahjongkers_list.append(DEIker())
 all_mahjongkers_list.append(SEIquenker())
 all_mahjongkers_list.append(Siker())
-all_mahjongkers_list.append(Bourdainker())
+# all_mahjongkers_list.append(Bourdainker())
 all_mahjongkers_list.append(Dollker())
 all_mahjongkers_list.append(Yenker())
 all_mahjongkers_list.append(Falchionker())
@@ -1712,7 +1931,7 @@ all_mahjongkers_list.append(Chungker())
 # all_mahjongkers_list.append(Dingker())
 # all_mahjongkers_list.append(Chingker())
 all_mahjongkers_list.append(Hoardker())
-all_mahjongkers_list.append(Meldker())
+# all_mahjongkers_list.append(Meldker())
 # all_mahjongkers_list.append(Snakeker())
 all_mahjongkers_list.append(Seeker())
 all_mahjongkers_list.append(LeeSinker())
@@ -1744,7 +1963,7 @@ all_mahjongkers_list.append(Arthker())
 all_mahjongkers_list.append(DuckDuckGooseker())
 all_mahjongkers_list.append(DebtCollectker())
 all_mahjongkers_list.append(Quaker())
-all_mahjongkers_list.append(Anthonyker())
+# all_mahjongkers_list.append(Anthonyker())
 all_mahjongkers_list.append(Picker())
 all_mahjongkers_list.append(Luckgker())
 all_mahjongkers_list.append(Buffettker())
@@ -1784,6 +2003,21 @@ all_mahjongkers_list.append(Donnerker())
 all_mahjongkers_list.append(Trashker())
 all_mahjongkers_list.append(Trapker())
 all_mahjongkers_list.append(Vanillaker())
+all_mahjongkers_list.append(NoReservaker())
+all_mahjongkers_list.append(Bamanker())
+all_mahjongkers_list.append(Danker())
+all_mahjongkers_list.append(Chanker())
+all_mahjongkers_list.append(Miniker())
+all_mahjongkers_list.append(Honker())
+all_mahjongkers_list.append(Eatker())
+all_mahjongkers_list.append(Sameker())
+all_mahjongkers_list.append(Odiumker())
+all_mahjongkers_list.append(Bamenker())
+all_mahjongkers_list.append(Denker())
+all_mahjongkers_list.append(Chenker())
+all_mahjongkers_list.append(Tanavastker())
+all_mahjongkers_list.append(Recykler())
+all_mahjongkers_list.append(Fardker())
 
 # --------------------------------------------------------------------------------------
 # MAHJONGKER DICT
@@ -1809,7 +2043,7 @@ all_mahjongkers_dict["gapker"] = Gapker()
 all_mahjongkers_dict["deiker"] = DEIker()
 all_mahjongkers_dict["seiquenker"] = SEIquenker()
 all_mahjongkers_dict["siker"] = Siker()
-all_mahjongkers_dict["bourdainker"] = Bourdainker()
+# all_mahjongkers_dict["bourdainker"] = Bourdainker()
 all_mahjongkers_dict["dollker"] = Dollker()
 all_mahjongkers_dict["yenker"] = Yenker()
 all_mahjongkers_dict["falchionker"] = Falchionker()
@@ -1822,7 +2056,7 @@ all_mahjongkers_dict["chungker"] = Chungker()
 # all_mahjongkers_dict["dingker"] = Dingker()
 # all_mahjongkers_dict["chingker"] = Chingker()
 all_mahjongkers_dict["hoardker"] = Hoardker()
-all_mahjongkers_dict["meldker"] = Meldker()
+# all_mahjongkers_dict["meldker"] = Meldker()
 # all_mahjongkers_dict["snakeker"] = Snakeker()
 all_mahjongkers_dict["seeker"] = Seeker()
 all_mahjongkers_dict["leesinker"] = LeeSinker()
@@ -1854,7 +2088,7 @@ all_mahjongkers_dict["arthker"] = Arthker()
 all_mahjongkers_dict["duckduckgooseker"] = DuckDuckGooseker()
 all_mahjongkers_dict["debtcollectker"] = DebtCollectker()
 all_mahjongkers_dict["quaker"] = Quaker()
-all_mahjongkers_dict["anthonyker"] = Anthonyker()
+# all_mahjongkers_dict["anthonyker"] = Anthonyker()
 all_mahjongkers_dict["picker"] = Picker()
 all_mahjongkers_dict["luckgker"] = Luckgker()
 all_mahjongkers_dict["buffettker"] = Buffettker()
@@ -1894,6 +2128,21 @@ all_mahjongkers_dict["donnerker"] = Donnerker()
 all_mahjongkers_dict["trashker"] = Trashker()
 all_mahjongkers_dict["trapker"] = Trapker()
 all_mahjongkers_dict["vanillaker"] = Vanillaker()
+all_mahjongkers_dict["noreservaker"] = NoReservaker()
+all_mahjongkers_dict["bamanker"] = Bamanker()
+all_mahjongkers_dict["danker"] = Danker()
+all_mahjongkers_dict["chanker"] = Chanker()
+all_mahjongkers_dict["miniker"] = Miniker()
+all_mahjongkers_dict["honker"] = Honker()
+all_mahjongkers_dict["eatker"] = Eatker()
+all_mahjongkers_dict["sameker"] = Sameker()
+all_mahjongkers_dict["odiumker"] = Odiumker()
+all_mahjongkers_dict["bamenker"] = Bamenker()
+all_mahjongkers_dict["denker"] = Denker()
+all_mahjongkers_dict["chenker"] = Chenker()
+all_mahjongkers_dict["tanavastker"] = Tanavastker()
+all_mahjongkers_dict["recykler"] = Recykler()
+all_mahjongkers_dict["fardker"] = Fardker()
 
 # ----------------------------------------------
 
@@ -1920,3 +2169,46 @@ rare_mahjongkers_list = []
 for mahjongker in all_mahjongkers_list:
     if mahjongker.cost == RARE_MAHJONGKER_COST:
         rare_mahjongkers_list.append(mahjongker)
+
+# --------------------------------------------------------------------------------------
+# INITIAL MAHJONGKER LIST
+# --------------------------------------------------------------------------------------
+initial_mahjongkers_list = []
+initial_mahjongkers_list.append(Bamonker())
+initial_mahjongkers_list.append(Donker())
+initial_mahjongkers_list.append(Chonker())
+initial_mahjongkers_list.append(Dragonker())
+initial_mahjongkers_list.append(Winker())
+initial_mahjongkers_list.append(Evenker())
+initial_mahjongkers_list.append(Oddker())
+initial_mahjongkers_list.append(Dollker())
+initial_mahjongkers_list.append(Yenker())
+initial_mahjongkers_list.append(Falchionker())
+initial_mahjongkers_list.append(Neenjaker())
+initial_mahjongkers_list.append(Highker())
+initial_mahjongkers_list.append(Lowker())
+initial_mahjongkers_list.append(Salarymanker())
+initial_mahjongkers_list.append(MealTicker())
+initial_mahjongkers_list.append(WenGeker())
+initial_mahjongkers_list.append(Fourker())
+initial_mahjongkers_list.append(Underdoker())
+initial_mahjongkers_list.append(JosephJoesker())
+initial_mahjongkers_list.append(Fibonaccker())
+initial_mahjongkers_list.append(Wokegker())
+initial_mahjongkers_list.append(Shardker())
+initial_mahjongkers_list.append(Ponorker())
+initial_mahjongkers_list.append(Sonorker())
+initial_mahjongkers_list.append(Blackjackgker())
+initial_mahjongkers_list.append(Chairker())
+initial_mahjongkers_list.append(Huntker())
+initial_mahjongkers_list.append(Spoilker())
+initial_mahjongkers_list.append(Trapker())
+initial_mahjongkers_list.append(Vanillaker())
+initial_mahjongkers_list.append(Bamanker())
+initial_mahjongkers_list.append(Danker())
+initial_mahjongkers_list.append(Chanker())
+initial_mahjongkers_list.append(Miniker())
+initial_mahjongkers_list.append(Honker())
+initial_mahjongkers_list.append(Eatker())
+initial_mahjongkers_list.append(Sameker())
+initial_mahjongkers_list.append(Recykler())

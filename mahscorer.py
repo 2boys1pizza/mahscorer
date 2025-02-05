@@ -19,42 +19,41 @@ def score(hand, table_wind, seat_wind, my_mahjongkers, mahjong_pts, mahjong_mone
             
     # score melds
     for meld in hand.melds: 
-        if meld.typing != "none":
-            kong = False
-            thunder_mult = 1
-            if len(meld.tiles) == 4:
-                kong_mult = True
-            for tile in meld.tiles:
-                if tile.seal == "thunder":
-                    thunder_mult = 2
-                if tile.modifier == "gold":
-                    money += 5 * thunder_mult
-                if tile.suit == "wind":
-                    if tile.rank == table_wind.rank:
-                        points += tile.points * thunder_mult
-                    if tile.rank == seat_wind.rank:
-                        points += tile.points * thunder_mult
-                else:
+        kong = False
+        thunder_mult = 1
+        if len(meld.tiles) == 4:
+            kong_mult = True
+        for tile in meld.tiles:
+            if tile.seal == "thunder":
+                thunder_mult = 2
+            if tile.modifier == "gold":
+                money += 5 * thunder_mult
+            if tile.suit == "wind":
+                if tile.rank == table_wind.rank:
                     points += tile.points * thunder_mult
-                # prio 1, tile jongkers
-                for mahjongker in my_mahjongkers:
-                    if mahjongker.priority == 1:
-                        evaluated_score = mahjongker.eval_score(tile)
-                        if kong:
-                            points += evaluated_score[0] * thunder_mult * 2
-                        else:
-                            points += evaluated_score[0] * thunder_mult
-
-                thunder_mult = 1
-            # prio 2, meld jongkers
+                if tile.rank == seat_wind.rank:
+                    points += tile.points * thunder_mult
+            else:
+                points += tile.points * thunder_mult
+            # prio 1, tile jongkers
             for mahjongker in my_mahjongkers:
-                if mahjongker.priority == 2:
-                    evaluated_score = mahjongker.eval_score(meld)
+                if mahjongker.priority == 1:
+                    evaluated_score = mahjongker.eval_score(tile)
                     if kong:
-                        points += evaluated_score[0] * 2
-                        
+                        points += evaluated_score[0] * thunder_mult * 2
                     else:
-                        points += evaluated_score[0]
+                        points += evaluated_score[0] * thunder_mult
+
+            thunder_mult = 1
+        # prio 2, meld jongkers
+        for mahjongker in my_mahjongkers:
+            if mahjongker.priority == 2:
+                evaluated_score = mahjongker.eval_score(meld)
+                if kong:
+                    points += evaluated_score[0] * 2
+                    
+                else:
+                    points += evaluated_score[0]
                         
 
     # score eyes if at least 3 melds. Mahjong needs to be checked
