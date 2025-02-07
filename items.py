@@ -2,6 +2,7 @@ class Item:
     name = ""
     description = ""
     cost = 3
+    rarity = "" #common, uncommon, rare
     img_src = ""
 
     def __repr__(self):
@@ -18,210 +19,245 @@ class Item_Bag(Item):
     name = "Bag"
     description = "Put a tile face-up on this bag. Draw another tile. On your turn you may draw this tile instead of drawing from the walls. Bag holds tiles between rounds.  You may discard bag at any time and shuffle its tile back into the living wall"
     cost = 2
+    rarity = "common"
     img_src = "/items/bag.jpg"
 
 class Item_Called_Shot_Dragon(Item):
     name = "Called Shot: Dragon"
     description = "Choose a player. If that player has a dragon tile, they must give it to you. You give them back a tile of your choice from your hand."
     cost = 2
+    rarity = "common"
     img_src = "/items/called-shot-dragon.jpg"
 
 class Item_Called_Shot_Wind(Item):
     name = "Called Shot: Wind"
     description = "Choose a player. If that player has a wind tile, they must give it to you. You give them back a tile of your choice from your hand."
     cost = 2
+    rarity = "common"
     img_src = "/items/called-shot-wind.jpg"
 
 class Item_Called_Shot_Rank(Item):
     name = "Called Shot: Rank"
     description = "Choose a player and name a group, low(1-3), mid(4-6), or high(7-9). If that player has a tile within that group, they must give you a tile matching that rank. You give them back a tile of your choice from your hand."
     cost = 2
+    rarity = "common"
     img_src = "/items/called-shot-rank.jpg"
 
 class Item_Called_Shot_Suit(Item):
     name = "Called Shot: Suit"
     description = "Choose a player and name a suit. If that player has a tile with that suit they must give you a tile matching that suit. You give them back a tile of your choice from your hand."
     cost = 2
+    rarity = "common"
     img_src = "/items/called-shot-suit.jpg"
 
 class Item_Controlled_Chaos(Item):
     name = "Controlled Chaos"
     description = "Take a random tile from an opponent's hand. Give them a tile from your hand."
     cost = 2
+    rarity = "common"
     img_src = "/items/controlled-chaos.jpg"
 
 class Item_Disguise(Item):
     name = "Disguise"
     description = "Change the suit of a tile in your hand."
     cost = 6
+    rarity = "rare"
     img_src = "/items/disguise.jpg"
 
 class Item_Dumpster_Diver(Item):
     name = "Dumpster Diver"
     description = "Take any revealed discarded tile. Then discard a tile at random from your hand."
     cost = 3
+    rarity = "uncommon"
     img_src = "/items/dumpster-diver.jpg"
 
 class Item_Equity(Item):
     name = "Equity"
     description = "Roll a D6, then decide whether all players gain or lose that amount of money."
     cost = 3
+    rarity = "common"
     img_src = "/items/equity.jpg"
 
 class Item_Golden_Compass(Item):
     name = "Golden Compass"
     description = "Select your seat wind. All players orient to your wind."
     cost = 3
+    rarity = "none"
     img_src = "/items/golden-compass.jpg"
 
 class Item_Grave_Dig(Item):
     name = "Grave Dig"
     description = "Draw a tile from the dead wall. Then discard a tile to the back of the dead wall."
     cost = 2
+    rarity = "common"
     img_src = "/items/grave-dig.jpg"
 
 class Item_Literally_Gambling(Item):
     name = "Literally Gambling"
     description = "You may roll up to three D6.  Each roll costs $1.  On an even roll you gain that much money.  On an odd roll you lose that much money."
     cost = 3
+    rarity = "common"
     img_src = "/items/literally-gambling.jpg"
 
 class Item_Mahjongkers_Dilemma(Item):
     name = "Mahjongker's Dilemma"
     description = "Select another player.  You both lose $1.  There is a prize of $6, and you both secretly choose to split or steal.  This is resolved just like the prisoner’s dilemma."
     cost = 1
+    rarity = "common"
     img_src = "/items/mahjongkers-dilemma.jpg"
 
 class Item_Oracle(Item):
     name = "Oracle"
     description = "Look at the top 2 tiles of the wall, you may discard any number of these tiles (cannot be picked up)."
     cost = 3
+    rarity = "common"
     img_src = "/items/oracle.jpg"
 
 class Item_Perpendicularity(Item):
     name = "Perpendicularity"
     description = "Add a Honor Tile to your hand. You can only use this when you current hand size <= max hand size."
     cost = 4
+    rarity = "none"
     img_src = "/items/perpendicularity.jpg"
 
 class Item_Power_Hour_Bamboo(Item):
     name = "Power Hour: Bamboo"
     description = "Add a bamboo tile of your choice to your hand."
     cost = 4
+    rarity = "none"
     img_src = "/items/power-hour-bamboo.jpg"
 
 class Item_Power_Hour_Character(Item):
     name = "Power Hour: Character"
     description = "Add a character tile of your choice to your hand."
     cost = 4
+    rarity = "none"
     img_src = "/items/power-hour-character.jpg"
 
 class Item_Power_Hour_Dots(Item):
     name = "Power Hour: Dots"
     description = "Add a circle tile of your choice to your hand."
     cost = 4
+    rarity = "none"
     img_src = "/items/power-hour-dots.jpg"
 
 class Item_Splitter(Item):
     name = "Splitter"
     description = "You may split a ranked tile in two in half. e.g. 9 of bamboo ->  4 & 5 of bamboo.  You cannot split a 1."
     cost = 4
+    rarity = "uncommon"
     img_src = "/items/splitter.jpg"
 
 class Item_Stun_Gun(Item):
     name = "Stun Gun"
     description = "Choose a player. They cannot act until the end of their next turn."
     cost = 1
+    rarity = "common"
     img_src = "/items/stun-gun.jpg"
 
 class Item_Take_2(Item):
     name = "Take 2"
     description = "Discard two tiles.  Then draw 2 tiles from the wall."
     cost = 3
+    rarity = "common"
     img_src = "/items/take-2.jpg"
 
 class Item_Trap_Card(Item):
     name = "Trap Card"
     description = "Name a specific tile.  If a player draws it, they must discard it."
     cost = 2
+    rarity = "none"
     img_src = "/items/trap-card.jpg"
 
 class Item_Upheaval(Item):
     name = "Upheaval"
     description = "Change the rank of one of your tiles into rank of your choice."
     cost = 6
+    rarity = "rare"
     img_src = "/items/upheaval.jpg"
 
 class Item_Weather_Vane(Item):
     name = "Weather Vane"
     description = "Select your seat wind. All players orient to your wind."
     cost = 2
+    rarity = "none"
     img_src = "/items/weather-vane.jpg"
 
 class Item_Handmaxxing(Item):
     name = "Handmaxxing"
     description = "Draw 4. Skip your draw phase for the rest of the round."
     cost = 4
+    rarity = "uncommon"
     img_src = "/items/handmaxxing.jpg"
 
 class Item_12_Inch(Item):
     name = "12 Inch Barrel Revolver"
     description = "Choose a player.  A random mahjongker for that player is disabled for the rest of this round."
     cost = 2
+    rarity = "common"
     img_src = "/items/12inch.jpg"
 
 class Item_Sleight_Of_Han(Item):
     name = "Sleight of Han"
     description = "Steal a random item from another player."
     cost = 3
+    rarity = "uncommon"
     img_src = "/items/sleight-of-han.jpg"
 
 class Item_Black_Eyed_Peas(Item):
     name = "Black Eyed Peas"
     description = "Combine two tiles of the same suit. Then split them down the middle. (3+7 -> 5,5)."
     cost = 4
+    rarity = "uncommon"
     img_src = "/items/black-eyed-peas.jpg"
 
 class Item_Mutually_Assured_Destruction(Item):
     name = "Mutually Assured Destruction"
     description = "Select a player.  Randomly discard tiles up to your current hand size.  The chosen player must also randomly discard up to that many tiles as well. Both players draw the discarded amount back."
     cost = 3
+    rarity = "none"
     img_src = "/items/mutually-assured-destruction.jpg"
 
 class Item_Re_Suitbaru(Item):
     name = "Re: Suitbaru"
     description = "Reroll the suit of a tile in your hand."
     cost = 2
+    rarity = "common"
     img_src = "/items/re-suitbaru.jpg"
 
 class Item_Re_Sident_Evil(Item):
     name = "Re: Sident Evil"
     description = "Reroll an honor tile in your hand, within its category (dragon, wind)."
     cost = 2
+    rarity = "common"
     img_src = "/items/re-sident-evil.jpg"
 
 class Item_Re_Surrection(Item):
     name = "Re: Surrection"
     description = "Reroll the rank of a tile in your hand.  Pick low (1-3), mid (4-6), or high (7-9)."
     cost = 2
+    rarity = "common"
     img_src = "/items/re-surrection.jpg"
 
 class Item_Piggy_Bank(Item):
     name = "Piggy Bank"
     description = "Worth $1. Pick break or wait. If wait, the next piggy bank you get is worth double. If break, get the value of the piggy bank, then reset back to $1."
     cost = 2
+    rarity = "common"
     img_src = "/items/piggy-bank.jpg"
 
 class Item_Pivoter(Item):
     name = "Pivoter"
     description = "Discard a random tile in your hand.  The next time you draw you get a copy of the drawn tile."
     cost = 2
+    rarity = "common"
     img_src = "/items/pivoter.jpg"
 
 class Item_Well_Laid_Plans(Item):
     name = "Well Laid Plans"
     description = "Draw a tile and then place a tile from your hand on top of either wall."
     cost = 2
+    rarity = "common"
     img_src = "/items/well-laid-plans.jpg"
 
 # --------------------------------------------------------------------------------------
@@ -342,3 +378,27 @@ all_item_names_dict["Re: Surrection"] = Item_Re_Surrection()
 all_item_names_dict["Piggy Bank"] = Item_Piggy_Bank()
 all_item_names_dict["Pivoter"] = Item_Pivoter()
 all_item_names_dict["Well Laid Plans"] = Item_Well_Laid_Plans()
+
+# --------------------------------------
+# COMMON ITEMS LIST
+# --------------------------------------
+common_items_list = []
+for item in all_items_list:
+    if item.rarity == "common":
+        common_items_list.append(item)
+
+# --------------------------------------
+# UNCOMMON ITEMS LIST
+# --------------------------------------
+uncommon_items_list = []
+for item in all_items_list:
+    if item.rarity == "uncommon":
+        uncommon_items_list.append(item)
+        
+# --------------------------------------
+# RARE ITEMS LIST
+# --------------------------------------
+rare_items_list = []
+for item in all_items_list:
+    if item.rarity == "rare":
+        rare_items_list.append(item)

@@ -38,7 +38,7 @@ def score(hand, table_wind, seat_wind, my_mahjongkers, mahjong_pts, mahjong_mone
             # prio 1, tile jongkers
             for mahjongker in my_mahjongkers:
                 if mahjongker.priority == 1:
-                    evaluated_score = mahjongker.eval_score(tile)
+                    evaluated_score = mahjongker.eval_score(my_mahjongkers, tile)
                     if kong:
                         points += evaluated_score[0] * thunder_mult * 2
                     else:
@@ -48,7 +48,7 @@ def score(hand, table_wind, seat_wind, my_mahjongkers, mahjong_pts, mahjong_mone
         # prio 2, meld jongkers
         for mahjongker in my_mahjongkers:
             if mahjongker.priority == 2:
-                evaluated_score = mahjongker.eval_score(meld)
+                evaluated_score = mahjongker.eval_score(my_mahjongkers, meld)
                 if kong:
                     points += evaluated_score[0] * 2
                     
@@ -69,34 +69,34 @@ def score(hand, table_wind, seat_wind, my_mahjongkers, mahjong_pts, mahjong_mone
             # prio 1, tile jongkers in eyes
             for mahjongker in my_mahjongkers:
                 if mahjongker.priority == 1:
-                    evaluated_score = mahjongker.eval_score(tile)
+                    evaluated_score = mahjongker.eval_score(my_mahjongkers, tile)
                     points += evaluated_score[0]
                     
         # prio 3, eyes jongkers
         for mahjongker in my_mahjongkers:
             if mahjongker.priority == 3:
-                evaluated_score = mahjongker.eval_score(hand.eyes[0])
+                evaluated_score = mahjongker.eval_score(my_mahjongkers, hand.eyes[0])
                 points += evaluated_score[0]
                 
 
         # prio 4, hand type jongkers
         for mahjongker in my_mahjongkers:
             if mahjongker.priority == 4:
-                evaluated_score = mahjongker.eval_score(hand)
+                evaluated_score = mahjongker.eval_score(my_mahjongkers, hand)
                 points += evaluated_score[0]
                 
 
     # prio 5, whole hand jongkers            
     for mahjongker in my_mahjongkers:
         if mahjongker.priority == 5:
-            evaluated_score = mahjongker.eval_score(hand)
+            evaluated_score = mahjongker.eval_score(my_mahjongkers, hand)
             points += evaluated_score[0]
             
 
     # prio 6, non-interative jongkers
     for mahjongker in my_mahjongkers:
         if mahjongker.priority == 6:
-            evaluated_score = mahjongker.eval_score()
+            evaluated_score = mahjongker.eval_score(my_mahjongkers, )
             points += evaluated_score[0]
             
             if len(evaluated_score) > 2:

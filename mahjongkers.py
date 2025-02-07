@@ -197,7 +197,7 @@ class Mahjongker:
     def __eq__(self, other):
         return self.name == other.name
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         print("I'm a dumb parent score func")
         return 0
 
@@ -214,11 +214,18 @@ class Bamonker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/bamonker.jpg"
 
-    def eval_score(self, meld):
+    def eval_score(self, my_mahjongkers, meld):
+        fluteker = Fluteker()
+        killtonyker = KillTonyker()
+        total_score = 0
         if meld.suit == "bamboo":
-            return (15, 0)
-        else:
-            return (0, 0)
+            total_score += 15
+        if meld.suit == "dot" and fluteker in my_mahjongkers:
+            total_score += 15
+        if meld.suit == "character" and killtonyker in my_mahjongkers:
+            total_score += 15
+
+        return (total_score, 0)
 
 # Donker
 class Donker(Mahjongker):
@@ -229,11 +236,18 @@ class Donker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/donker.jpg"
 
-    def eval_score(self, meld):
+    def eval_score(self, my_mahjongkers, meld):
+        fluteker = Fluteker()
+        iker = Iker()
+        total_score = 0
         if meld.suit == "dot":
-            return (15, 0)
-        else:
-            return (0, 0)
+            total_score += 15
+        if meld.suit == "bamboo" and fluteker in my_mahjongkers:
+            total_score += 15
+        if meld.suit == "character" and iker in my_mahjongkers:
+            total_score += 15
+
+        return (total_score, 0)
 
 # Chonker
 class Chonker(Mahjongker):
@@ -244,11 +258,18 @@ class Chonker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/chonker.jpg"
 
-    def eval_score(self, meld):
+    def eval_score(self, my_mahjongkers, meld):
+        iker = Iker()
+        killtonyker = KillTonyker()
+        total_score = 0
         if meld.suit == "character":
-            return (15, 0)
-        else:
-            return (0, 0)
+            total_score += 15
+        if meld.suit == "bamboo" and killtonyker in my_mahjongkers:
+            total_score += 15
+        if meld.suit == "dot" and iker in my_mahjongkers:
+            total_score += 15
+
+        return (total_score, 0)
 
 # Dragonker
 class Dragonker(Mahjongker):
@@ -259,7 +280,7 @@ class Dragonker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/dragonker.jpg"
 
-    def eval_score(self, meld):
+    def eval_score(self, my_mahjongkers, meld):
         if meld.suit == "dragon":
             return (20, 0)
         else:
@@ -274,7 +295,7 @@ class Winker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/winker.jpg"
 
-    def eval_score(self, meld):
+    def eval_score(self, my_mahjongkers, meld):
         if meld.suit == "wind":
             return (30, 0)
         else:
@@ -289,7 +310,7 @@ class Sequencker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/sequencker.jpg"
 
-    def eval_score(self, hand):
+    def eval_score(self, my_mahjongkers, hand):
         if hand.is_sequence:
             return (0, 2)
         else:
@@ -304,7 +325,7 @@ class MahMahMahjonker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/mahmahmahjonker.jpg"
 
-    def eval_score(self, hand):
+    def eval_score(self, my_mahjongkers, hand):
         if hand.is_triplet:
             return (0, 4)
         else:
@@ -320,7 +341,7 @@ class Milwaunker(Mahjongker):
     img_src = "/jongker/milwaunker.jpg"
 
     # what happens if hand is all honors?
-    def eval_score(self, hand):
+    def eval_score(self, my_mahjongkers, hand):
         if hand.is_half_flush:
             return (0, 4)
         else:
@@ -336,7 +357,7 @@ class Kohlker(Mahjongker):
     img_src = "/jongker/kohlker.jpg"
 
     # what happens if hand is all honors?
-    def eval_score(self, hand):
+    def eval_score(self, my_mahjongkers, hand):
         if hand.is_flush:
             return (0, 7)
         else:
@@ -351,7 +372,7 @@ class Windker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/windker.jpg"
 
-    def eval_score(self, meld):
+    def eval_score(self, my_mahjongkers, meld):
         if meld.suit == "wind":
             return (0, 0.3)
         else:
@@ -366,7 +387,7 @@ class Draker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/draker.jpg"
 
-    def eval_score(self, meld):
+    def eval_score(self, my_mahjongkers, meld):
         if meld.suit == "dragon":
             return (0, 0.3)
         else:
@@ -382,7 +403,7 @@ class Evenker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/evenker.jpg"
 
-    def eval_score(self, tile):
+    def eval_score(self, my_mahjongkers, tile):
         if tile.suit == "bamboo" or tile.suit == "dot" or tile.suit == "character":
             if int(tile.rank) % 2 == 0:
                 return (5, 0)
@@ -400,7 +421,7 @@ class Oddker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/oddker.jpg"
 
-    def eval_score(self, tile):
+    def eval_score(self, my_mahjongkers, tile):
         if tile.suit == "bamboo" or tile.suit == "dot" or tile.suit == "character":
             if int(tile.rank) % 2 == 1:
                 return (5, 0)
@@ -419,7 +440,7 @@ class AYCker(Mahjongker):
     img_src = "/jongker/aycker.jpg"
     point_value = 0
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (self.point_value, 0)
 
 # Pingker
@@ -432,7 +453,7 @@ class Pingker(Mahjongker):
     img_src = "/jongker/pingker.jpg"
     point_value = 0
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (self.point_value, 0)
 
 # KingKongker
@@ -445,7 +466,7 @@ class KingKongker(Mahjongker):
     img_src = "/jongker/kingkongker.jpg"
     point_value = 0
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (self.point_value, 0)
 
 # Gapker
@@ -457,31 +478,31 @@ class Gapker(Mahjongker):
     sell_value = RARE_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/gapker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # DEIker
 class DEIker(Mahjongker):
     name = "DEIker"
-    description = "Triplets may contain up to two different suits (honors excluded)"
+    description = "Triplets can contain up to two different suits (excluding honors). The suit of this meld is the majority suit of the tiles."
     priority = 6 
     cost = RARE_MAHJONGKER_COST
     sell_value = RARE_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/deiker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # SEIquenker
 class SEIquenker(Mahjongker):
     name = "SEIquenker"
-    description = "Sequences may contain up to two different suits (honors excluded)"
+    description = "Sequences can contain up to two different suits (excluding honors). The suit of this meld is the majority suit of the tiles."
     priority = 6 
     cost = RARE_MAHJONGKER_COST
     sell_value = RARE_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/seiquenker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Siker
@@ -493,7 +514,7 @@ class Siker(Mahjongker):
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/siker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Bourdainker
@@ -505,7 +526,7 @@ class Bourdainker(Mahjongker):
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/bourdainker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Dollker
@@ -517,7 +538,7 @@ class Dollker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/dollker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Yenker
@@ -529,7 +550,7 @@ class Yenker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/yenker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Falchionker
@@ -541,7 +562,7 @@ class Falchionker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/falchionker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Neenjaker
@@ -553,7 +574,7 @@ class Neenjaker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/neenjaker.jpg"
 
-    def eval_score(self, meld):
+    def eval_score(self, my_mahjongkers, meld):
         if meld.hidden:
             return (30, 0)
         else:
@@ -568,7 +589,7 @@ class Gayker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/gayker.jpg"
 
-    def eval_score(self, meld):
+    def eval_score(self, my_mahjongkers, meld):
         ranks_low = []
         ranks_high = []
         for tile in meld.tiles:
@@ -596,8 +617,12 @@ class Bumungker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/bumungker.jpg"
 
-    def eval_score(self, hand):
+    def eval_score(self, my_mahjongkers, hand):
         all_bamboos = True
+        fluteker = Fluteker()
+        killtonyker = KillTonyker()
+        if fluteker in my_mahjongkers or killtonyker in my_mahjongkers:
+            return (0, 0)
         for meld in hand.melds:
             if meld.suit != "bamboo" and meld.suit != "dragon" and meld.suit != "wind" and meld.suit != "special":
                 all_bamboos = False
@@ -617,8 +642,12 @@ class Dungker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/dungker.jpg"
 
-    def eval_score(self, hand):
+    def eval_score(self, my_mahjongkers, hand):
         all_dots = True
+        fluteker = Fluteker()
+        iker = Iker()
+        if fluteker in my_mahjongkers or iker in my_mahjongkers:
+            return (0, 0)
         for meld in hand.melds:
             if meld.suit != "dot" and meld.suit != "dragon" and meld.suit != "wind" and meld.suit != "special":
                 all_dots = False
@@ -638,8 +667,12 @@ class Chungker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/chungker.jpg"
 
-    def eval_score(self, hand):
+    def eval_score(self, my_mahjongkers, hand):
         all_chars = True
+        killtonyker = KillTonyker()
+        iker = Iker()
+        if killtonyker in my_mahjongkers or iker in my_mahjongkers:
+            return (0, 0)
         for meld in hand.melds:
             if meld.suit != "character" and meld.suit != "dragon" and meld.suit != "wind" and meld.suit != "special":
                 all_chars = False
@@ -659,7 +692,7 @@ class Bimingker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/bimingker.jpg"
 
-    def eval_score(self, meld):
+    def eval_score(self, my_mahjongkers, meld):
         if meld.suit == "bamboo":
             return (0, 0.15)
         else:
@@ -674,7 +707,7 @@ class Dingker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/dingker.jpg"
 
-    def eval_score(self, meld):
+    def eval_score(self, my_mahjongkers, meld):
         if meld.suit == "dot":
             return (0, 0.15)
         else:
@@ -689,7 +722,7 @@ class Chingker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/chingker.jpg"
 
-    def eval_score(self, meld):
+    def eval_score(self, my_mahjongkers, meld):
         if meld.suit == "character":
             return (0, 0.15)
         else:
@@ -704,7 +737,7 @@ class Hoardker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/hoardker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Meldker
@@ -717,7 +750,7 @@ class Meldker(Mahjongker):
     img_src = "/jongker/meldker.jpg"
     point_value = 0
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (self.point_value, 0)
 
 # Snakeker
@@ -729,10 +762,10 @@ class Snakeker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/snakeker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
-    # def eval_score(self, eyes):
+    # def eval_score(self, my_mahjongkers, eyes):
     #     for tile in eyes.tiles:
     #         if tile.rank != "1":
     #             return (0, 0)
@@ -747,7 +780,7 @@ class Seeker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/seeker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # LeeSinker
@@ -760,7 +793,7 @@ class LeeSinker(Mahjongker):
     img_src = "/jongker/leesinker.jpg"
     active = False
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         if active:
             return (-20, 0)
         else:
@@ -775,7 +808,7 @@ class SeeingDoubker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/seeingdoubker.jpg"
 
-    def eval_score(self, eyes):
+    def eval_score(self, my_mahjongkers, eyes):
         for tile in eyes.tiles:
             if tile.rank != "2":
                 return (0, 0)
@@ -790,7 +823,7 @@ class Seequenker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/seequenker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Highker
@@ -802,7 +835,7 @@ class Highker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/highker.jpg"
 
-    def eval_score(self, meld):
+    def eval_score(self, my_mahjongkers, meld):
         high = True
         for tile in meld.tiles:
             if tile.suit != "wind" and tile.suit != "dragon" and tile.suit != "special":
@@ -825,7 +858,7 @@ class Lowker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/lowker.jpg"
 
-    def eval_score(self, meld):
+    def eval_score(self, my_mahjongkers, meld):
         low = True
         for tile in meld.tiles:
             if tile.suit != "wind" and tile.suit != "dragon" and tile.suit != "special":
@@ -848,7 +881,7 @@ class Rainbowker(Mahjongker):
     sell_value = CONSISTENCY_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/rainbowker.jpg"
 
-    def eval_score(self, meld):
+    def eval_score(self, my_mahjongkers, meld):
         seen_suits = []
         for tile in meld.tiles:
             if tile.suit in seen_suits:
@@ -866,7 +899,7 @@ class Raindraker(Mahjongker):
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/raindraker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Magellker
@@ -878,7 +911,7 @@ class Magellker(Mahjongker):
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/magellker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Salarymanker
@@ -890,7 +923,7 @@ class Salarymanker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/salarymanker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0, 4)
 
 # MealTicker
@@ -902,7 +935,7 @@ class MealTicker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/mealticker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # WenGeker
@@ -914,7 +947,7 @@ class WenGeker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/wengeker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Fourker
@@ -926,7 +959,7 @@ class Fourker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/fourker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # DOWker
@@ -938,7 +971,7 @@ class DOWker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/dowker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Comebacker
@@ -950,7 +983,7 @@ class Comebacker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/comebacker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Underdoker
@@ -962,7 +995,7 @@ class Underdoker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/underdoker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Compensaker
@@ -974,7 +1007,7 @@ class Compensaker(Mahjongker):
     sell_value = RARE_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/compensaker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Gronkowsker
@@ -986,7 +1019,7 @@ class Gronkowsker(Mahjongker):
     sell_value = RARE_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/gronkowsker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Dumpsker
@@ -998,7 +1031,7 @@ class Dumpsker(Mahjongker):
     sell_value = RARE_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/dumpsker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Copycatker
@@ -1010,7 +1043,7 @@ class Copycatker(Mahjongker):
     sell_value = RARE_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/copycatker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Boomerangker
@@ -1022,7 +1055,7 @@ class Boomerangker(Mahjongker):
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/boomerangker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Doraker
@@ -1035,7 +1068,7 @@ class Doraker(Mahjongker):
     img_src = "/jongker/doraker.jpg"
     point_value = 0
 
-    def eval_score(self, tile):
+    def eval_score(self, my_mahjongkers, tile):
         return point_value
 
 # AllforOneker - needs special scoring check
@@ -1047,7 +1080,7 @@ class AllforOneker(Mahjongker):
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/allforoneker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # OneforAllker
@@ -1059,7 +1092,7 @@ class OneforAllker(Mahjongker):
     sell_value = CONSISTENCY_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/oneforallker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Pickgker
@@ -1071,7 +1104,7 @@ class Pickgker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/pickgker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Straightker - pretty sure this shit doesn't work lol. test again later
@@ -1083,7 +1116,7 @@ class Straightker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/straightker.jpg"
 
-    def eval_score(self, hand):
+    def eval_score(self, my_mahjongkers, hand):
         lows = []
         highs = []
         total_points = 0
@@ -1113,7 +1146,7 @@ class Arthker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/arthker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (30, 0)
 
 # DuckDuckGooseker
@@ -1125,7 +1158,7 @@ class DuckDuckGooseker(Mahjongker):
     sell_value = RARE_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/duckduckgooseker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # DebtCollectker
@@ -1137,7 +1170,7 @@ class DebtCollectker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/debtcollectker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Quaker
@@ -1149,7 +1182,7 @@ class Quaker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/quaker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Anthonyker
@@ -1161,7 +1194,7 @@ class Anthonyker(Mahjongker):
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/anthonyker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Picker
@@ -1173,7 +1206,7 @@ class Picker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/picker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Luckgker
@@ -1185,7 +1218,7 @@ class Luckgker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/luckgker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Buffettker
@@ -1197,7 +1230,7 @@ class Buffettker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/buffettker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Fuckgker
@@ -1210,7 +1243,7 @@ class Fuckgker(Mahjongker):
     img_src = "/jongker/fuckgker.jpg"
     point_value = 0
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (self.point_value, 0)
 
 # Toker
@@ -1222,7 +1255,7 @@ class Toker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/toker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Emeraldker
@@ -1234,7 +1267,7 @@ class Emeraldker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/emeraldker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Snipker
@@ -1246,7 +1279,7 @@ class Snipker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/snipker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Grenadeker
@@ -1258,7 +1291,7 @@ class Grenadeker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/grenadeker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Stepsisker
@@ -1270,7 +1303,7 @@ class Stepsisker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/stepsisker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # LarryEllisker
@@ -1282,7 +1315,7 @@ class LarryEllisker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/larryellisker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Suckgker
@@ -1295,7 +1328,7 @@ class Suckgker(Mahjongker):
     img_src = "/jongker/suckgker.jpg"
     point_value = 0
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (self.point_value, 0)
 
 # JosephJoesker
@@ -1307,7 +1340,7 @@ class JosephJoesker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/josephjoesker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Riggedker
@@ -1319,7 +1352,7 @@ class Riggedker(Mahjongker):
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/riggedker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Fibonaccker
@@ -1331,7 +1364,7 @@ class Fibonaccker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/fibonaccker.jpg"
 
-    def eval_score(self, hand):
+    def eval_score(self, my_mahjongkers, hand):
         ranks = {}
         total_points = 0
         for meld in hand.melds:
@@ -1373,9 +1406,13 @@ class Wokegker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/wokegker.jpg"
 
-    def eval_score(self, hand):
+    def eval_score(self, my_mahjongkers, hand):
         suits = set()
         total_points = 0
+        fluteker = Fluteker()
+        killtonyker = KillTonyker()
+        iker = Iker()
+
         for meld in hand.melds:
             for tile in meld.tiles:
                 if tile.suit == "dot" or tile.suit == "bamboo" or tile.suit == "character":
@@ -1384,6 +1421,42 @@ class Wokegker(Mahjongker):
             for tile in hand.eyes[0].tiles:
                 if tile.suit == "dot" or tile.suit == "bamboo" or tile.suit == "character":
                         suits.add(tile.suit)
+
+        if fluteker in my_mahjongkers and iker in my_mahjongkers and killtonyker in my_mahjongkers:
+            if len(suits) >= 1:
+                return (50, 0)
+            else:
+                return (0, 0)
+
+        if fluteker in my_mahjongkers and iker in my_mahjongkers:
+            if "dot" in suits:
+                return (50, 0)
+            elif len(suits) >= 2:
+                return (50, 0)
+            else:
+                return (0, 0)
+
+        if fluteker in my_mahjongkers and killtonyker in my_mahjongkers:
+            if "bamboo" in suits:
+                return (50, 0)
+            elif len(suits) >= 2:
+                return (50, 0)
+            else:
+                return (0, 0)
+
+        if iker in my_mahjongkers and killtonyker in my_mahjongkers:
+            if "character" in suits:
+                return (50, 0)
+            elif len(suits) >= 2:
+                return (50, 0)
+            else:
+                return (0, 0)
+
+        if fluteker in my_mahjongkers or iker in my_mahjongkers or killtonyker in my_mahjongkers:
+            if len(suits) >= 2:
+                return (50, 0)
+            else:
+                return (0, 0)
 
         if len(suits) >= 3: 
             return (50, 0)
@@ -1399,7 +1472,7 @@ class Shardker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/shardker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Ponorker
@@ -1411,7 +1484,7 @@ class Ponorker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/ponorker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Sonorker
@@ -1423,7 +1496,7 @@ class Sonorker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/sonorker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Speedker
@@ -1436,7 +1509,7 @@ class Speedker(Mahjongker):
     img_src = "/jongker/speedker.jpg"
     point_value = 30
 
-    def eval_score(self, hand):
+    def eval_score(self, my_mahjongkers, hand):
         self.point_value = self.point_value + 15
         return (self.point_value, 0)
 
@@ -1449,7 +1522,7 @@ class Blackjackgker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/blackjackgker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Chairker
@@ -1461,7 +1534,7 @@ class Chairker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/chairker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # AngelInvesker
@@ -1473,7 +1546,7 @@ class AngelInvesker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/angelinvesker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Triker
@@ -1485,7 +1558,7 @@ class Triker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/triker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Emporerker
@@ -1497,7 +1570,7 @@ class Emporerker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/emporerker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Empressker
@@ -1510,7 +1583,7 @@ class Empressker(Mahjongker):
     img_src = "/jongker/empressker.jpg"
     point_value = 0
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (self.point_value, 0)
 
 # Laobanker
@@ -1523,7 +1596,7 @@ class Laobanker(Mahjongker):
     img_src = "/jongker/laobanker.jpg"
     point_value = 0
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (self.point_value, 0)
 
 # Huntker
@@ -1535,7 +1608,7 @@ class Huntker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/huntker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Gourmetker
@@ -1547,7 +1620,7 @@ class Gourmetker(Mahjongker):
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/gourmetker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Specialker
@@ -1560,7 +1633,7 @@ class Specialker(Mahjongker):
     img_src = "/jongker/specialker.jpg"
     point_value = 0
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (self.point_value, 0)
 
 # Spoilker
@@ -1573,7 +1646,7 @@ class Spoilker(Mahjongker):
     img_src = "/jongker/spoilker.jpg"
     point_value = 50
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (self.point_value, 0)
 
 # Harbingker
@@ -1585,7 +1658,7 @@ class Harbingker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/harbingker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # GoGoGaker
@@ -1597,7 +1670,7 @@ class GoGoGaker(Mahjongker):
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/gogogaker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # DejaVuker
@@ -1609,7 +1682,7 @@ class DejaVuker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/dejavuker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Coilker
@@ -1621,7 +1694,7 @@ class Coilker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/coilker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Donnerker
@@ -1634,7 +1707,7 @@ class Donnerker(Mahjongker):
     img_src = "/jongker/donnerker.jpg"
     point_value = 0
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (self.point_value, 0)
 
 # Trashker
@@ -1646,7 +1719,7 @@ class Trashker(Mahjongker):
     sell_value = CONSISTENCY_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/trashker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Trapker
@@ -1658,7 +1731,7 @@ class Trapker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/trapker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Sprayker
@@ -1670,7 +1743,7 @@ class Sprayker(Mahjongker):
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/sprayker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Vanillaker
@@ -1682,7 +1755,7 @@ class Vanillaker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/vanillaker.jpg"
 
-    def eval_score(self, hand):
+    def eval_score(self, my_mahjongkers, hand):
         return (20, 0)     
 
 # NoReservaker
@@ -1694,7 +1767,7 @@ class NoReservaker(Mahjongker):
     sell_value = RARE_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/noreservaker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Bamanker
@@ -1706,10 +1779,18 @@ class Bamanker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/bamanker.jpg"
 
-    def eval_score(self, tile):
+    def eval_score(self, my_mahjongkers, tile):
+        fluteker = Fluteker()
+        killtonyker = KillTonyker()
+        total_score = 0
         if tile.suit == "bamboo":
-            return (5, 0)
-        return (0, 0)
+            total_score += 5
+        if tile.suit == "dot" and fluteker in my_mahjongkers:
+            total_score += 5
+        if tile.suit == "character" and killtonyker in my_mahjongkers:
+            total_score += 5
+
+        return (total_score, 0)
 
 # Danker
 class Danker(Mahjongker):
@@ -1720,10 +1801,19 @@ class Danker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/danker.jpg"
 
-    def eval_score(self, tile):
+    def eval_score(self, my_mahjongkers, tile):
+        fluteker = Fluteker()
+        iker = Iker()
+        total_score = 0
+
         if tile.suit == "dot":
-            return (5, 0)
-        return (0, 0)
+            total_score += 5
+        if tile.suit == "bamboo" and fluteker in my_mahjongkers:
+            total_score += 5
+        if tile.suit == "character" and iker in my_mahjongkers:
+            total_score += 5
+
+        return (total_score, 0)
 
 # Chanker
 class Chanker(Mahjongker):
@@ -1734,10 +1824,18 @@ class Chanker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/chanker.jpg"
 
-    def eval_score(self, tile):
+    def eval_score(self, my_mahjongkers, tile):
+        iker = Iker()
+        killtonyker = KillTonyker()
+        total_score = 0
         if tile.suit == "character":
-            return (5, 0)
-        return (0, 0)
+            total_score += 5
+        if tile.suit == "bamboo" and killtonyker in my_mahjongkers:
+            total_score += 5
+        if tile.suit == "dot" and iker in my_mahjongkers:
+            total_score += 5
+
+        return (total_score, 0)
 
 # Miniker
 class Miniker(Mahjongker):
@@ -1748,7 +1846,7 @@ class Miniker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/miniker.jpg"
 
-    def eval_score(self, hand):
+    def eval_score(self, my_mahjongkers, hand):
         ranks = []
         for meld in hand.melds:
             if meld.suit != "dragon" and meld.suit != "wind" and meld.suit != "special":
@@ -1772,7 +1870,7 @@ class Honker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/honker.jpg"
 
-    def eval_score(self, meld):
+    def eval_score(self, my_mahjongkers, meld):
         if meld.suit == "dragon" or meld.suit == "wind" or meld.suit == "special":
             return (15, 0)
         return (0, 0)
@@ -1786,7 +1884,7 @@ class Eatker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/eatker.jpg"
 
-    def eval_score(self, meld):
+    def eval_score(self, my_mahjongkers, meld):
         if meld.typing == "sequence":
             return (15, 0)
         return (0, 0)
@@ -1800,7 +1898,7 @@ class Sameker(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/sameker.jpg"
 
-    def eval_score(self, meld):
+    def eval_score(self, my_mahjongkers, meld):
         if meld.typing == "triplet":
             return (15, 0)
         return (0, 0)
@@ -1815,7 +1913,7 @@ class Odiumker(Mahjongker):
     img_src = "/jongker/odiumker.jpg"
     point_value = 0
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (self.point_value, 0)
 
 # Bamenker
@@ -1828,7 +1926,7 @@ class Bamenker(Mahjongker):
     img_src = "/jongker/bamenker.jpg"
     point_value = 0
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (self.point_value, 0)
 
 # Denker
@@ -1841,7 +1939,7 @@ class Denker(Mahjongker):
     img_src = "/jongker/denker.jpg"
     point_value = 0
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (self.point_value, 0)
 
 # Chenker
@@ -1854,7 +1952,7 @@ class Chenker(Mahjongker):
     img_src = "/jongker/chenker.jpg"
     point_value = 0
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (self.point_value, 0)
 
 # Tanavastker
@@ -1867,7 +1965,7 @@ class Tanavastker(Mahjongker):
     img_src = "/jongker/tanavastker.jpg"
     point_value = 0
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (self.point_value, 0)
 
 # Recykler
@@ -1879,7 +1977,7 @@ class Recykler(Mahjongker):
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/recykler.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # Fardker
@@ -1891,7 +1989,43 @@ class Fardker(Mahjongker):
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/fardker.jpg"
 
-    def eval_score(self):
+    def eval_score(self, my_mahjongkers):
+        return (0, 0)
+
+# Fluteker
+class Fluteker(Mahjongker):
+    name = "Fluteker"
+    description = "During scoring, bamboos are also considered dots, and vice versa."
+    priority = 6 
+    cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/fluteker.jpg"
+
+    def eval_score(self, my_mahjongkers):
+        return (0, 0)
+
+# i-ker
+class Iker(Mahjongker):
+    name = "iker"
+    description = "During scoring, dots are also considered characters, and vice versa."
+    priority = 6 
+    cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/iker.jpg"
+
+    def eval_score(self, my_mahjongkers):
+        return (0, 0)
+
+# KillTonyker
+class KillTonyker(Mahjongker):
+    name = "KillTonyker"
+    description = "During scoring, characters are also considered bamboo, and vice versa."
+    priority = 6 
+    cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/killtonyker.jpg"
+
+    def eval_score(self, my_mahjongkers):
         return (0, 0)
 
 # --------------------------------------------------------------------------------------
@@ -2018,6 +2152,9 @@ all_mahjongkers_list.append(Chenker())
 all_mahjongkers_list.append(Tanavastker())
 all_mahjongkers_list.append(Recykler())
 all_mahjongkers_list.append(Fardker())
+all_mahjongkers_list.append(Fluteker())
+all_mahjongkers_list.append(Iker())
+all_mahjongkers_list.append(KillTonyker())
 
 # --------------------------------------------------------------------------------------
 # MAHJONGKER DICT
@@ -2143,6 +2280,10 @@ all_mahjongkers_dict["chenker"] = Chenker()
 all_mahjongkers_dict["tanavastker"] = Tanavastker()
 all_mahjongkers_dict["recykler"] = Recykler()
 all_mahjongkers_dict["fardker"] = Fardker()
+all_mahjongkers_dict["fluteker"] = Fluteker()
+all_mahjongkers_dict["iker"] = Iker()
+all_mahjongkers_dict["killtonyker"] = KillTonyker()
+
 
 # ----------------------------------------------
 

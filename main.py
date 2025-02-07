@@ -25,7 +25,7 @@ FLUSH_UPGRADE_COSTS = [2,3,4,5,6]
 AVATAR_UPGRADE_COSTS = [6,9,12,15,18]
 ZODIAC_COST = 3
 TRIGRAM_COST = 2
-# ITEM_COST = 3
+ITEM_COST = 3
 MAX_NUM_MAHJONGKERS = 5
 MAX_NUM_ITEMS = 2
 SEQUENCE_UPGRADE_AMOUNT = 0.1
@@ -34,6 +34,7 @@ HALF_FLUSH_UPGRADE_AMOUNT = 0.15
 FLUSH_UPGRADE_AMOUNT = 0.2
 SHOP_MAHJONGKER_RARITIES = ["common", "uncommon", "rare"]
 SHOP_MAHJONGKER_RARITY_PROBABILITIES = {1:[82, 13, 0], 2:[73, 25, 2], 3:[60, 30, 10], 4:[50, 35, 15], 5:[40, 40, 20]}
+ITEM_RARITY_PROBABILITY = [85,10,5]
 START_MONEY = 2
 ROUND_UBI = [6,11,15,18,18]
 
@@ -151,6 +152,7 @@ refresh_shop_button = []
 shop_row = []
 my_mahjongkers_shop_row = []
 item_row = []
+item_pack_row = []
 my_items_shop_row = []
 shop_zodiac_row = []
 shop_trigram_row = []
@@ -181,6 +183,10 @@ flush_button = []
 flush_current_text = []
 avatar_button = []
 hand_upgrade_enabled = True
+
+shop_info_column = []
+trigram_pack_info_column = []
+item_pack_info_column = []
 
 zodiac_row = []
 zodiac_text = []
@@ -2720,6 +2726,84 @@ def main(page: ft.Page):
         refresh_my_mahjongkers()
         refresh_rare_mahjongkers_empty()
 
+    # item roll
+    def refresh_items(e):
+        global item_pack_row
+        global item_pack_info_column
+        item_pack_row.controls.clear()
+        item_pack_info_column.controls.clear()
+        i = 0
+        selected_i = []
+        while i < 3:
+            rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=ITEM_RARITY_PROBABILITY)[0]
+            print(rarity_roll)
+            item = roll_item(rarity_roll, selected_i)
+            selected_i.append(all_items_list.index(item))
+            i = i+1
+
+        for i in selected_i:
+            item = all_items_list[i]
+            item_pack_row.controls.append(
+                ft.Container(
+                        image=ft.DecorationImage(src=item.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(f"{item.name}", bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_add_shop_item_select,
+                        tooltip=ft.Tooltip(
+                            message=f"{item.description}",
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        )
+                    )
+            )
+            item_pack_info_column.controls.append(ft.Text(f"{item.name} : {item.description}", color=ft.colors.WHITE, size=20))
+
+        item_pack_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_items))
+        page.update()
+
+    def refresh_items_empty():
+        global item_pack_row
+        item_pack_row.controls.clear()
+        for i in range(3):
+            item_pack_row.controls.append(
+                ft.Container(
+                    content=ft.Text("Empty", bgcolor="#000000",color=ft.colors.WHITE),
+                    image=ft.DecorationImage(src="/tiles/empty.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                    border_radius=ft.border_radius.all(5),
+                    ink=True,
+                    )
+                )
+        item_pack_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_items))
+        page.update()
+
+    def handle_item_select(e):
+        global item_text
+        item_name = e.control.image.src.split("/")[2].split(".")[0]
+        item_text.value = all_items_dict[item_name].name
+        page.update()
+
+    def select_item(e):
+        global my_mahjongkers
+        global rare_mahjongker_text
+        do_nothing()
+
     # zodiac roll
     def refresh_zodiacs(e):
         global zodiac_row
@@ -2798,7 +2882,9 @@ def main(page: ft.Page):
     # trigram roll
     def refresh_trigrams(e):
         global trigram_row
+        global trigram_pack_info_column
         trigram_row.controls.clear()
+        trigram_pack_info_column.controls.clear()
         i = 0
         selected_i = []
         while i < 3:
@@ -2841,6 +2927,7 @@ def main(page: ft.Page):
                         # tooltip=trigramTooltip(trigram=trigram)
                     )
             )
+            trigram_pack_info_column.controls.append(ft.Text(f"{trigram.name} : {trigram.description}", color=ft.colors.WHITE, size=20))
         trigram_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_trigrams))
         page.update()
 
@@ -2891,6 +2978,26 @@ def main(page: ft.Page):
                 mahjongker = rare_mahjongkers_list[index]
                 if mahjongker not in my_mahjongkers and all_mahjongkers_list.index(mahjongker) not in shop_selected_i:
                     return mahjongker 
+
+    def roll_item(rarity, selected_i):
+        if rarity == "common":
+            for i in range(20):
+                index = random.randint(0,len(common_items_list)-1)
+                item = common_items_list[index]
+                if all_items_list.index(item) not in selected_i:
+                    return item
+        elif rarity == "uncommon":
+            for i in range(20):
+                index = random.randint(0,len(uncommon_items_list)-1)
+                item = uncommon_items_list[index]
+                if all_items_list.index(item) not in selected_i:
+                    return item
+        else:
+            for i in range(20):
+                index = random.randint(0,len(rare_items_list)-1)
+                item = rare_items_list[index]
+                if all_items_list.index(item) not in selected_i:
+                    return item 
 
     def refresh_shop(e):
         global shop_row
@@ -2969,51 +3076,51 @@ def main(page: ft.Page):
             shop_info_column.controls.append(ft.Text(f"${mahjongker.cost} - {mahjongker.name} : {mahjongker.description}", color=ft.colors.WHITE, size=20))
 
         # items
-        item_row.controls.clear()
-        item_info_column.controls.clear()
-        i = 0
-        item_selected = []
-        while i < 3:
-            random_i = random.randint(0,len(all_items_list)-1)
-            item = all_items_list[random_i]
-            if item not in item_selected: 
-                item_selected.append(item)
-                i = i+1
+        # item_row.controls.clear()
+        # item_info_column.controls.clear()
+        # i = 0
+        # item_selected = []
+        # while i < 3:
+        #     random_i = random.randint(0,len(all_items_list)-1)
+        #     item = all_items_list[random_i]
+        #     if item not in item_selected: 
+        #         item_selected.append(item)
+        #         i = i+1
 
-        for item in item_selected:
-            item_row.controls.append(
-                ft.Container(
-                        image=ft.DecorationImage(src=item.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
-                        content=ft.Text(f"{item.name} - ${item.cost}", bgcolor="#000000", color=ft.colors.WHITE),
-                        border_radius=ft.border_radius.all(5),
-                        ink=True,
-                        on_click=handle_add_shop_item_select,
-                        tooltip=ft.Tooltip(
-                            message=f"${item.cost} - {item.description}",
-                            padding=20,
-                            border_radius=10,
-                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
-                            gradient=ft.LinearGradient(
-                                begin=ft.alignment.top_left,
-                                end=ft.alignment.Alignment(0.8, 1),
-                                colors=[
-                                    "0xff1f005c",
-                                    "0xff5b0060",
-                                    "0xff870160",
-                                    "0xffac255e",
-                                    "0xffca485c",
-                                    "0xffe16b5c",
-                                    "0xfff39060",
-                                    "0xffffb56b",
-                                ],
-                                tile_mode=ft.GradientTileMode.MIRROR,
-                            )
-                        )
-                    )
-            )
-            item_info_column.controls.append(ft.Text(f"${item.cost} - {item.name} : {item.description}", color=ft.colors.WHITE, size=20))
-        reroll_cost = 1
-        reroll_item_cost = 1
+        # for item in item_selected:
+        #     item_row.controls.append(
+        #         ft.Container(
+        #                 image=ft.DecorationImage(src=item.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+        #                 content=ft.Text(f"{item.name} - ${item.cost}", bgcolor="#000000", color=ft.colors.WHITE),
+        #                 border_radius=ft.border_radius.all(5),
+        #                 ink=True,
+        #                 on_click=handle_add_shop_item_select,
+        #                 tooltip=ft.Tooltip(
+        #                     message=f"${item.cost} - {item.description}",
+        #                     padding=20,
+        #                     border_radius=10,
+        #                     text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+        #                     gradient=ft.LinearGradient(
+        #                         begin=ft.alignment.top_left,
+        #                         end=ft.alignment.Alignment(0.8, 1),
+        #                         colors=[
+        #                             "0xff1f005c",
+        #                             "0xff5b0060",
+        #                             "0xff870160",
+        #                             "0xffac255e",
+        #                             "0xffca485c",
+        #                             "0xffe16b5c",
+        #                             "0xfff39060",
+        #                             "0xffffb56b",
+        #                         ],
+        #                         tile_mode=ft.GradientTileMode.MIRROR,
+        #                     )
+        #                 )
+        #             )
+        #     )
+        #     item_info_column.controls.append(ft.Text(f"${item.cost} - {item.name} : {item.description}", color=ft.colors.WHITE, size=20))
+        # reroll_cost = 1
+        # reroll_item_cost = 1
 
         # zodiacs
         # shop_zodiac_row.controls.clear()
@@ -3062,59 +3169,59 @@ def main(page: ft.Page):
         # shop_zodiac_row.controls.append(ft.FloatingActionButton(text=f"${reroll_zodiac_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_zodiacs))
 
         # trigrams
-        reroll_trigram_cost = TRIGRAM_COST
-        shop_trigram_row.controls.clear()
-        trigram_info_column.controls.clear()
-        i = 0
-        trigram_selected = []
-        while i < 3:
-            random_i = random.randint(0,len(all_trigrams_list)-1)
-            trigram = all_trigrams_list[random_i]
-            if trigram not in trigram_selected: 
-                trigram_selected.append(trigram)
-                i = i+1
+        # reroll_trigram_cost = TRIGRAM_COST
+        # shop_trigram_row.controls.clear()
+        # trigram_info_column.controls.clear()
+        # i = 0
+        # trigram_selected = []
+        # while i < 3:
+        #     random_i = random.randint(0,len(all_trigrams_list)-1)
+        #     trigram = all_trigrams_list[random_i]
+        #     if trigram not in trigram_selected: 
+        #         trigram_selected.append(trigram)
+        #         i = i+1
 
-        for trigram in trigram_selected:
-            shop_trigram_row.controls.append(
-                ft.Container(
-                        image=ft.DecorationImage(src=trigram.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
-                        content=ft.Text(f"{trigram.name} - ${trigram.cost}", bgcolor="#000000", color=ft.colors.WHITE),
-                        border_radius=ft.border_radius.all(5),
-                        ink=True,
-                        on_click=handle_add_shop_trigram_select,
-                        tooltip=ft.Tooltip(
-                            message=f"${trigram.cost} - {trigram.description}",
-                            padding=20,
-                            border_radius=10,
-                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
-                            gradient=ft.LinearGradient(
-                                begin=ft.alignment.top_left,
-                                end=ft.alignment.Alignment(0.8, 1),
-                                colors=[
-                                    "0xff1f005c",
-                                    "0xff5b0060",
-                                    "0xff870160",
-                                    "0xffac255e",
-                                    "0xffca485c",
-                                    "0xffe16b5c",
-                                    "0xfff39060",
-                                    "0xffffb56b",
-                                ],
-                                tile_mode=ft.GradientTileMode.MIRROR,
-                            )
-                        )
-                    )
-            )
-            trigram_info_column.controls.append(ft.Text(f"${trigram.cost} - {trigram.name} : {trigram.description}", color=ft.colors.WHITE, size=20))
+        # for trigram in trigram_selected:
+        #     shop_trigram_row.controls.append(
+        #         ft.Container(
+        #                 image=ft.DecorationImage(src=trigram.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+        #                 content=ft.Text(f"{trigram.name} - ${trigram.cost}", bgcolor="#000000", color=ft.colors.WHITE),
+        #                 border_radius=ft.border_radius.all(5),
+        #                 ink=True,
+        #                 on_click=handle_add_shop_trigram_select,
+        #                 tooltip=ft.Tooltip(
+        #                     message=f"${trigram.cost} - {trigram.description}",
+        #                     padding=20,
+        #                     border_radius=10,
+        #                     text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+        #                     gradient=ft.LinearGradient(
+        #                         begin=ft.alignment.top_left,
+        #                         end=ft.alignment.Alignment(0.8, 1),
+        #                         colors=[
+        #                             "0xff1f005c",
+        #                             "0xff5b0060",
+        #                             "0xff870160",
+        #                             "0xffac255e",
+        #                             "0xffca485c",
+        #                             "0xffe16b5c",
+        #                             "0xfff39060",
+        #                             "0xffffb56b",
+        #                         ],
+        #                         tile_mode=ft.GradientTileMode.MIRROR,
+        #                     )
+        #                 )
+        #             )
+        #     )
+        #     trigram_info_column.controls.append(ft.Text(f"${trigram.cost} - {trigram.name} : {trigram.description}", color=ft.colors.WHITE, size=20))
 
-        shop_trigram_row.controls.append(ft.FloatingActionButton(text=f"${reroll_trigram_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_trigrams))
+        # shop_trigram_row.controls.append(ft.FloatingActionButton(text=f"${reroll_trigram_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_trigrams))
 
         # Picker disabled for comp shop
         # for mahjongker in my_mahjongkers:
         #     if mahjongker.name == "Picker":
         #         reroll_cost = 0
         shop_row.controls.append(ft.FloatingActionButton(text=f"${reroll_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_mahjongkers))
-        item_row.controls.append(ft.FloatingActionButton(text=f"${reroll_item_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_items))
+        # item_row.controls.append(ft.FloatingActionButton(text=f"${reroll_item_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_items))
         enable_hand_upgrade_buy()
         refresh_shop_button.text = f"Refresh Shop Round {shop_round + 1}"
         page.update()
@@ -3857,6 +3964,9 @@ def main(page: ft.Page):
         global item_row
         global item_info_column
         global my_items_shop_row
+        global item_pack_row
+        global item_pack_info_column
+        global trigram_pack_info_column
         global shop_zodiac_row
         global shop_trigram_row
         global shop_mahjongker_text
@@ -4491,8 +4601,10 @@ def main(page: ft.Page):
             shop_money_text = ft.Text(f"Money: {money}", size=30)
             shop_zodiac_text = ft.Text("", color=ft.colors.WHITE)
             shop_trigram_text = ft.Text("", color=ft.colors.WHITE)
-            # hand_size_upgrade_button = ft.ElevatedButton(text=f"Upgrade Hand Size - ${HAND_SIZE_COSTS[hand_size_level]}", on_click=upgrade_hand_size)
-            hand_size_upgrade_button = ft.ElevatedButton(text=f"Upgrade Hand Size - $ Check your own app!")
+            item_pack_button = ft.ElevatedButton(text=f"Buy Item Pack - ${ITEM_COST}")
+            trigram_pack_button = ft.ElevatedButton(text=f"Buy Trigram Pack - ${TRIGRAM_COST}")
+            hand_size_upgrade_button = ft.ElevatedButton(text=f"Upgrade Hand Size - ${HAND_SIZE_COSTS[hand_size_level]}", on_click=upgrade_hand_size)
+            # hand_size_upgrade_button = ft.ElevatedButton(text=f"Upgrade Hand Size - $ Check your own app!")
             sequence_button = ft.ElevatedButton(text="x", on_click=do_nothing)
             sequence_current_text = ft.Text(f"{sequence_hand_mult}")
             triplet_button = ft.ElevatedButton(text="x", on_click=do_nothing)
@@ -4516,36 +4628,38 @@ def main(page: ft.Page):
                     shop_mahjongker_text]),
                 shop_info_column,
                 ft.Divider(),
-                ft.Row([
-                    ft.Text("Items ", size=20, color=ft.colors.WHITE),
-                    ]),
-                ft.Row([
-                    item_row,
-                    # ft.Column([ft.Text("Inventory", size=20, color=ft.colors.WHITE), my_items_shop_row])],
-                    ],
-                    spacing=90),
-                ft.Row([
-                    ft.ElevatedButton(text="Buy", on_click=buy_item),
-                    shop_item_text
-                ]),
-                item_info_column,
+                # ft.Row([
+                #     ft.Text("Items ", size=20, color=ft.colors.WHITE),
+                #     ]),
+                # ft.Row([
+                #     item_row,
+                #     # ft.Column([ft.Text("Inventory", size=20, color=ft.colors.WHITE), my_items_shop_row])],
+                #     ],
+                #     spacing=90),
+                # ft.Row([
+                #     ft.ElevatedButton(text="Buy", on_click=buy_item),
+                #     shop_item_text
+                # ]),
+                # item_info_column,
+                item_pack_button,
                 ft.Divider(),
-                ft.Row([
-                    # ft.Text("Zodiacs", size=20, color=ft.colors.WHITE),
-                    ft.Text("Trigrams", size=20, color=ft.colors.WHITE)],
-                    spacing=450),
-                ft.Row([
-                    # shop_zodiac_row,
-                    shop_trigram_row],
-                    spacing=120),
-                ft.Row([
-                    # ft.Row([ft.ElevatedButton(text="Buy", on_click=buy_zodiac),
-                    #     shop_zodiac_text]),
-                    ft.Row([ft.ElevatedButton(text="Buy", on_click=buy_trigram),
-                        shop_trigram_text]),
-                    ],
-                    spacing=450),
-                trigram_info_column,
+                # ft.Row([
+                #     # ft.Text("Zodiacs", size=20, color=ft.colors.WHITE),
+                #     ft.Text("Trigrams", size=20, color=ft.colors.WHITE)],
+                #     spacing=450),
+                # ft.Row([
+                #     # shop_zodiac_row,
+                #     shop_trigram_row],
+                #     spacing=120),
+                # ft.Row([
+                #     # ft.Row([ft.ElevatedButton(text="Buy", on_click=buy_zodiac),
+                #     #     shop_zodiac_text]),
+                #     ft.Row([ft.ElevatedButton(text="Buy", on_click=buy_trigram),
+                #         shop_trigram_text]),
+                #     ],
+                #     spacing=450),
+                # trigram_info_column,
+                trigram_pack_button,
                 ft.Divider(),
                 ft.Row([
                     ft.Text("Hand Size Upgrade (+1)", size=20, color=ft.colors.WHITE),
@@ -4794,16 +4908,15 @@ def main(page: ft.Page):
             panel.controls.append(shop_panel)
 
             # -------------------------------------------------------------
-            # initial mahjongker tab 
+            # item roll tab 
             # -------------------------------------------------------------
-
-            first_mahjongker_panel = ft.ExpansionPanel(
-                bgcolor=ft.colors.ORANGE_500,
-                header=ft.ListTile(title=ft.Text(f"Initial Mahjongker Roll")),
+            item_roll_panel = ft.ExpansionPanel(
+                bgcolor=ft.colors.PURPLE_500,
+                header=ft.ListTile(title=ft.Text(f"Item Roll")),
                 can_tap_header=True
             )
 
-            initial_mahjongkers_row = ft.GridView(
+            item_pack_row = ft.GridView(
                 # expand=1,
                 height=100,
                 width=400,
@@ -4814,9 +4927,11 @@ def main(page: ft.Page):
                 run_spacing=5,
             )
 
+            item_pack_info_column = ft.Column()
+
             # set up base row
             for i in range(3):
-                initial_mahjongkers_row.controls.append(
+                item_pack_row.controls.append(
                     ft.Container(
                         content=ft.Text("Empty", bgcolor="#000000",color=ft.colors.WHITE),
                         image=ft.DecorationImage(src="/tiles/empty.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
@@ -4824,17 +4939,55 @@ def main(page: ft.Page):
                         ink=True,
                         )
                     )
-            initial_mahjongkers_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_initial_mahjongkers))
-            initial_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
-            first_mahjongker_panel.content = ft.Column([
-                    initial_mahjongkers_row,
-                    ft.Row([
-                        ft.ElevatedButton(text="Select", on_click=add_initial_mahjongker),
-                        initial_mahjongker_text
-                    ])
+            item_pack_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_items))
+            item_roll_text = ft.Text("", color=ft.colors.WHITE)
+            item_roll_panel.content = ft.Column([
+                    item_pack_row,
+                    item_pack_info_column
                 ])
 
-            panel.controls.append(first_mahjongker_panel)
+            panel.controls.append(item_roll_panel)
+
+            # -------------------------------------------------------------
+            # free trigram tab 
+            # -------------------------------------------------------------
+            trigram_panel = ft.ExpansionPanel(
+                bgcolor=ft.colors.RED_500,
+                header=ft.ListTile(title=ft.Text(f"Trigram Roll")),
+                can_tap_header=True
+            )
+
+            trigram_row = ft.GridView(
+                # expand=1,
+                height=100,
+                width=400,
+                runs_count=1,
+                max_extent=95,
+                child_aspect_ratio=1.0,
+                spacing=5,
+                run_spacing=5,
+            )
+
+            trigram_pack_info_column = ft.Column()
+
+            # set up base row
+            for i in range(3):
+                trigram_row.controls.append(
+                    ft.Container(
+                        content=ft.Text("Empty", bgcolor="#000000",color=ft.colors.WHITE),
+                        image=ft.DecorationImage(src="/tiles/empty.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        )
+                    )
+            trigram_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_trigrams))
+            trigram_text = ft.Text("", color=ft.colors.WHITE)
+            trigram_panel.content = ft.Column([
+                    trigram_row,
+                    trigram_pack_info_column
+                ])
+
+            panel.controls.append(trigram_panel)
 
             # -------------------------------------------------------------
             # common mahjongker tab 
@@ -5007,16 +5160,18 @@ def main(page: ft.Page):
                 ])
 
             panel.controls.append(zodiac_panel)
+
             # -------------------------------------------------------------
-            # free trigram tab 
+            # initial mahjongker tab 
             # -------------------------------------------------------------
-            trigram_panel = ft.ExpansionPanel(
-                bgcolor=ft.colors.RED_500,
-                header=ft.ListTile(title=ft.Text(f"Trigram Roll")),
+
+            first_mahjongker_panel = ft.ExpansionPanel(
+                bgcolor=ft.colors.ORANGE_500,
+                header=ft.ListTile(title=ft.Text(f"Initial Mahjongker Roll")),
                 can_tap_header=True
             )
 
-            trigram_row = ft.GridView(
+            initial_mahjongkers_row = ft.GridView(
                 # expand=1,
                 height=100,
                 width=400,
@@ -5029,7 +5184,7 @@ def main(page: ft.Page):
 
             # set up base row
             for i in range(3):
-                trigram_row.controls.append(
+                initial_mahjongkers_row.controls.append(
                     ft.Container(
                         content=ft.Text("Empty", bgcolor="#000000",color=ft.colors.WHITE),
                         image=ft.DecorationImage(src="/tiles/empty.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
@@ -5037,17 +5192,17 @@ def main(page: ft.Page):
                         ink=True,
                         )
                     )
-            trigram_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_trigrams))
-            trigram_text = ft.Text("", color=ft.colors.WHITE)
-            trigram_panel.content = ft.Column([
-                    trigram_row,
+            initial_mahjongkers_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_initial_mahjongkers))
+            initial_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
+            first_mahjongker_panel.content = ft.Column([
+                    initial_mahjongkers_row,
                     ft.Row([
-                        ft.ElevatedButton(text="Select", on_click=select_trigram),
-                        rare_mahjongker_text
+                        ft.ElevatedButton(text="Select", on_click=add_initial_mahjongker),
+                        initial_mahjongker_text
                     ])
                 ])
 
-            panel.controls.append(trigram_panel)
+            panel.controls.append(first_mahjongker_panel)
 
             page.views.append(
                 ft.View(
