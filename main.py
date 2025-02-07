@@ -34,7 +34,7 @@ HALF_FLUSH_UPGRADE_AMOUNT = 0.15
 FLUSH_UPGRADE_AMOUNT = 0.2
 SHOP_MAHJONGKER_RARITIES = ["common", "uncommon", "rare"]
 SHOP_MAHJONGKER_RARITY_PROBABILITIES = {1:[82, 13, 0], 2:[73, 25, 2], 3:[60, 30, 10], 4:[50, 35, 15], 5:[40, 40, 20]}
-ITEM_RARITY_PROBABILITY = [85,10,5]
+ITEM_RARITY_PROBABILITY = [80,15,5]
 START_MONEY = 2
 ROUND_UBI = [6,11,15,18,18]
 
@@ -2734,20 +2734,28 @@ def main(page: ft.Page):
         item_pack_info_column.controls.clear()
         i = 0
         selected_i = []
+        borders = []
         while i < 3:
             rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=ITEM_RARITY_PROBABILITY)[0]
             print(rarity_roll)
             item = roll_item(rarity_roll, selected_i)
             selected_i.append(all_items_list.index(item))
+            if rarity_roll == "common":
+                borders.append(ft.border.all(4, ft.colors.BLUE_600))
+            elif rarity_roll == "uncommon":
+                borders.append(ft.border.all(4, ft.colors.PURPLE_600))
+            else:
+                borders.append(ft.border.all(4, ft.colors.YELLOW_600))
             i = i+1
 
+        j = 0
         for i in selected_i:
             item = all_items_list[i]
             item_pack_row.controls.append(
                 ft.Container(
                         image=ft.DecorationImage(src=item.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                         content=ft.Text(f"{item.name}", bgcolor="#000000", color=ft.colors.WHITE),
-                        border_radius=ft.border_radius.all(5),
+                        border=borders[j],
                         ink=True,
                         on_click=handle_add_shop_item_select,
                         tooltip=ft.Tooltip(
@@ -2774,6 +2782,7 @@ def main(page: ft.Page):
                     )
             )
             item_pack_info_column.controls.append(ft.Text(f"{item.name} : {item.description}", color=ft.colors.WHITE, size=20))
+            j += 1
 
         item_pack_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_items))
         page.update()
@@ -3034,20 +3043,28 @@ def main(page: ft.Page):
         shop_info_column.controls.clear()
         i = 0
         shop_selected_i = []
+        borders = []
         while i < 5:
             rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_RARITY_PROBABILITIES[int(shop_round)])[0]
             print(rarity_roll)
             mahjongker = roll_mahjongker(rarity_roll)
             shop_selected_i.append(all_mahjongkers_list.index(mahjongker))
+            if rarity_roll == "common":
+                borders.append(ft.border.all(4, ft.colors.BLUE_600))
+            elif rarity_roll == "uncommon":
+                borders.append(ft.border.all(4, ft.colors.PURPLE_600))
+            else:
+                borders.append(ft.border.all(4, ft.colors.YELLOW_600))
             i = i+1
 
+        j = 0
         for i in shop_selected_i:
             mahjongker = all_mahjongkers_list[i]
             shop_row.controls.append(
                 ft.Container(
                         image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                         content=ft.Text(f"{mahjongker.name} - ${mahjongker.cost}", bgcolor="#000000", color=ft.colors.WHITE),
-                        border_radius=ft.border_radius.all(5),
+                        border=borders[j],
                         ink=True,
                         on_click=handle_add_shop_mahjongker_select,
                         tooltip=ft.Tooltip(
@@ -3074,6 +3091,8 @@ def main(page: ft.Page):
                     )
             )
             shop_info_column.controls.append(ft.Text(f"${mahjongker.cost} - {mahjongker.name} : {mahjongker.description}", color=ft.colors.WHITE, size=20))
+            j += 1
+        reroll_cost = 1
 
         # items
         # item_row.controls.clear()
@@ -3242,20 +3261,29 @@ def main(page: ft.Page):
             shop_info_column.controls.clear()
             i = 0
             shop_selected_i = []
+            borders = []
+
             while i < 5:
                 rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_RARITY_PROBABILITIES[int(shop_round)])[0]
                 print(rarity_roll)
                 mahjongker = roll_mahjongker(rarity_roll)
                 shop_selected_i.append(all_mahjongkers_list.index(mahjongker))
+                if rarity_roll == "common":
+                    borders.append(ft.border.all(4, ft.colors.BLUE_600))
+                elif rarity_roll == "uncommon":
+                    borders.append(ft.border.all(4, ft.colors.PURPLE_600))
+                else:
+                    borders.append(ft.border.all(4, ft.colors.YELLOW_600))
                 i = i+1
 
+            j = 0
             for i in shop_selected_i:
                 mahjongker = all_mahjongkers_list[i]
                 shop_row.controls.append(
                     ft.Container(
                             image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
                             content=ft.Text(f"{mahjongker.name} - ${mahjongker.cost}", bgcolor="#000000", color=ft.colors.WHITE),
-                            border_radius=ft.border_radius.all(5),
+                            border=borders[j],
                             ink=True,
                             on_click=handle_add_shop_mahjongker_select,
                             tooltip=ft.Tooltip(
@@ -3282,6 +3310,7 @@ def main(page: ft.Page):
                         )
                 )
                 shop_info_column.controls.append(ft.Text(f"${mahjongker.cost} - {mahjongker.name} : {mahjongker.description}", color=ft.colors.WHITE, size=20))
+                j += 1
             shop_row.controls.append(ft.FloatingActionButton(text=f"${reroll_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_mahjongkers))
             page.update()
 
@@ -4911,7 +4940,7 @@ def main(page: ft.Page):
             # item roll tab 
             # -------------------------------------------------------------
             item_roll_panel = ft.ExpansionPanel(
-                bgcolor=ft.colors.PURPLE_500,
+                bgcolor=ft.colors.PURPLE_300,
                 header=ft.ListTile(title=ft.Text(f"Item Roll")),
                 can_tap_header=True
             )
