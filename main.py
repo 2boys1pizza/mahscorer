@@ -3538,6 +3538,7 @@ def main(page: ft.Page):
             else:
                 shop_mahjongker_text.value = "TOO POOR"
         refresh_shop_inventory()
+        refresh_my_mahjongkers()
         page.update()
 
     def sell_mahjongker(e):
@@ -5210,6 +5211,12 @@ def main(page: ft.Page):
                 ])
 
             panel.controls.append(zodiac_panel)
+
+            # -------------------------------------------------------------
+            # jongkers panel for comp shop selling
+            # -------------------------------------------------------------
+
+            panel.controls.append(my_jongkers_panel)
 
             # -------------------------------------------------------------
             # initial mahjongker tab 
