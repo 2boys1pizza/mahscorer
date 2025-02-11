@@ -2,7 +2,7 @@ class Item:
     name = ""
     description = ""
     cost = 3
-    rarity = "" #common, uncommon, rare
+    rarity = "" #common, uncommon, rare, piggy
     img_src = ""
 
     def __repr__(self):
@@ -243,14 +243,14 @@ class Item_Piggy_Bank(Item):
     name = "Piggy Bank"
     description = "Worth $1. Pick break or wait. If wait, the next piggy bank you get is worth double. If break, get the value of the piggy bank, then reset back to $1."
     cost = 2
-    rarity = "common"
+    rarity = "piggy"
     img_src = "/items/piggy-bank.jpg"
 
 class Item_Pivoter(Item):
     name = "Pivoter"
     description = "Discard a random tile in your hand.  The next time you draw you get a copy of the drawn tile."
     cost = 2
-    rarity = "common"
+    rarity = "uncommon"
     img_src = "/items/pivoter.jpg"
 
 class Item_Well_Laid_Plans(Item):
@@ -379,6 +379,14 @@ all_item_names_dict["Piggy Bank"] = Item_Piggy_Bank()
 all_item_names_dict["Pivoter"] = Item_Pivoter()
 all_item_names_dict["Well Laid Plans"] = Item_Well_Laid_Plans()
 
+# --------------------------------------
+# Piggy ITEMS LIST
+# --------------------------------------
+piggy_items_list = []
+for item in all_items_list:
+    if item.rarity == "piggy":
+        piggy_items_list.append(item) 
+        
 # --------------------------------------
 # COMMON ITEMS LIST
 # --------------------------------------

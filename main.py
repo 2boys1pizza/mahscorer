@@ -33,10 +33,11 @@ TRIPLET_UPGRADE_AMOUNT = 0.15
 HALF_FLUSH_UPGRADE_AMOUNT = 0.15
 FLUSH_UPGRADE_AMOUNT = 0.2
 SHOP_MAHJONGKER_RARITIES = ["common", "uncommon", "rare"]
-SHOP_MAHJONGKER_RARITY_PROBABILITIES = {1:[82, 13, 0], 2:[73, 25, 2], 3:[60, 30, 10], 4:[50, 35, 15], 5:[40, 40, 20]}
-ITEM_RARITY_PROBABILITY = [80,15,5]
+SHOP_MAHJONGKER_RARITY_PROBABILITIES = {1:[83, 12, 0], 2:[75, 25, 0], 3:[65, 35, 0], 4:[50, 50, 0], 5:[40, 60, 0]}
+ITEM_RARITIES = ["piggy", "common", "uncommon", "rare"]
+ITEM_RARITY_PROBABILITY = [13, 67, 18, 2]
 START_MONEY = 2
-ROUND_UBI = [6,11,15,18,18]
+ROUND_UBI = [6,6,6,6,6]
 
 # hands
 sequence_hand_level = 0
@@ -187,6 +188,7 @@ hand_upgrade_enabled = True
 shop_info_column = []
 trigram_pack_info_column = []
 item_pack_info_column = []
+initial_mahjongker_info_column = []
 
 zodiac_row = []
 zodiac_text = []
@@ -414,7 +416,7 @@ def main(page: ft.Page):
             if mahjongker.name == "AYCker":
                 aycker = mahjongker
                 break
-        aycker.point_value = aycker.point_value + 15
+        aycker.point_value = aycker.point_value + 7
         aycker_text.value = f"AYCker value: {aycker.point_value}"
         page.update()
 
@@ -425,7 +427,7 @@ def main(page: ft.Page):
             if mahjongker.name == "AYCker":
                 aycker = mahjongker
                 break
-        aycker.point_value = max(0, aycker.point_value - 15)
+        aycker.point_value = max(0, aycker.point_value - 7)
         aycker_text.value = f"AYCker value: {aycker.point_value}"
         page.update()
 
@@ -464,7 +466,7 @@ def main(page: ft.Page):
             if mahjongker.name == "Pingker":
                 pingker = mahjongker
                 break
-        pingker.point_value = pingker.point_value + 20
+        pingker.point_value = pingker.point_value + 7
         pingker_text.value = f"Pingker value: {pingker.point_value}"
         page.update()
 
@@ -475,7 +477,7 @@ def main(page: ft.Page):
             if mahjongker.name == "Pingker":
                 pingker = mahjongker
                 break
-        pingker.point_value = max(0, pingker.point_value - 20)
+        pingker.point_value = max(0, pingker.point_value - 7)
         pingker_text.value = f"Pingker value: {pingker.point_value}"
         page.update()
 
@@ -514,7 +516,7 @@ def main(page: ft.Page):
             if mahjongker.name == "KingKongker":
                 kingkongker = mahjongker
                 break
-        kingkongker.point_value = kingkongker.point_value + 40
+        kingkongker.point_value = kingkongker.point_value + 20
         kingkongker_text.value = f"KingKongker value: {kingkongker.point_value}"
         page.update()
 
@@ -525,7 +527,7 @@ def main(page: ft.Page):
             if mahjongker.name == "KingKongker":
                 kingkongker = mahjongker
                 break
-        kingkongker.point_value = max(0, kingkongker.point_value - 40)
+        kingkongker.point_value = max(0, kingkongker.point_value - 20)
         kingkongker_text.value = f"KingKongker value: {kingkongker.point_value}"
         page.update()
 
@@ -614,7 +616,7 @@ def main(page: ft.Page):
             if mahjongker.name == "Fuckgker":
                 fuckgker = mahjongker
                 break
-        fuckgker.point_value = fuckgker.point_value + 10
+        fuckgker.point_value = fuckgker.point_value + 5
         fuckgker_text.value = f"Fuckgker value: {fuckgker.point_value}"
         page.update()
 
@@ -625,7 +627,7 @@ def main(page: ft.Page):
             if mahjongker.name == "Fuckgker":
                 fuckgker = mahjongker
                 break
-        fuckgker.point_value = max(0, fuckgker.point_value - 10)
+        fuckgker.point_value = max(0, fuckgker.point_value - 5)
         fuckgker_text.value = f"Fuckgker value: {fuckgker.point_value}"
         page.update()
 
@@ -664,7 +666,7 @@ def main(page: ft.Page):
             if mahjongker.name == "Suckgker":
                 suckgker = mahjongker
                 break
-        suckgker.point_value = suckgker.point_value + 10
+        suckgker.point_value = suckgker.point_value + 5
         suckgker_text.value = f"Suckgker value: {suckgker.point_value}"
         page.update()
 
@@ -675,7 +677,7 @@ def main(page: ft.Page):
             if mahjongker.name == "Suckgker":
                 suckgker = mahjongker
                 break
-        suckgker.point_value = max(0, suckgker.point_value - 10)
+        suckgker.point_value = max(0, suckgker.point_value - 5)
         suckgker_text.value = f"Suckgker value: {suckgker.point_value}"
         page.update()
 
@@ -2406,13 +2408,14 @@ def main(page: ft.Page):
     # -------------------------------------------------------------
     # SHOP FUNC
     # -------------------------------------------------------------
-    # common mahjongker roll
+    # initial mahjongker roll
     def refresh_initial_mahjongkers(e):
         global initial_mahjongkers_row
+        global initial_mahjongker_info_column
         initial_mahjongkers_row.controls.clear()
         i = 0
         selected_i = []
-        while i < 3:
+        while i < 10:
             index = random.randint(0,len(initial_mahjongkers_list)-1)
             if index not in selected_i: 
                 mahjongker = initial_mahjongkers_list[index]
@@ -2453,7 +2456,8 @@ def main(page: ft.Page):
                         # tooltip=MahjongkerTooltip(mahjongker=mahjongker)
                     )
             )
-        initial_mahjongkers_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_initial_mahjongkers))
+            initial_mahjongker_info_column.controls.append(ft.Text(f"{mahjongker.name} : {mahjongker.description}", color=ft.colors.WHITE, size=20))
+        initial_mahjongkers_row.controls.append(ft.FloatingActionButton(icon=ft.icons.CHECK, on_click=refresh_initial_mahjongkers))
         page.update()
 
     def refresh_initial_mahjongkers_empty():
@@ -2468,7 +2472,7 @@ def main(page: ft.Page):
                     ink=True,
                     )
                 )
-        initial_mahjongkers_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_initial_mahjongkers))
+        initial_mahjongkers_row.controls.append(ft.FloatingActionButton(icon=ft.icons.CHECK, on_click=refresh_initial_mahjongkers))
         page.update()
 
     def handle_add_initial_mahjongker_select(e):
@@ -2479,12 +2483,23 @@ def main(page: ft.Page):
 
     def add_initial_mahjongker(e):
         global my_mahjongkers
+        global initial_mahjongkers_row
         global initial_mahjongker_text
-        if initial_mahjongker_text.value != "":
-            my_mahjongkers.append(all_mahjongkers_dict[initial_mahjongker_text.value.lower()])
+        if initial_mahjongker_text.value == "":
+            return
+        mahjongker = all_mahjongkers_dict[initial_mahjongker_text.value.lower()]
+        my_mahjongkers.append(mahjongker)
+        # then replace this slot in the grid view
+        for container in initial_mahjongkers_row.controls:
+            # print(container.content.value)
+            if mahjongker.name in container.content.value:
+                selected_container = container
+                break
         initial_mahjongker_text.value = ""
+        selected_container.image="/jongker/sold.png"
+        selected_container.content.value= "SOLD"
+        page.update()
         refresh_my_mahjongkers()
-        refresh_initial_mahjongkers_empty()
 
     # common mahjongker roll
     def refresh_common_mahjongkers(e):
@@ -2736,11 +2751,13 @@ def main(page: ft.Page):
         selected_i = []
         borders = []
         while i < 3:
-            rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=ITEM_RARITY_PROBABILITY)[0]
+            rarity_roll = random.choices(ITEM_RARITIES, weights=ITEM_RARITY_PROBABILITY)[0]
             print(rarity_roll)
             item = roll_item(rarity_roll, selected_i)
-            selected_i.append(all_items_list.index(item))
-            if rarity_roll == "common":
+            selected_i.append(all_items_list.index(item))   
+            if rarity_roll == "piggy":
+                borders.append(ft.border.all(4, ft.colors.GREEN_600))
+            elif rarity_roll == "common":
                 borders.append(ft.border.all(4, ft.colors.BLUE_600))
             elif rarity_roll == "uncommon":
                 borders.append(ft.border.all(4, ft.colors.PURPLE_600))
@@ -2784,7 +2801,7 @@ def main(page: ft.Page):
             item_pack_info_column.controls.append(ft.Text(f"{item.name} : {item.description}", color=ft.colors.WHITE, size=20))
             j += 1
 
-        item_pack_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_items))
+        item_pack_row.controls.append(ft.FloatingActionButton(icon=ft.icons.CHECK, on_click=refresh_items))
         page.update()
 
     def refresh_items_empty():
@@ -2799,7 +2816,7 @@ def main(page: ft.Page):
                     ink=True,
                     )
                 )
-        item_pack_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_items))
+        item_pack_row.controls.append(ft.FloatingActionButton(icon=ft.icons.CHECK, on_click=refresh_items))
         page.update()
 
     def handle_item_select(e):
@@ -2989,7 +3006,9 @@ def main(page: ft.Page):
                     return mahjongker 
 
     def roll_item(rarity, selected_i):
-        if rarity == "common":
+        if rarity == "piggy":
+            return piggy_items_list[0]
+        elif rarity == "common":
             for i in range(20):
                 index = random.randint(0,len(common_items_list)-1)
                 item = common_items_list[index]
@@ -3044,7 +3063,7 @@ def main(page: ft.Page):
         i = 0
         shop_selected_i = []
         borders = []
-        while i < 5:
+        while i < 6:
             rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_RARITY_PROBABILITIES[int(shop_round)])[0]
             print(rarity_roll)
             mahjongker = roll_mahjongker(rarity_roll)
@@ -3263,7 +3282,7 @@ def main(page: ft.Page):
             shop_selected_i = []
             borders = []
 
-            while i < 5:
+            while i < 6:
                 rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_RARITY_PROBABILITIES[int(shop_round)])[0]
                 print(rarity_roll)
                 mahjongker = roll_mahjongker(rarity_roll)
@@ -3981,6 +4000,7 @@ def main(page: ft.Page):
         global trigram_text
         global initial_mahjongkers_row
         global initial_mahjongker_text
+        global initial_mahjongker_info_column
         global common_mahjongkers_row
         global common_mahjongker_text
         global uncommon_mahjongkers_row
@@ -4416,13 +4436,14 @@ def main(page: ft.Page):
 
             add_tiles_panel.content = ft.Column([
                     tile_radio,
-                    ft.Divider(),
-                    modifier_radio,
-                    ft.Divider(),
-                    seal_radio,
-                    ft.Row(
-                        [all_tile_grid, lake_adjuster],
-                        spacing=50),
+                    # ft.Divider(),
+                    # modifier_radio,
+                    # ft.Divider(),
+                    # seal_radio,
+                    all_tile_grid,
+                    # ft.Row(
+                    #     [all_tile_grid, lake_adjuster],
+                    #     spacing=50),
                     selected_tiles_row,
                     ft.ElevatedButton(text="Add To Hand", on_click=add_selected_tiles_to_hand)
                 ])
@@ -4556,7 +4577,7 @@ def main(page: ft.Page):
             shop_row = ft.GridView(
                 # expand=1,
                 height=100,
-                width=600,
+                width=700,
                 runs_count=1,
                 max_extent=95,
                 child_aspect_ratio=1.0,
@@ -4688,8 +4709,8 @@ def main(page: ft.Page):
                 #     ],
                 #     spacing=450),
                 # trigram_info_column,
-                trigram_pack_button,
-                ft.Divider(),
+                # trigram_pack_button,
+                # ft.Divider(),
                 ft.Row([
                     ft.Text("Hand Size Upgrade (+1)", size=20, color=ft.colors.WHITE),
                     ]),
@@ -4793,7 +4814,7 @@ def main(page: ft.Page):
                         )
                     shop_info_column.controls.append(ft.Text(f"${mahjongker.cost} - {mahjongker.name} : {mahjongker.description}", color=ft.colors.WHITE, size=20))
             else:
-                for i in range(5):
+                for i in range(6):
                     shop_row.controls.append(
                         ft.Container(
                             image=ft.DecorationImage(src="/jongker/sold.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
@@ -5203,7 +5224,7 @@ def main(page: ft.Page):
             initial_mahjongkers_row = ft.GridView(
                 # expand=1,
                 height=100,
-                width=400,
+                width=1100,
                 runs_count=1,
                 max_extent=95,
                 child_aspect_ratio=1.0,
@@ -5211,8 +5232,10 @@ def main(page: ft.Page):
                 run_spacing=5,
             )
 
+            initial_mahjongker_info_column = ft.Column()
+
             # set up base row
-            for i in range(3):
+            for i in range(10):
                 initial_mahjongkers_row.controls.append(
                     ft.Container(
                         content=ft.Text("Empty", bgcolor="#000000",color=ft.colors.WHITE),
@@ -5221,14 +5244,15 @@ def main(page: ft.Page):
                         ink=True,
                         )
                     )
-            initial_mahjongkers_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_initial_mahjongkers))
+            initial_mahjongkers_row.controls.append(ft.FloatingActionButton(icon=ft.icons.CHECK, on_click=refresh_initial_mahjongkers))
             initial_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
             first_mahjongker_panel.content = ft.Column([
                     initial_mahjongkers_row,
                     ft.Row([
                         ft.ElevatedButton(text="Select", on_click=add_initial_mahjongker),
                         initial_mahjongker_text
-                    ])
+                    ]),
+                    initial_mahjongker_info_column
                 ])
 
             panel.controls.append(first_mahjongker_panel)

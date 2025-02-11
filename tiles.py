@@ -37,6 +37,7 @@ for rank in ["east", "south", "west", "north"]:
     all_tiles["wind"][rank] = Tile(rank, "wind", 10, "none", "none", "/tiles/" + "wind" + "-" + rank + ".jpg")
 
 all_tiles["special"]["bomb"] = Tile("bomb", "special", 10, "none", "none", "/tiles/" + "special" + "-" + "bomb" + ".jpg")
+all_tiles["special"]["jackpot"] = Tile("jackpot", "special", 10, "none", "none", "/tiles/" + "special" + "-" + "jackpot" + ".jpg")
 
 # thunder tiles
 all_tiles_thunder = {"dot":{}, "bamboo":{}, "character":{}, "dragon":{}, "wind":{}, "special":{}}
