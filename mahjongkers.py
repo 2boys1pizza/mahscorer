@@ -2188,6 +2188,17 @@ class DoubDoubker(Mahjongker):
                 return (0, 0)
         return (0, 0)
 
+# Jeaucoeur
+class Jeaucoeur(Mahjongker):
+    name = "Jeaucoeur"
+    description = "When you chi you may shuffle and redraw up to 3 tiles in your hand."
+    priority = 3 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/jeaucoeur.jpg"
+
+    def eval_score(self, my_mahjongkers):
+        return (0, 0)
 
 
 # --------------------------------------------------------------------------------------
@@ -2327,6 +2338,7 @@ all_mahjongkers_list.append(Squadker())
 all_mahjongkers_list.append(Goalker())
 all_mahjongkers_list.append(Doubker())
 all_mahjongkers_list.append(DoubDoubker())
+all_mahjongkers_list.append(Jeaucoeur())
 
 # --------------------------------------------------------------------------------------
 # MAHJONGKER DICT
@@ -2460,11 +2472,13 @@ all_mahjongkers_dict["discombobuker"] = Discombobuker()
 all_mahjongkers_dict["pivotker"] = Pivotker()
 all_mahjongkers_dict["spanker"] = Spanker()
 all_mahjongkers_dict["jackblackgker"] = JackBlackgker()
-all_mahjongkers_dict["recruitker"] = (Recruitker())
-all_mahjongkers_dict["squadker"] = (Squadker())
-all_mahjongkers_dict["goalker"] = (Goalker())
-all_mahjongkers_dict["doubker"] = (Doubker())
-all_mahjongkers_dict["doubdoubker"] = (DoubDoubker())
+all_mahjongkers_dict["recruitker"] = Recruitker()
+all_mahjongkers_dict["squadker"] = Squadker()
+all_mahjongkers_dict["goalker"] = Goalker()
+all_mahjongkers_dict["doubker"] = Doubker()
+all_mahjongkers_dict["doubdoubker"] = DoubDoubker()
+all_mahjongkers_dict["jeaucoeur"] = Jeaucoeur()
+
 
 # ----------------------------------------------
 
@@ -2555,3 +2569,4 @@ initial_mahjongkers_list.append(Recruitker())
 initial_mahjongkers_list.append(Goalker())
 initial_mahjongkers_list.append(Doubker())
 initial_mahjongkers_list.append(DoubDoubker())
+initial_mahjongkers_list.append(Jeaucoeur())

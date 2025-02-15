@@ -33,7 +33,7 @@ TRIPLET_UPGRADE_AMOUNT = 0.15
 HALF_FLUSH_UPGRADE_AMOUNT = 0.15
 FLUSH_UPGRADE_AMOUNT = 0.2
 SHOP_MAHJONGKER_RARITIES = ["common", "uncommon", "rare"]
-SHOP_MAHJONGKER_RARITY_PROBABILITIES = {1:[83, 12, 0], 2:[75, 25, 0], 3:[60, 35, 5], 4:[45, 45, 10], 5:[30, 50, 20]}
+SHOP_MAHJONGKER_RARITY_PROBABILITIES = {1:[83, 12, 0], 2:[74, 25, 1], 3:[58, 35, 7], 4:[40, 45, 15], 5:[30, 50, 20]}
 ITEM_RARITIES = ["piggy", "common", "uncommon", "rare"]
 ITEM_RARITY_PROBABILITY = [13, 65, 17, 5]
 START_MONEY = 2
@@ -121,6 +121,7 @@ bamenker_text = ft.Text("Bamenker value: 0", size=40)
 denker_text = ft.Text("Denker value: 0", size=40)
 chenker_text = ft.Text("Chenker value: 0", size=40)
 tanavastker_text = ft.Text("Tanavastker value: 0", size=40)
+jackblackgker_text = ft.Text("JackBlackgker value: 0", size=40)
 lake_text = ft.Text("Lake value: 0", size=40)
 mahjong_pts_text = ft.Text("Mahjong Pts: 0 pts", size=20)
 mahjong_money_text = ft.Text("Mahjong Money: $ 0", size=20)
@@ -1231,6 +1232,56 @@ def main(page: ft.Page):
         tanavastker_text.value = f"Tanavastker value: {tanavastker.point_value}"
         page.update()
 
+    def handle_jackblackgker_select(e):
+        global my_mahjongker_text
+        global my_jongkers_panel
+        global jackblackgker_text
+        # Add UI to increase/decrease value of ayceker
+        jackblackgker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Jackblackgker":
+                jackblackgker = mahjongker
+                break
+        jackblackgker_text.value = f"Jackblackgker value: {jackblackgker.point_value}"
+        upgrade_row = ft.Row([
+            jackblackgker_text,
+            ft.Column([
+                ft.ElevatedButton(text="↑", on_click=increment_jackblackgker_score),
+                ft.ElevatedButton(text="↓", on_click=decrement_jackblackgker_score)
+                ])
+            ],
+            alignment=ft.MainAxisAlignment.CENTER)
+        if len(my_jongkers_panel.content.controls) >= 3:
+            my_jongkers_panel.content.controls[1] = upgrade_row
+        else:
+            my_jongkers_panel.content.controls.insert(1, upgrade_row)
+
+        jonker_name = e.control.image.src.split("/")[2].split(".")[0]
+        my_mahjongker_text.value = all_mahjongkers_dict[jonker_name].name
+        page.update()
+
+    def increment_jackblackgker_score(e):
+        global jackblackgker_text
+        jackblackgker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Jackblackgker":
+                jackblackgker = mahjongker
+                break
+        jackblackgker.point_value = jackblackgker.point_value + 5
+        jackblackgker_text.value = f"Jackblackgker value: {jackblackgker.point_value}"
+        page.update()
+
+    def decrement_jackblackgker_score(e):
+        global jackblackgker_text
+        jackblackgker = []
+        for mahjongker in my_mahjongkers:
+            if mahjongker.name == "Jackblackgker":
+                jackblackgker = mahjongker
+                break
+        jackblackgker.point_value = max(0, jackblackgker.point_value - 5)
+        jackblackgker_text.value = f"Jackblackgker value: {jackblackgker.point_value}"
+        page.update()
+
     def apply_mahjongker_filter(e):
         global filtered_mahjongkers_list
         global mahjongker_filter
@@ -1779,6 +1830,37 @@ def main(page: ft.Page):
                         border_radius=ft.border_radius.all(5),
                         ink=True,
                         on_click=handle_tanavastker_select,
+                        tooltip=ft.Tooltip(
+                            message=mahjongker.description,
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        )
+                    )
+                )
+            elif mahjongker.name == "Jackblackgker":
+                my_mahjongkers_containers.append(
+                    ft.Container(
+                        image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(mahjongker.name, bgcolor="#000000", color=ft.colors.WHITE),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        on_click=handle_jackblackgker_select,
                         tooltip=ft.Tooltip(
                             message=mahjongker.description,
                             padding=20,
@@ -3292,7 +3374,7 @@ def main(page: ft.Page):
                 elif rarity_roll == "uncommon":
                     borders.append(ft.border.all(4, ft.colors.PURPLE_600))
                 else:
-                    borders.append(ft.border.all(4, ft.colors.YELLOW_600))
+                    borders.append(ft.border.all(4, ft.colors.RED_600))
                 i = i+1
 
             j = 0
@@ -4992,10 +5074,11 @@ def main(page: ft.Page):
                     )
             item_pack_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_items))
             item_roll_text = ft.Text("", color=ft.colors.WHITE)
-            item_roll_panel.content = ft.Column([
+            item_roll_panel.content = ft.Row([ft.Column([
                     item_pack_row,
                     item_pack_info_column
-                ])
+                ],
+                horizontal_alignment=ft.CrossAxisAlignment.START)])
 
             panel.controls.append(item_roll_panel)
 
