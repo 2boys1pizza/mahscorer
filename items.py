@@ -59,7 +59,7 @@ class Item_Controlled_Chaos(Item):
 
 class Item_Disguise(Item):
     name = "Disguise"
-    description = "Change the suit of a tile in your hand."
+    description = "Change the suit of a tile in your hand. You cannot lock in this tile this turn."
     cost = 6
     rarity = "rare"
     img_src = "/items/disguise.jpg"
@@ -171,7 +171,7 @@ class Item_Trap_Card(Item):
 
 class Item_Upheaval(Item):
     name = "Upheaval"
-    description = "Change the rank of one of your tiles into rank of your choice."
+    description = "Change the rank of one of your tiles into rank of your choice. You cannot lock in this tile this turn."
     cost = 6
     rarity = "rare"
     img_src = "/items/upheaval.jpg"

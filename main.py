@@ -33,9 +33,9 @@ TRIPLET_UPGRADE_AMOUNT = 0.15
 HALF_FLUSH_UPGRADE_AMOUNT = 0.15
 FLUSH_UPGRADE_AMOUNT = 0.2
 SHOP_MAHJONGKER_RARITIES = ["common", "uncommon", "rare"]
-SHOP_MAHJONGKER_RARITY_PROBABILITIES = {1:[83, 12, 0], 2:[75, 25, 0], 3:[65, 35, 0], 4:[50, 50, 0], 5:[40, 60, 0]}
+SHOP_MAHJONGKER_RARITY_PROBABILITIES = {1:[83, 12, 0], 2:[75, 25, 0], 3:[60, 35, 5], 4:[45, 45, 10], 5:[30, 50, 20]}
 ITEM_RARITIES = ["piggy", "common", "uncommon", "rare"]
-ITEM_RARITY_PROBABILITY = [13, 67, 18, 2]
+ITEM_RARITY_PROBABILITY = [13, 65, 17, 5]
 START_MONEY = 2
 ROUND_UBI = [6,6,6,6,6]
 
@@ -2762,7 +2762,7 @@ def main(page: ft.Page):
             elif rarity_roll == "uncommon":
                 borders.append(ft.border.all(4, ft.colors.PURPLE_600))
             else:
-                borders.append(ft.border.all(4, ft.colors.YELLOW_600))
+                borders.append(ft.border.all(4, ft.colors.RED_600))
             i = i+1
 
         j = 0
@@ -3073,7 +3073,7 @@ def main(page: ft.Page):
             elif rarity_roll == "uncommon":
                 borders.append(ft.border.all(4, ft.colors.PURPLE_600))
             else:
-                borders.append(ft.border.all(4, ft.colors.YELLOW_600))
+                borders.append(ft.border.all(4, ft.colors.RED_600))
             i = i+1
 
         j = 0

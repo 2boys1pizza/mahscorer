@@ -72,6 +72,32 @@ class Meld:
     def __repr__(self):
         return repr(self.tiles)
 
+    def __eq__(self, other):
+        if self.suit != other.suit:
+            return False
+        selfranks = []
+        otherranks = []
+        for tile in self.tiles:
+            selfranks.append(tile.rank)
+        for tile in other.tiles:
+            otherranks.append(tile.rank)
+        while len(selfranks) != 0 and len(otherranks) != 0:
+            comp = selfranks[0]
+            print(comp)
+            if comp in otherranks:
+                selfranks.remove(comp)
+                otherranks.remove(comp)
+                print(selfranks)
+                print(otherranks)
+            else:
+                return False
+        print(selfranks)
+        print(otherranks)
+        if len(selfranks) == 0 and len(otherranks) == 0:
+            return True
+        else: 
+            return False
+
 class Eyes:
     tiles = [] # array of 2 Tiles
     suit = "none"
@@ -474,8 +500,8 @@ class Gapker(Mahjongker):
     name = "Gapker"
     description = "Sequences may contain one gap of 1 (1-2-4 valid, 2-4-6 not valid)"
     priority = 6 
-    cost = RARE_MAHJONGKER_COST
-    sell_value = RARE_MAHJONGKER_SELL_VALUE
+    cost = CONSISTENCY_MAHJONGKER_COST
+    sell_value = CONSISTENCY_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/gapker.jpg"
 
     def eval_score(self, my_mahjongkers):
@@ -731,7 +757,7 @@ class Chingker(Mahjongker):
 # Hoardker
 class Hoardker(Mahjongker):
     name = "Hoardker"
-    description = "Whenever a pretty is drawn, you may discard a tile at random and you gain two items. Draw to replace the discarded tile"
+    description = "Whenever a pretty is drawn, you may discard a tile at random and you gain two items. Draw to replace the discarded tile."
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -786,7 +812,7 @@ class Seeker(Mahjongker):
 # LeeSinker
 class LeeSinker(Mahjongker):
     name = "LeeSinker"
-    description = "You can mahjong without eyes. -20 pts if you mahjong this way."
+    description = "Your eyes must be 3 tiles.  +1 hand size."
     priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
@@ -794,10 +820,7 @@ class LeeSinker(Mahjongker):
     active = False
 
     def eval_score(self, my_mahjongkers):
-        if active:
-            return (-20, 0)
-        else:
-            return (0, 0)
+        return (0, 0)
 
 # SeeingDoubker
 class SeeingDoubker(Mahjongker):
@@ -2047,6 +2070,126 @@ class Discombobuker(Mahjongker):
     def eval_score(self, my_mahjongkers):
         return (40, 0)
 
+# Pivotker
+class Pivotker(Mahjongker):
+    name = "Pivotker"
+    description = "Gain +5 pts for every tile you score that is not from your opening hand."
+    priority = 1
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/pivotker.jpg"
+
+    def eval_score(self, my_mahjongkers, tile):
+        return (0, 0)
+
+# Spanker
+class Spanker(Mahjongker):
+    name = "Spanker"
+    description = "1-5-9 is now a valid sequence meld.  +15 pts for 1-5-9 melds."
+    priority = 2 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/spanker.jpg"
+
+    def eval_score(self, my_mahjongkers, meld):
+        ranks = []
+        for tile in meld.tiles:
+            ranks.append(tile.rank)
+
+        if "1" in ranks and "5" in ranks and "9" in ranks:
+            return (15, 0)
+        return (0, 0)
+
+# JackBlackgker
+class JackBlackgker(Mahjongker):
+    name = "JackBlackgker"
+    description = "Counter starts at 21.  Whenever you discard a tile, decrease the counter by the rank of the tile, honors are 10.  If the counter is at 0, this permanently gains +10 pts.  Else if you go negative, this permanently loses 5 pts.  Then reset the counter in either case."
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/jackblackgker.jpg"
+    point_value = 0
+
+    def eval_score(self, my_mahjongkers):
+        return (self.point_value, 0)
+
+# Recruitker
+class Recruitker(Mahjongker):
+    name = "Recruitker"
+    description = "The first mahjongker you buy each shop phase is free."
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/recruitker.jpg"
+
+    def eval_score(self, my_mahjongkers):
+        return (0, 0)
+
+# Squadker
+class Squadker(Mahjongker):
+    name = "Squadker"
+    description = "At the start of each round, create 2 random common mahjongkers."
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/squadker.jpg"
+
+    def eval_score(self, my_mahjongkers):
+        return (0, 0)
+
+# Goalker
+class Goalker(Mahjongker):
+    name = "Goalker"
+    description = "Randomly select a hand type (flush, sequence, set) at the start of the round.  Completing a mahjong hand of that type grants +30 pts."
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/goalker.jpg"
+
+    def eval_score(self, my_mahjongkers):
+        return (0, 0)
+
+# Doubker
+class Doubker(Mahjongker):
+    name = "Doubker"
+    description = "The first meld you lock in scores twice."
+    priority = 6 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/doubker.jpg"
+
+    def eval_score(self, my_mahjongkers):
+        return (0, 0)
+
+# DoubDoubker
+class DoubDoubker(Mahjongker):
+    name = "DoubDoubker"
+    description = "Having two of the exact same meld gives +40 pts."
+    priority = 5 
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    img_src = "/jongker/doubdoubker.jpg"
+
+    def eval_score(self, my_mahjongkers, hand):
+        if len(hand.melds) <= 1: return (0, 0)
+        if len(hand.melds) == 2:
+            if (hand.melds[0] == hand.melds[1]):
+                return (40, 0)
+            else:
+                return (0, 0)
+        if len(hand.melds) == 3:
+            if hand.melds[0] == hand.melds[1]:
+                return (40, 0)
+            elif hand.melds[0] == hand.melds[2]:
+                return (40, 0)
+            elif hand.melds[1] == hand.melds[2]:
+                return (40, 0)
+            else:
+                return (0, 0)
+        return (0, 0)
+
+
+
 # --------------------------------------------------------------------------------------
 # MAHJONGKER LIST
 # --------------------------------------------------------------------------------------
@@ -2067,7 +2210,7 @@ all_mahjongkers_list.append(Oddker())
 all_mahjongkers_list.append(AYCker())
 all_mahjongkers_list.append(Pingker())
 all_mahjongkers_list.append(KingKongker())
-# all_mahjongkers_list.append(Gapker())
+all_mahjongkers_list.append(Gapker())
 # all_mahjongkers_list.append(DEIker())
 # all_mahjongkers_list.append(SEIquenker())
 all_mahjongkers_list.append(Siker())
@@ -2176,6 +2319,14 @@ all_mahjongkers_list.append(Iker())
 all_mahjongkers_list.append(KillTonyker())
 all_mahjongkers_list.append(Doldrumker())
 all_mahjongkers_list.append(Discombobuker())
+all_mahjongkers_list.append(Pivotker())
+all_mahjongkers_list.append(Spanker())
+all_mahjongkers_list.append(JackBlackgker())
+all_mahjongkers_list.append(Recruitker())
+all_mahjongkers_list.append(Squadker())
+all_mahjongkers_list.append(Goalker())
+all_mahjongkers_list.append(Doubker())
+all_mahjongkers_list.append(DoubDoubker())
 
 # --------------------------------------------------------------------------------------
 # MAHJONGKER DICT
@@ -2197,7 +2348,7 @@ all_mahjongkers_dict["oddker"] = Oddker()
 all_mahjongkers_dict["aycker"] = AYCker()
 all_mahjongkers_dict["pingker"] = Pingker()
 all_mahjongkers_dict["kingkongker"] = KingKongker()
-# all_mahjongkers_dict["gapker"] = Gapker()
+all_mahjongkers_dict["gapker"] = Gapker()
 # all_mahjongkers_dict["deiker"] = DEIker()
 # all_mahjongkers_dict["seiquenker"] = SEIquenker()
 all_mahjongkers_dict["siker"] = Siker()
@@ -2306,6 +2457,14 @@ all_mahjongkers_dict["iker"] = Iker()
 all_mahjongkers_dict["killtonyker"] = KillTonyker()
 all_mahjongkers_dict["doldrumker"] = Doldrumker()
 all_mahjongkers_dict["discombobuker"] = Discombobuker()
+all_mahjongkers_dict["pivotker"] = Pivotker()
+all_mahjongkers_dict["spanker"] = Spanker()
+all_mahjongkers_dict["jackblackgker"] = JackBlackgker()
+all_mahjongkers_dict["recruitker"] = (Recruitker())
+all_mahjongkers_dict["squadker"] = (Squadker())
+all_mahjongkers_dict["goalker"] = (Goalker())
+all_mahjongkers_dict["doubker"] = (Doubker())
+all_mahjongkers_dict["doubdoubker"] = (DoubDoubker())
 
 # ----------------------------------------------
 
@@ -2322,7 +2481,7 @@ for mahjongker in all_mahjongkers_list:
 # --------------------------------------------------------------------------------------
 uncommon_mahjongkers_list = []
 for mahjongker in all_mahjongkers_list:
-    if mahjongker.cost == UNCOMMON_MAHJONGKER_COST or mahjongker.cost == CONSISTENCY_MAHJONGKER_COST:
+    if mahjongker.cost == UNCOMMON_MAHJONGKER_COST:
         uncommon_mahjongkers_list.append(mahjongker)
 
 # --------------------------------------------------------------------------------------
@@ -2330,7 +2489,7 @@ for mahjongker in all_mahjongkers_list:
 # --------------------------------------------------------------------------------------
 rare_mahjongkers_list = []
 for mahjongker in all_mahjongkers_list:
-    if mahjongker.cost == RARE_MAHJONGKER_COST:
+    if mahjongker.cost == CONSISTENCY_MAHJONGKER_COST:
         rare_mahjongkers_list.append(mahjongker)
 
 # --------------------------------------------------------------------------------------
@@ -2389,3 +2548,10 @@ initial_mahjongkers_list.append(Chenker())
 initial_mahjongkers_list.append(Tanavastker())
 initial_mahjongkers_list.append(Recykler())
 initial_mahjongkers_list.append(Doldrumker())
+initial_mahjongkers_list.append(Pivotker())
+initial_mahjongkers_list.append(Spanker())
+initial_mahjongkers_list.append(JackBlackgker())
+initial_mahjongkers_list.append(Recruitker())
+initial_mahjongkers_list.append(Goalker())
+initial_mahjongkers_list.append(Doubker())
+initial_mahjongkers_list.append(DoubDoubker())
