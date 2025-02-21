@@ -143,7 +143,7 @@ class Item_Power_Hour_Dots(Item):
 
 class Item_Splitter(Item):
     name = "Splitter"
-    description = "You may split a ranked tile in two in half. e.g. 9 of bamboo ->  4 & 5 of bamboo.  You cannot split a 1."
+    description = "You may split a ranked tile down the middle. e.g. 9 of bamboo ->  4 & 5 of bamboo.  You cannot split a 1."
     cost = 4
     rarity = "uncommon"
     img_src = "/items/splitter.jpg"
@@ -260,6 +260,13 @@ class Item_Well_Laid_Plans(Item):
     rarity = "common"
     img_src = "/items/well-laid-plans.jpg"
 
+class Item_Coup_De_Han(Item):
+    name = "Coup De Han"
+    description = "Take an opponent's mahjongker until the end of your next turn."
+    cost = 2
+    rarity = "common"
+    img_src = "/items/coup-de-han.jpg"
+
 # --------------------------------------------------------------------------------------
 # ALL ITEMS LIST
 # --------------------------------------------------------------------------------------
@@ -300,6 +307,7 @@ all_items_list.append(Item_Re_Surrection())
 all_items_list.append(Item_Piggy_Bank())
 all_items_list.append(Item_Pivoter())
 all_items_list.append(Item_Well_Laid_Plans())
+all_items_list.append(Item_Coup_De_Han())
 
 # --------------------------------------------------------------------------------------
 # ITEM DICT
@@ -339,6 +347,7 @@ all_items_dict["re-surrection"] = Item_Re_Surrection()
 all_items_dict["piggy-bank"] = Item_Piggy_Bank()
 all_items_dict["pivoter"] = Item_Pivoter()
 all_items_dict["well-laid-plans"] = Item_Well_Laid_Plans()
+all_items_dict["coup-de-han"] = Item_Coup_De_Han()
 
 # --------------------------------------------------------------------------------------
 # ITEM NAME DICT
@@ -378,6 +387,7 @@ all_item_names_dict["Re: Surrection"] = Item_Re_Surrection()
 all_item_names_dict["Piggy Bank"] = Item_Piggy_Bank()
 all_item_names_dict["Pivoter"] = Item_Pivoter()
 all_item_names_dict["Well Laid Plans"] = Item_Well_Laid_Plans()
+all_item_names_dict["Coup De Han"] = Item_Coup_De_Han()
 
 # --------------------------------------
 # Piggy ITEMS LIST

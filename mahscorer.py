@@ -18,6 +18,13 @@ def score(hand, table_wind, seat_wind, my_mahjongkers, mahjong_pts, mahjong_mone
     #         mult = max(mult, flush_hand_mult)
             
     # score melds
+    bamynker = Bamynker()
+    dynker = Dynker()
+    chynker = Chynker()
+    hynker = Hynker()
+    fluteker = Fluteker()
+    killtonyker = KillTonyker()
+    iker = Iker()
     for meld in hand.melds: 
         kong = False
         thunder_mult = 1
@@ -28,6 +35,29 @@ def score(hand, table_wind, seat_wind, my_mahjongkers, mahjong_pts, mahjong_mone
                 thunder_mult = 2
             if tile.modifier == "gold":
                 money += 5 * thunder_mult
+            if bamynker in my_mahjongkers:
+                if (tile.suit == "bamboo" or 
+                    tile.suit == "dot" and fluteker in my_mahjongkers or 
+                    tile.suit == "character" and killtonyker in my_mahjongkers):
+                    points += tile.points * thunder_mult
+            if chynker in my_mahjongkers:
+                if (tile.suit == "character" or 
+                    tile.suit == "dot" and iker in my_mahjongkers or 
+                    tile.suit == "bamboo" and killtonyker in my_mahjongkers):
+                    points += tile.points * thunder_mult
+            if dynker in my_mahjongkers:
+                if (tile.suit == "dot" or 
+                    tile.suit == "character" and iker in my_mahjongkers or 
+                    tile.suit == "bamboo" and fluteker in my_mahjongkers):
+                    points += tile.points * thunder_mult
+            if hynker in my_mahjongkers:
+                if (tile.suit == "dragon"):
+                    points += tile.points * thunder_mult
+                if tile.suit == "wind":
+                    if tile.rank == table_wind.rank:
+                        points += tile.points * thunder_mult
+                    if tile.rank == seat_wind.rank:
+                        points += tile.points * thunder_mult
             if tile.suit == "wind":
                 if tile.rank == table_wind.rank:
                     points += tile.points * thunder_mult
@@ -96,7 +126,7 @@ def score(hand, table_wind, seat_wind, my_mahjongkers, mahjong_pts, mahjong_mone
     # prio 6, non-interative jongkers
     for mahjongker in my_mahjongkers:
         if mahjongker.priority == 6:
-            evaluated_score = mahjongker.eval_score(my_mahjongkers, )
+            evaluated_score = mahjongker.eval_score(my_mahjongkers)
             points += evaluated_score[0]
             
             if len(evaluated_score) > 2:

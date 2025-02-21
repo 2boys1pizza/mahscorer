@@ -33,7 +33,7 @@ TRIPLET_UPGRADE_AMOUNT = 0.15
 HALF_FLUSH_UPGRADE_AMOUNT = 0.15
 FLUSH_UPGRADE_AMOUNT = 0.2
 SHOP_MAHJONGKER_RARITIES = ["common", "uncommon", "rare"]
-SHOP_MAHJONGKER_RARITY_PROBABILITIES = {1:[83, 12, 0], 2:[74, 25, 1], 3:[58, 35, 7], 4:[40, 45, 15], 5:[30, 50, 20]}
+SHOP_MAHJONGKER_RARITY_PROBABILITIES = {1:[87, 13, 0], 2:[72, 25, 3], 3:[57, 35, 8], 4:[40, 45, 15]}
 ITEM_RARITIES = ["piggy", "common", "uncommon", "rare"]
 ITEM_RARITY_PROBABILITY = [13, 65, 17, 5]
 START_MONEY = 2
@@ -3145,7 +3145,7 @@ def main(page: ft.Page):
         i = 0
         shop_selected_i = []
         borders = []
-        while i < 6:
+        while i < 5:
             rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_RARITY_PROBABILITIES[int(shop_round)])[0]
             print(rarity_roll)
             mahjongker = roll_mahjongker(rarity_roll)
@@ -3364,7 +3364,7 @@ def main(page: ft.Page):
             shop_selected_i = []
             borders = []
 
-            while i < 6:
+            while i < 5:
                 rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_RARITY_PROBABILITIES[int(shop_round)])[0]
                 print(rarity_roll)
                 mahjongker = roll_mahjongker(rarity_roll)
@@ -4660,7 +4660,7 @@ def main(page: ft.Page):
             shop_row = ft.GridView(
                 # expand=1,
                 height=100,
-                width=700,
+                width=600,
                 runs_count=1,
                 max_extent=95,
                 child_aspect_ratio=1.0,
