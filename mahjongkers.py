@@ -2766,7 +2766,7 @@ class Eggker(Mahjongker):
     priority = 6 
     cost = RARE_MAHJONGKER_COST
     sell_value = RARE_MAHJONGKER_SELL_VALUE
-    img_src = "/jongker/Eggker.jpg"
+    img_src = "/jongker/eggker.jpg"
 
     def eval_score(self, my_mahjongkers):
         return (0, 0)
