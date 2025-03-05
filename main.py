@@ -25,7 +25,7 @@ FLUSH_UPGRADE_COSTS = [2,3,4,5,6]
 AVATAR_UPGRADE_COSTS = [6,9,12,15,18]
 ZODIAC_COST = 3
 TRIGRAM_COST = 2
-ITEM_COST = 3
+ITEM_COST = 2
 MAX_NUM_MAHJONGKERS = 5
 MAX_NUM_ITEMS = 2
 SEQUENCE_UPGRADE_AMOUNT = 0.1
@@ -37,7 +37,7 @@ SHOP_MAHJONGKER_RARITY_PROBABILITIES = {1:[87, 13, 0], 2:[72, 25, 3], 3:[57, 35,
 ITEM_RARITIES = ["piggy", "common", "uncommon", "rare"]
 ITEM_RARITY_PROBABILITY = [13, 65, 17, 5]
 START_MONEY = 2
-ROUND_UBI = [6,6,6,6,6]
+ROUND_UBI = [0,0,0,0,0]
 
 # hands
 sequence_hand_level = 0
@@ -517,7 +517,7 @@ def main(page: ft.Page):
             if mahjongker.name == "KingKongker":
                 kingkongker = mahjongker
                 break
-        kingkongker.point_value = kingkongker.point_value + 20
+        kingkongker.point_value = kingkongker.point_value + 14
         kingkongker_text.value = f"KingKongker value: {kingkongker.point_value}"
         page.update()
 
@@ -528,7 +528,7 @@ def main(page: ft.Page):
             if mahjongker.name == "KingKongker":
                 kingkongker = mahjongker
                 break
-        kingkongker.point_value = max(0, kingkongker.point_value - 20)
+        kingkongker.point_value = max(0, kingkongker.point_value - 14)
         kingkongker_text.value = f"KingKongker value: {kingkongker.point_value}"
         page.update()
 
