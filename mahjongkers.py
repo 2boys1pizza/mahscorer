@@ -235,7 +235,7 @@ class Mahjongker:
 # Bamonker
 class Bamonker(Mahjongker):
     name = "Bamonker"
-    description = "+15 pts for each bamboo meld."
+    description = "+15 pts for each bamboo meld. Once each turn, you may pay $2 to use Called Shot: Bamboo."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -259,7 +259,7 @@ class Bamonker(Mahjongker):
 # Donker
 class Donker(Mahjongker):
     name = "Donker"
-    description = "+15 pts for each dot meld."
+    description = "+15 pts for each dot meld. Once each turn, you may pay $2 to use Called Shot: Dot."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -283,7 +283,7 @@ class Donker(Mahjongker):
 # Chonker
 class Chonker(Mahjongker):
     name = "Chonker"
-    description = "+15 pts for each character meld."
+    description = "+15 pts for each character meld. Once each turn, you may pay $2 to use Called Shot: Character."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -307,7 +307,7 @@ class Chonker(Mahjongker):
 # Dragonker
 class Dragonker(Mahjongker):
     name = "Dragonker"
-    description = "+20 pts for each dragon meld."
+    description = "+20 pts for each dragon meld. Once each turn, you may pay $2 to use Called Shot: Dragon."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -326,7 +326,7 @@ class Dragonker(Mahjongker):
 # Wonker
 class Wonker(Mahjongker):
     name = "Wonker"
-    description = "+30 pts for each wind meld."
+    description = "+30 pts for each wind meld. Once each turn, you may pay $2 to use Called Shot: Wind."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -595,10 +595,10 @@ class SEIquenker(Mahjongker):
 # Siker
 class Siker(Mahjongker):
     name = "Siker"
-    description = "You may form a quad with a sequence (chi only, 3456)"
+    description = "You may form a quad with a sequence (eg. 3456)"
     priority = 6 
-    cost = COMMON_MAHJONGKER_COST
-    sell_value = COMMON_MAHJONGKER_SELL_VALUE
+    cost = UNCOMMON_MAHJONGKER_COST
+    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/siker.jpg"
 
     def eval_score(self, my_mahjongkers):
@@ -698,7 +698,7 @@ class Gayker(Mahjongker):
 # Bumungker
 class Bumungker(Mahjongker):
     name = "Bumungker"
-    description = "Gain +25 pts for each bamboo meld.  Once each turn, you may pay $2 to use Called Shot: Bamboo."
+    description = "Gain +25 pts for each bamboo meld. When you reveal a bamboo meld, you may use Called Shot: Bamboo."
     priority = 2
     cost = UNCOMMON_MAHJONGKER_COST
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
@@ -722,7 +722,7 @@ class Bumungker(Mahjongker):
 # Dungker
 class Dungker(Mahjongker):
     name = "Dungker"
-    description = "Gain +25 pts for each dot meld.  Once each turn, you may pay $2 to use Called Shot: Dot."
+    description = "Gain +25 pts for each dot meld. When you reveal a dots meld, you may use Called Shot: Dots. "
     priority = 2
     cost = UNCOMMON_MAHJONGKER_COST
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
@@ -746,7 +746,7 @@ class Dungker(Mahjongker):
 # Chungker
 class Chungker(Mahjongker):
     name = "Chungker"
-    description = "Gain +25 pts for each character meld.  Once each turn, you may pay $2 to use Called Shot: Character."
+    description = "Gain +25 pts for each character meld.  When you reveal a character meld, you may use Called Shot: Character."
     priority = 2
     cost = UNCOMMON_MAHJONGKER_COST
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
@@ -770,7 +770,7 @@ class Chungker(Mahjongker):
 # Dragunker
 class Dragunker(Mahjongker):
     name = "Dragunker"
-    description = "Gain +30 pts for each dragon meld.  Once each turn, you may pay $2 to use Called Shot: Dragon."
+    description = "Gain +30 pts for each dragon meld.  When you reveal a dragon meld, you may use Called Shot: Dragon."
     priority = 2
     cost = UNCOMMON_MAHJONGKER_COST
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
@@ -790,7 +790,7 @@ class Dragunker(Mahjongker):
 # Wunker
 class Wunker(Mahjongker):
     name = "Wunker"
-    description = "Gain +35 pts for each wind meld.  Once each turn, you may pay $2 to use Called Shot: Wind."
+    description = "Gain +35 pts for each wind meld.  When you reveal a wind meld, you may use Called Shot: Wind."
     priority = 2
     cost = UNCOMMON_MAHJONGKER_COST
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
@@ -996,7 +996,7 @@ class Highker(Mahjongker):
 # Lowker
 class Lowker(Mahjongker):
     name = "Lowker"
-    description = "+40 points for each meld containing numbered tiles where all rank <= 5"
+    description = "+30 points for each meld containing numbered tiles where all rank <= 5"
     priority = 2 
     cost = UNCOMMON_MAHJONGKER_COST
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
@@ -1229,8 +1229,8 @@ class Boomerangker(Mahjongker):
     name = "Boomerangker"
     description = "If this mahjonker is empty: set aside a tile face-up on this card.  After three turns, you must draw this tile during your draw step if able. You may not use this again until the start of your next turn"
     priority = 6 
-    cost = UNCOMMON_MAHJONGKER_COST
-    sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
+    cost = COMMON_MAHJONGKER_COST
+    sell_value = COMMON_MAHJONGKER_SELL_VALUE
     img_src = "/jongker/boomerangker.jpg"
 
     def eval_score(self, my_mahjongkers):
@@ -1378,7 +1378,7 @@ class Anthonyker(Mahjongker):
 # Picker
 class Picker(Mahjongker):
     name = "Picker"
-    description = "Gain a free reroll each shop phase."
+    description = "Get two free rerolls each round."
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE

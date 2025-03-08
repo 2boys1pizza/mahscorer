@@ -23,6 +23,7 @@ TRIPLET_UPGRADE_COSTS = [2,3,4,5,6]
 HALF_FLUSH_UPGRADE_COSTS = [2,3,4,5,6]
 FLUSH_UPGRADE_COSTS = [2,3,4,5,6]
 AVATAR_UPGRADE_COSTS = [6,9,12,15,18]
+MAHJONGKERS_REROLL_COST = 2
 ZODIAC_COST = 3
 TRIGRAM_COST = 2
 ITEM_COST = 2
@@ -33,7 +34,7 @@ TRIPLET_UPGRADE_AMOUNT = 0.15
 HALF_FLUSH_UPGRADE_AMOUNT = 0.15
 FLUSH_UPGRADE_AMOUNT = 0.2
 SHOP_MAHJONGKER_RARITIES = ["common", "uncommon", "rare"]
-SHOP_MAHJONGKER_RARITY_PROBABILITIES = {1:[87, 13, 0], 2:[72, 25, 3], 3:[57, 35, 8], 4:[40, 45, 15]}
+SHOP_MAHJONGKER_RARITY_PROBABILITIES = {0:[95, 5, 0], 1:[87, 13, 0], 2:[72, 25, 3], 3:[57, 35, 8], 4:[40, 45, 15]}
 ITEM_RARITIES = ["piggy", "common", "uncommon", "rare"]
 ITEM_RARITY_PROBABILITY = [13, 65, 17, 5]
 START_MONEY = 2
@@ -163,13 +164,14 @@ shop_sell_mahjongker_text = ""
 shop_item_text = ""
 shop_zodiac_text = ""
 shop_trigram_text = ""
-reroll_cost = 1
+reroll_cost = MAHJONGKERS_REROLL_COST
 reroll_item_cost = 1
 reroll_zodiac_cost = 3
 reroll_trigram_cost = 2
 current_zodiac_cost = 3
 current_trigram_cost = 2
 shop_money_text = ft.Text("", color=ft.colors.WHITE)
+shop_tier_text = ft.Text("", color=ft.colors.WHITE)
 hand_size_upgrade_button = []
 shop_selected_i = []
 item_selected = []
@@ -2490,6 +2492,23 @@ def main(page: ft.Page):
     # -------------------------------------------------------------
     # SHOP FUNC
     # -------------------------------------------------------------
+
+    def increment_shop_tier(e):
+        global shop_round
+        global shop_tier_text
+        shop_round += 1
+        shop_round = min(4, shop_round)
+        shop_tier_text.value = f"Shop Tier: {shop_round}"
+        page.update()
+
+    def decrement_shop_tier(e):
+        global shop_round
+        global shop_tier_text
+        shop_round -= 1
+        shop_round = max(0, shop_round)
+        shop_tier_text.value = f"Shop Tier: {shop_round}"
+        page.update()
+
     # initial mahjongker roll
     def refresh_initial_mahjongkers(e):
         global initial_mahjongkers_row
@@ -3132,7 +3151,7 @@ def main(page: ft.Page):
         global trigram_info_column
 
         money = money + ROUND_UBI[shop_round]
-        shop_round = min(5, shop_round + 1)
+        # shop_round = min(5, shop_round + 1)
         refresh_shop_inventory()
         # give UBI
         refresh_money_text()
@@ -3145,7 +3164,7 @@ def main(page: ft.Page):
         i = 0
         shop_selected_i = []
         borders = []
-        while i < 5:
+        while i < 7:
             rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_RARITY_PROBABILITIES[int(shop_round)])[0]
             print(rarity_roll)
             mahjongker = roll_mahjongker(rarity_roll)
@@ -3193,7 +3212,7 @@ def main(page: ft.Page):
             )
             shop_info_column.controls.append(ft.Text(f"${mahjongker.cost} - {mahjongker.name} : {mahjongker.description}", color=ft.colors.WHITE, size=20))
             j += 1
-        reroll_cost = 1
+        reroll_cost = MAHJONGKERS_REROLL_COST
 
         # items
         # item_row.controls.clear()
@@ -3357,14 +3376,14 @@ def main(page: ft.Page):
         if money >= reroll_cost:
             money = money - reroll_cost
             refresh_money_text()
-            reroll_cost += 1
+            # reroll_cost += 1
             shop_row.controls.clear()
             shop_info_column.controls.clear()
             i = 0
             shop_selected_i = []
             borders = []
 
-            while i < 5:
+            while i < 7:
                 rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_RARITY_PROBABILITIES[int(shop_round)])[0]
                 print(rarity_roll)
                 mahjongker = roll_mahjongker(rarity_roll)
@@ -3414,6 +3433,76 @@ def main(page: ft.Page):
                 j += 1
             shop_row.controls.append(ft.FloatingActionButton(text=f"${reroll_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_mahjongkers))
             page.update()
+
+    def refill_shop_mahjongkers(e):
+        global my_mahjongkers
+        global shop_round
+        global shop_info_column
+        global shop_row
+        global shop_selected_i
+
+        borders = []
+        for i in range(len(shop_selected_i)):
+            if shop_selected_i[i] == -1:
+                rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_RARITY_PROBABILITIES[int(shop_round)])[0]
+                print(rarity_roll)
+                mahjongker = roll_mahjongker(rarity_roll)
+                shop_selected_i[i] = all_mahjongkers_list.index(mahjongker)
+                if rarity_roll == "common":
+                    borders.append(ft.border.all(4, ft.colors.BLUE_600))
+                elif rarity_roll == "uncommon":
+                    borders.append(ft.border.all(4, ft.colors.PURPLE_600))
+                else:
+                    borders.append(ft.border.all(4, ft.colors.RED_600))
+            else:
+                mahjongker = all_mahjongkers_list[shop_selected_i[i]]
+                if mahjongker.cost == COMMON_MAHJONGKER_COST:
+                    borders.append(ft.border.all(4, ft.colors.BLUE_600))
+                elif mahjongker.cost == UNCOMMON_MAHJONGKER_COST:
+                    borders.append(ft.border.all(4, ft.colors.PURPLE_600))
+                else:
+                    borders.append(ft.border.all(4, ft.colors.RED_600))
+
+        j = 0
+        shop_row.controls.clear()
+        shop_info_column.controls.clear()
+
+        for i in shop_selected_i:
+            mahjongker = all_mahjongkers_list[i]
+            shop_row.controls.append(
+                ft.Container(
+                        image=ft.DecorationImage(src=mahjongker.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(f"{mahjongker.name} - ${mahjongker.cost}", bgcolor="#000000", color=ft.colors.WHITE),
+                        border=borders[j],
+                        ink=True,
+                        on_click=handle_add_shop_mahjongker_select,
+                        tooltip=ft.Tooltip(
+                            message=f"${mahjongker.cost} - {mahjongker.description}",
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        )
+                    )
+            )
+            shop_info_column.controls.append(ft.Text(f"${mahjongker.cost} - {mahjongker.name} : {mahjongker.description}", color=ft.colors.WHITE, size=20))
+            j += 1
+        shop_row.controls.append(ft.FloatingActionButton(text=f"${reroll_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_mahjongkers))
+        page.update()
 
     def reroll_shop_items(e):
         global reroll_item_cost
@@ -3601,6 +3690,7 @@ def main(page: ft.Page):
         global shop_mahjongker_text
         global money
         global shop_row
+        global shop_selected_i
         selected_container = []
         if shop_mahjongker_text.value != "" and shop_mahjongker_text.value != "TOO POOR":
             mahjongker = all_mahjongkers_dict[shop_mahjongker_text.value.lower()]
@@ -3608,10 +3698,11 @@ def main(page: ft.Page):
                 my_mahjongkers.append(mahjongker)
                 money = money - mahjongker.cost
                 # then replace this slot in the grid view
-                for container in shop_row.controls:
+                for i, container in enumerate(shop_row.controls):
                     # print(container.content.value)
                     if mahjongker.name in container.content.value:
                         selected_container = container
+                        shop_selected_i[i] = -1
                         break
                 refresh_money_text()
                 shop_mahjongker_text.value = ""
@@ -4111,6 +4202,7 @@ def main(page: ft.Page):
         global current_zodiac_cost
         global current_trigram_cost
         global shop_money_text
+        global shop_tier_text
         global hand_size_upgrade_button
         global shop_selected_i
         global item_selected
@@ -4660,7 +4752,7 @@ def main(page: ft.Page):
             shop_row = ft.GridView(
                 # expand=1,
                 height=100,
-                width=600,
+                width=800,
                 runs_count=1,
                 max_extent=95,
                 child_aspect_ratio=1.0,
@@ -4727,11 +4819,12 @@ def main(page: ft.Page):
 
             trigram_info_column = ft.Column()
 
-            refresh_shop_button = ft.ElevatedButton(text=f"Refresh Shop Round {shop_round + 1}", on_click=refresh_shop)
+            refresh_shop_button = ft.ElevatedButton(text=f"Refill Shop", on_click=refill_shop_mahjongkers)
             shop_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
             shop_sell_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
             shop_item_text = ft.Text("", color=ft.colors.WHITE)
             shop_money_text = ft.Text(f"Money: {money}", size=30)
+            shop_tier_text = ft.Text(f"Shop Tier: {shop_round}", size=30)
             shop_zodiac_text = ft.Text("", color=ft.colors.WHITE)
             shop_trigram_text = ft.Text("", color=ft.colors.WHITE)
             item_pack_button = ft.ElevatedButton(text=f"Buy Item Pack - ${ITEM_COST}")
@@ -4749,9 +4842,13 @@ def main(page: ft.Page):
             avatar_button = ft.ElevatedButton(text="x", on_click=do_nothing)
             shop_panel.content = ft.Column([
                 ft.Row([
-                    shop_money_text,
+                    # shop_money_text,
+                    shop_tier_text,
+                    ft.Column([
+                        ft.ElevatedButton(text="↑", on_click=increment_shop_tier),
+                        ft.ElevatedButton(text="↓", on_click=decrement_shop_tier)
+                        ]),
                     refresh_shop_button,
-                    ft.TextField(label="Shop Round", hint_text=shop_round, on_change=adjust_shop_round)
                 ]),
                 ft.Divider(),
                 ft.Text("Mahjongkers", size=20, color=ft.colors.WHITE),
@@ -4897,7 +4994,7 @@ def main(page: ft.Page):
                         )
                     shop_info_column.controls.append(ft.Text(f"${mahjongker.cost} - {mahjongker.name} : {mahjongker.description}", color=ft.colors.WHITE, size=20))
             else:
-                for i in range(6):
+                for i in range(7):
                     shop_row.controls.append(
                         ft.Container(
                             image=ft.DecorationImage(src="/jongker/sold.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
