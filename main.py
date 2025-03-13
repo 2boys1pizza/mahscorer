@@ -969,7 +969,7 @@ def main(page: ft.Page):
             if mahjongker.name == "Doraker":
                 doraker = mahjongker
                 break
-        doraker.point_value = doraker.point_value + 15
+        doraker.point_value = doraker.point_value + 7
         doraker_text.value = f"Doraker value: {doraker.point_value}"
         page.update()
 
@@ -980,7 +980,7 @@ def main(page: ft.Page):
             if mahjongker.name == "Doraker":
                 doraker = mahjongker
                 break
-        doraker.point_value = max(0, doraker.point_value - 15)
+        doraker.point_value = max(0, doraker.point_value - 7)
         doraker_text.value = f"Doraker value: {doraker.point_value}"
         page.update()
 
@@ -4891,13 +4891,13 @@ def main(page: ft.Page):
                 # trigram_info_column,
                 # trigram_pack_button,
                 # ft.Divider(),
-                ft.Row([
-                    ft.Text("Hand Size Upgrade (+1)", size=20, color=ft.colors.WHITE),
-                    ]),
-                ft.Row([
-                    hand_size_upgrade_button
-                    ]),
-                ft.Divider(),
+                # ft.Row([
+                #     ft.Text("Hand Size Upgrade (+1)", size=20, color=ft.colors.WHITE),
+                #     ]),
+                # ft.Row([
+                #     hand_size_upgrade_button
+                #     ]),
+                # ft.Divider(),
                 # ft.Row([
                 #     ft.Text("Hand Type Upgrades", size=20, color=ft.colors.WHITE),
                 #     ]),
