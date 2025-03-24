@@ -35,9 +35,10 @@ HALF_FLUSH_UPGRADE_AMOUNT = 0.15
 FLUSH_UPGRADE_AMOUNT = 0.2
 SHOP_MAHJONGKER_RARITIES = ["common", "uncommon", "rare"]
 SHOP_MAHJONGKER_RARITY_PROBABILITIES = {0:[95, 5, 0], 1:[87, 13, 0], 2:[72, 25, 3], 3:[57, 35, 8], 4:[40, 45, 15]}
+SHOP_MAHJONGKER_PROBABILITIES = [71, 25, 4]
 ITEM_RARITIES = ["piggy", "common", "uncommon", "rare"]
 ITEM_RARITY_PROBABILITY = [13, 65, 17, 5]
-START_MONEY = 2
+START_MONEY = 0
 ROUND_UBI = [0,0,0,0,0]
 
 # hands
@@ -118,9 +119,9 @@ spoilker_text = ft.Text("Spoilker value: 50", size=40)
 donnerker_text = ft.Text("Donnerker value: 0", size=40)
 doraker_text = ft.Text("Doraker value: 0", size=40)
 odiumker_text = ft.Text("Odiumker value: 0", size=40)
-bamenker_text = ft.Text("Bamenker value: 0", size=40)
-denker_text = ft.Text("Denker value: 0", size=40)
-chenker_text = ft.Text("Chenker value: 0", size=40)
+bamenker_text = ft.Text("Bamonker value: 0", size=40)
+denker_text = ft.Text("Donker value: 0", size=40)
+chenker_text = ft.Text("Chonker value: 0", size=40)
 tanavastker_text = ft.Text("Tanavastker value: 0", size=40)
 jackblackgker_text = ft.Text("JackBlackgker value: 0", size=40)
 lake_text = ft.Text("Lake value: 0", size=40)
@@ -165,7 +166,7 @@ shop_item_text = ""
 shop_zodiac_text = ""
 shop_trigram_text = ""
 reroll_cost = MAHJONGKERS_REROLL_COST
-reroll_item_cost = 1
+reroll_item_cost = 2
 reroll_zodiac_cost = 3
 reroll_trigram_cost = 2
 current_zodiac_cost = 3
@@ -253,15 +254,19 @@ def main(page: ft.Page):
     def increment_money(e):
         global money
         global money_text
+        global shop_money_text
         money += 1
         money_text.value = str(money)
+        shop_money_text.value = f"Money: {money}"
         page.update()
 
     def decrement_money(e):
         global money
         global money_text
+        global shop_money_text
         money -= 1
         money_text.value = str(money)
+        shop_money_text.value = f"Money: {money}"
         page.update()
 
     def adjust_score(e):
@@ -1041,10 +1046,10 @@ def main(page: ft.Page):
         # Add UI to increase/decrease value of ayceker
         bamenker = []
         for mahjongker in my_mahjongkers:
-            if mahjongker.name == "Bamenker":
+            if mahjongker.name == "Bamonker":
                 bamenker = mahjongker
                 break
-        bamenker_text.value = f"Bamenker value: {bamenker.point_value}"
+        bamenker_text.value = f"Bamonker value: {bamenker.point_value}"
         upgrade_row = ft.Row([
             bamenker_text,
             ft.Column([
@@ -1066,22 +1071,22 @@ def main(page: ft.Page):
         global bamenker_text
         bamenker = []
         for mahjongker in my_mahjongkers:
-            if mahjongker.name == "Bamenker":
+            if mahjongker.name == "Bamonker":
                 bamenker = mahjongker
                 break
         bamenker.point_value = bamenker.point_value + 7
-        bamenker_text.value = f"Bamenker value: {bamenker.point_value}"
+        bamenker_text.value = f"Bamonker value: {bamenker.point_value}"
         page.update()
 
     def decrement_bamenker_score(e):
         global bamenker_text
         bamenker = []
         for mahjongker in my_mahjongkers:
-            if mahjongker.name == "Bamenker":
+            if mahjongker.name == "Bamonker":
                 bamenker = mahjongker
                 break
         bamenker.point_value = max(0, bamenker.point_value - 7)
-        bamenker_text.value = f"Bamenker value: {bamenker.point_value}"
+        bamenker_text.value = f"Bamonker value: {bamenker.point_value}"
         page.update()
 
     def handle_denker_select(e):
@@ -1091,10 +1096,10 @@ def main(page: ft.Page):
         # Add UI to increase/decrease value of ayceker
         denker = []
         for mahjongker in my_mahjongkers:
-            if mahjongker.name == "Denker":
+            if mahjongker.name == "Donker":
                 denker = mahjongker
                 break
-        denker_text.value = f"Denker value: {denker.point_value}"
+        denker_text.value = f"Donker value: {denker.point_value}"
         upgrade_row = ft.Row([
             denker_text,
             ft.Column([
@@ -1116,22 +1121,22 @@ def main(page: ft.Page):
         global denker_text
         denker = []
         for mahjongker in my_mahjongkers:
-            if mahjongker.name == "Denker":
+            if mahjongker.name == "Donker":
                 denker = mahjongker
                 break
         denker.point_value = denker.point_value + 7
-        denker_text.value = f"Denker value: {denker.point_value}"
+        denker_text.value = f"Donker value: {denker.point_value}"
         page.update()
 
     def decrement_denker_score(e):
         global denker_text
         denker = []
         for mahjongker in my_mahjongkers:
-            if mahjongker.name == "Denker":
+            if mahjongker.name == "Donker":
                 denker = mahjongker
                 break
         denker.point_value = max(0, denker.point_value - 7)
-        denker_text.value = f"Denker value: {denker.point_value}"
+        denker_text.value = f"Donker value: {denker.point_value}"
         page.update()
 
     def handle_chenker_select(e):
@@ -1141,10 +1146,10 @@ def main(page: ft.Page):
         # Add UI to increase/decrease value of ayceker
         chenker = []
         for mahjongker in my_mahjongkers:
-            if mahjongker.name == "Chenker":
+            if mahjongker.name == "Chonker":
                 chenker = mahjongker
                 break
-        chenker_text.value = f"Chenker value: {chenker.point_value}"
+        chenker_text.value = f"Chonker value: {chenker.point_value}"
         upgrade_row = ft.Row([
             chenker_text,
             ft.Column([
@@ -1166,22 +1171,22 @@ def main(page: ft.Page):
         global chenker_text
         chenker = []
         for mahjongker in my_mahjongkers:
-            if mahjongker.name == "Chenker":
+            if mahjongker.name == "Chonker":
                 chenker = mahjongker
                 break
         chenker.point_value = chenker.point_value + 7
-        chenker_text.value = f"Chenker value: {chenker.point_value}"
+        chenker_text.value = f"Chonker value: {chenker.point_value}"
         page.update()
 
     def decrement_chenker_score(e):
         global chenker_text
         chenker = []
         for mahjongker in my_mahjongkers:
-            if mahjongker.name == "Chenker":
+            if mahjongker.name == "Chonker":
                 chenker = mahjongker
                 break
         chenker.point_value = max(0, chenker.point_value - 7)
-        chenker_text.value = f"Chenker value: {chenker.point_value}"
+        chenker_text.value = f"Chonker value: {chenker.point_value}"
         page.update()
 
     def handle_tanavastker_select(e):
@@ -2516,7 +2521,7 @@ def main(page: ft.Page):
         initial_mahjongkers_row.controls.clear()
         i = 0
         selected_i = []
-        while i < 10:
+        while i < 5:
             index = random.randint(0,len(initial_mahjongkers_list)-1)
             if index not in selected_i: 
                 mahjongker = initial_mahjongkers_list[index]
@@ -3164,8 +3169,9 @@ def main(page: ft.Page):
         i = 0
         shop_selected_i = []
         borders = []
-        while i < 7:
-            rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_RARITY_PROBABILITIES[int(shop_round)])[0]
+        while i < 5:
+            # rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_RARITY_PROBABILITIES[int(shop_round)])[0]
+            rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_PROBABILITIES)[0]
             print(rarity_roll)
             mahjongker = roll_mahjongker(rarity_roll)
             shop_selected_i.append(all_mahjongkers_list.index(mahjongker))
@@ -3362,7 +3368,8 @@ def main(page: ft.Page):
         shop_row.controls.append(ft.FloatingActionButton(text=f"${reroll_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_mahjongkers))
         # item_row.controls.append(ft.FloatingActionButton(text=f"${reroll_item_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_items))
         enable_hand_upgrade_buy()
-        refresh_shop_button.text = f"Refresh Shop Round {shop_round + 1}"
+        # refresh_shop_button.text = f"Refresh Shop Round {shop_round + 1}"
+        refresh_shop_button.text = f"Refresh Shop"
         page.update()
 
     def reroll_shop_mahjongkers(e):
@@ -3373,7 +3380,7 @@ def main(page: ft.Page):
         global shop_row
         global shop_selected_i
         global money
-        if money >= reroll_cost:
+        if money >= reroll_cost:    
             money = money - reroll_cost
             refresh_money_text()
             # reroll_cost += 1
@@ -3383,8 +3390,9 @@ def main(page: ft.Page):
             shop_selected_i = []
             borders = []
 
-            while i < 7:
-                rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_RARITY_PROBABILITIES[int(shop_round)])[0]
+            while i < 5:
+                # rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_RARITY_PROBABILITIES[int(shop_round)])[0]
+                rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_PROBABILITIES)[0]
                 print(rarity_roll)
                 mahjongker = roll_mahjongker(rarity_roll)
                 shop_selected_i.append(all_mahjongkers_list.index(mahjongker))
@@ -3444,7 +3452,8 @@ def main(page: ft.Page):
         borders = []
         for i in range(len(shop_selected_i)):
             if shop_selected_i[i] == -1:
-                rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_RARITY_PROBABILITIES[int(shop_round)])[0]
+                # rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_RARITY_PROBABILITIES[int(shop_round)])[0]
+                rarity_roll = random.choices(SHOP_MAHJONGKER_RARITIES, weights=SHOP_MAHJONGKER_PROBABILITIES)[0]
                 print(rarity_roll)
                 mahjongker = roll_mahjongker(rarity_roll)
                 shop_selected_i[i] = all_mahjongkers_list.index(mahjongker)
@@ -3512,7 +3521,7 @@ def main(page: ft.Page):
         if money >= reroll_item_cost:
             money = money - reroll_item_cost
             refresh_money_text()
-            reroll_item_cost += 1
+            # reroll_item_cost += 1
             item_row.controls.clear()
             item_info_column.controls.clear()
         else:
@@ -3530,12 +3539,13 @@ def main(page: ft.Page):
             item_row.controls.append(
                 ft.Container(
                         image=ft.DecorationImage(src=item.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
-                        content=ft.Text(f"{item.name} - ${item.cost}", bgcolor="#000000", color=ft.colors.WHITE),
+                        # content=ft.Text(f"{item.name} - ${item.cost}", bgcolor="#000000", color=ft.colors.WHITE),
+                        content=ft.Text(f"{item.name}", bgcolor="#000000", color=ft.colors.WHITE),
                         border_radius=ft.border_radius.all(5),
                         ink=True,
                         on_click=handle_add_shop_item_select,
                         tooltip=ft.Tooltip(
-                            message=f"${item.cost} - {item.description}",
+                            message=f"{item.description}",
                             padding=20,
                             border_radius=10,
                             text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
@@ -3712,6 +3722,7 @@ def main(page: ft.Page):
                 shop_mahjongker_text.value = "TOO POOR"
         refresh_shop_inventory()
         refresh_my_mahjongkers()
+        refill_shop_mahjongkers(1)
         page.update()
 
     def sell_mahjongker(e):
@@ -4067,8 +4078,11 @@ def main(page: ft.Page):
 
     def handle_add_shop_item_select(e):
         global shop_item_text
-        item_name = e.control.image.src.split("/")[2].split(".")[0]
-        shop_item_text.value = all_items_dict[item_name].name
+        global item_row
+        # item_name = e.control.image.src.split("/")[2].split(".")[0]
+        # shop_item_text.value = all_items_dict[item_name].name
+        item_row.controls.clear()
+
         page.update()
 
     def handle_add_shop_zodiac_select(e):
@@ -4752,7 +4766,7 @@ def main(page: ft.Page):
             shop_row = ft.GridView(
                 # expand=1,
                 height=100,
-                width=800,
+                width=600,
                 runs_count=1,
                 max_extent=95,
                 child_aspect_ratio=1.0,
@@ -4775,7 +4789,7 @@ def main(page: ft.Page):
             item_row = ft.GridView(
                 # expand=1,
                 height=100,
-                width=400,
+                width=300,
                 runs_count=1,
                 max_extent=95,
                 child_aspect_ratio=1.0,
@@ -4819,7 +4833,7 @@ def main(page: ft.Page):
 
             trigram_info_column = ft.Column()
 
-            refresh_shop_button = ft.ElevatedButton(text=f"Refill Shop", on_click=refill_shop_mahjongkers)
+            refresh_shop_button = ft.ElevatedButton(text=f"Refresh Shop", on_click=refresh_shop)
             shop_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
             shop_sell_mahjongker_text = ft.Text("", color=ft.colors.WHITE)
             shop_item_text = ft.Text("", color=ft.colors.WHITE)
@@ -4827,7 +4841,7 @@ def main(page: ft.Page):
             shop_tier_text = ft.Text(f"Shop Tier: {shop_round}", size=30)
             shop_zodiac_text = ft.Text("", color=ft.colors.WHITE)
             shop_trigram_text = ft.Text("", color=ft.colors.WHITE)
-            item_pack_button = ft.ElevatedButton(text=f"Buy Item Pack - ${ITEM_COST}")
+            item_pack_button = ft.ElevatedButton(text=f"Buy Item Pack - ${ITEM_COST}", on_click=reroll_shop_items)
             trigram_pack_button = ft.ElevatedButton(text=f"Buy Trigram Pack - ${TRIGRAM_COST}")
             hand_size_upgrade_button = ft.ElevatedButton(text=f"Upgrade Hand Size - ${HAND_SIZE_COSTS[hand_size_level]}", on_click=upgrade_hand_size)
             # hand_size_upgrade_button = ft.ElevatedButton(text=f"Upgrade Hand Size - $ Check your own app!")
@@ -4842,36 +4856,57 @@ def main(page: ft.Page):
             avatar_button = ft.ElevatedButton(text="x", on_click=do_nothing)
             shop_panel.content = ft.Column([
                 ft.Row([
-                    # shop_money_text,
-                    shop_tier_text,
+                    shop_money_text,
                     ft.Column([
-                        ft.ElevatedButton(text="↑", on_click=increment_shop_tier),
-                        ft.ElevatedButton(text="↓", on_click=decrement_shop_tier)
+                        ft.ElevatedButton(text="↑", on_click=increment_money),
+                        ft.ElevatedButton(text="↓", on_click=decrement_money)
                         ]),
+                    # shop_tier_text,
+                    # ft.Column([
+                    #     ft.ElevatedButton(text="↑", on_click=increment_shop_tier),
+                    #     ft.ElevatedButton(text="↓", on_click=decrement_shop_tier)
+                    #     ]),
                     refresh_shop_button,
                 ]),
                 ft.Divider(),
-                ft.Text("Mahjongkers", size=20, color=ft.colors.WHITE),
-                shop_row,
                 ft.Row([
-                    ft.ElevatedButton(text="Buy", on_click=buy_mahjongker),
-                    shop_mahjongker_text]),
+                    ft.Text("Mahjongkers", size=20, color=ft.colors.WHITE),
+                    ft.Text("Inventory", size=20, color=ft.colors.WHITE),
+                    ],
+                    spacing=530
+                ),
+                ft.Row([
+                    shop_row,
+                    my_mahjongkers_shop_row],
+                    spacing=50
+                ),
+                ft.Row([
+                    ft.Row([
+                        ft.ElevatedButton(text="Buy", on_click=buy_mahjongker),
+                        shop_mahjongker_text]),
+                    ft.Row([
+                        ft.ElevatedButton(text="Sell", on_click=sell_mahjongker),
+                        shop_sell_mahjongker_text]),
+                    ],
+                    spacing=565
+                ),
                 shop_info_column,
                 ft.Divider(),
                 # ft.Row([
                 #     ft.Text("Items ", size=20, color=ft.colors.WHITE),
                 #     ]),
-                # ft.Row([
-                #     item_row,
-                #     # ft.Column([ft.Text("Inventory", size=20, color=ft.colors.WHITE), my_items_shop_row])],
-                #     ],
-                #     spacing=90),
+                item_pack_button,
+                ft.Row([
+                    item_row,
+                    # ft.Column([ft.Text("Inventory", size=20, color=ft.colors.WHITE), my_items_shop_row])],
+                    ],
+                    spacing=90),
                 # ft.Row([
                 #     ft.ElevatedButton(text="Buy", on_click=buy_item),
                 #     shop_item_text
                 # ]),
                 # item_info_column,
-                item_pack_button,
+                
                 ft.Divider(),
                 # ft.Row([
                 #     # ft.Text("Zodiacs", size=20, color=ft.colors.WHITE),
@@ -5046,7 +5081,7 @@ def main(page: ft.Page):
                             ink=True,
                         )
                     )
-            item_row.controls.append(ft.FloatingActionButton(text=f"${reroll_item_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_items))
+            # item_row.controls.append(ft.FloatingActionButton(text=f"${reroll_item_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_items))
 
             # if zodiac_selected:
                 # for zodiac in zodiac_selected:
@@ -5411,7 +5446,7 @@ def main(page: ft.Page):
             initial_mahjongkers_row = ft.GridView(
                 # expand=1,
                 height=100,
-                width=1100,
+                width=600,
                 runs_count=1,
                 max_extent=95,
                 child_aspect_ratio=1.0,
@@ -5422,7 +5457,7 @@ def main(page: ft.Page):
             initial_mahjongker_info_column = ft.Column()
 
             # set up base row
-            for i in range(10):
+            for i in range(5):
                 initial_mahjongkers_row.controls.append(
                     ft.Container(
                         content=ft.Text("Empty", bgcolor="#000000",color=ft.colors.WHITE),

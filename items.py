@@ -267,6 +267,13 @@ class Item_Coup_De_Han(Item):
     rarity = "common"
     img_src = "/items/coup-de-han.jpg"
 
+class Item_Scalpel(Item):
+    name = "Scalpel"
+    description = "Remove one of your locked-in melds and score it as a fever meld."
+    cost = 2
+    rarity = "common"
+    img_src = "/items/scalpel.jpg"
+
 # --------------------------------------------------------------------------------------
 # ALL ITEMS LIST
 # --------------------------------------------------------------------------------------
@@ -308,6 +315,7 @@ all_items_list.append(Item_Piggy_Bank())
 all_items_list.append(Item_Pivoter())
 all_items_list.append(Item_Well_Laid_Plans())
 all_items_list.append(Item_Coup_De_Han())
+all_items_list.append(Item_Scalpel())
 
 # --------------------------------------------------------------------------------------
 # ITEM DICT
@@ -348,6 +356,7 @@ all_items_dict["piggy-bank"] = Item_Piggy_Bank()
 all_items_dict["pivoter"] = Item_Pivoter()
 all_items_dict["well-laid-plans"] = Item_Well_Laid_Plans()
 all_items_dict["coup-de-han"] = Item_Coup_De_Han()
+all_items_dict["scalpel"] = Item_Scalpel()
 
 # --------------------------------------------------------------------------------------
 # ITEM NAME DICT
@@ -388,6 +397,7 @@ all_item_names_dict["Piggy Bank"] = Item_Piggy_Bank()
 all_item_names_dict["Pivoter"] = Item_Pivoter()
 all_item_names_dict["Well Laid Plans"] = Item_Well_Laid_Plans()
 all_item_names_dict["Coup De Han"] = Item_Coup_De_Han()
+all_item_names_dict["Scalpel"] = Item_Scalpel()
 
 # --------------------------------------
 # Piggy ITEMS LIST
