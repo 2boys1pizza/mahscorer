@@ -36,6 +36,13 @@ class Item_Called_Shot_Wind(Item):
     rarity = "common"
     img_src = "/items/called-shot-wind.jpg"
 
+class Item_Called_Shot_Honor(Item):
+    name = "Called Shot: Honor"
+    description = "Choose a player. If that player has an honor tile, they must give it to you. You give them back a tile of your choice from your hand."
+    cost = 2
+    rarity = "common"
+    img_src = "/items/called-shot-honor.jpg"
+
 class Item_Called_Shot_Rank(Item):
     name = "Called Shot: Rank"
     description = "Choose a player and name a group, low(1-3), mid(4-6), or high(7-9). If that player has a tile within that group, they must give you a tile matching that rank. You give them back a tile of your choice from your hand."
@@ -280,8 +287,9 @@ class Item_Scalpel(Item):
 
 all_items_list = []
 all_items_list.append(Item_Bag())
-all_items_list.append(Item_Called_Shot_Dragon())
-all_items_list.append(Item_Called_Shot_Wind())
+# all_items_list.append(Item_Called_Shot_Dragon())
+# all_items_list.append(Item_Called_Shot_Wind())
+all_items_list.append(Item_Called_Shot_Honor())
 all_items_list.append(Item_Called_Shot_Rank())
 all_items_list.append(Item_Called_Shot_Suit())
 all_items_list.append(Item_Controlled_Chaos())
@@ -324,6 +332,7 @@ all_items_dict = {}
 all_items_dict["bag"] = Item_Bag()
 all_items_dict["called-shot-dragon"] = Item_Called_Shot_Dragon()
 all_items_dict["called-shot-wind"] = Item_Called_Shot_Wind()
+all_items_dict["called-shot-honor"] = Item_Called_Shot_Honor()
 all_items_dict["called-shot-rank"] = Item_Called_Shot_Rank()
 all_items_dict["called-shot-suit"] = Item_Called_Shot_Suit()
 all_items_dict["controlled-chaos"] = Item_Controlled_Chaos()
@@ -365,6 +374,7 @@ all_item_names_dict = {}
 all_item_names_dict["Bag"] = Item_Bag()
 all_item_names_dict["Called Shot: Dragon"] = Item_Called_Shot_Dragon()
 all_item_names_dict["Called Shot: Wind"] = Item_Called_Shot_Wind()
+all_item_names_dict["Called Shot: Honor"] = Item_Called_Shot_Honor()
 all_item_names_dict["Called Shot: Rank"] = Item_Called_Shot_Rank()
 all_item_names_dict["Called Shot: Suit"] = Item_Called_Shot_Suit()
 all_item_names_dict["Controlled Chaos"] = Item_Controlled_Chaos()

@@ -624,7 +624,7 @@ def main(page: ft.Page):
             if mahjongker.name == "Fuckgker":
                 fuckgker = mahjongker
                 break
-        fuckgker.point_value = fuckgker.point_value + 5
+        fuckgker.point_value = fuckgker.point_value + 10
         fuckgker_text.value = f"Fuckgker value: {fuckgker.point_value}"
         page.update()
 
@@ -635,7 +635,7 @@ def main(page: ft.Page):
             if mahjongker.name == "Fuckgker":
                 fuckgker = mahjongker
                 break
-        fuckgker.point_value = max(0, fuckgker.point_value - 5)
+        fuckgker.point_value = max(0, fuckgker.point_value - 10)
         fuckgker_text.value = f"Fuckgker value: {fuckgker.point_value}"
         page.update()
 
@@ -674,7 +674,7 @@ def main(page: ft.Page):
             if mahjongker.name == "Suckgker":
                 suckgker = mahjongker
                 break
-        suckgker.point_value = suckgker.point_value + 5
+        suckgker.point_value = suckgker.point_value + 7
         suckgker_text.value = f"Suckgker value: {suckgker.point_value}"
         page.update()
 
@@ -685,7 +685,7 @@ def main(page: ft.Page):
             if mahjongker.name == "Suckgker":
                 suckgker = mahjongker
                 break
-        suckgker.point_value = max(0, suckgker.point_value - 5)
+        suckgker.point_value = max(0, suckgker.point_value - 7)
         suckgker_text.value = f"Suckgker value: {suckgker.point_value}"
         page.update()
 
@@ -1224,7 +1224,7 @@ def main(page: ft.Page):
             if mahjongker.name == "Tanavastker":
                 tanavastker = mahjongker
                 break
-        tanavastker.point_value = tanavastker.point_value + 10
+        tanavastker.point_value = tanavastker.point_value + 15
         tanavastker_text.value = f"Tanavastker value: {tanavastker.point_value}"
         page.update()
 
@@ -1235,7 +1235,7 @@ def main(page: ft.Page):
             if mahjongker.name == "Tanavastker":
                 tanavastker = mahjongker
                 break
-        tanavastker.point_value = max(0, tanavastker.point_value - 10)
+        tanavastker.point_value = max(0, tanavastker.point_value - 15)
         tanavastker_text.value = f"Tanavastker value: {tanavastker.point_value}"
         page.update()
 
@@ -2521,7 +2521,7 @@ def main(page: ft.Page):
         initial_mahjongkers_row.controls.clear()
         i = 0
         selected_i = []
-        while i < 5:
+        while i < 10:
             index = random.randint(0,len(initial_mahjongkers_list)-1)
             if index not in selected_i: 
                 mahjongker = initial_mahjongkers_list[index]
@@ -3365,7 +3365,7 @@ def main(page: ft.Page):
         # for mahjongker in my_mahjongkers:
         #     if mahjongker.name == "Picker":
         #         reroll_cost = 0
-        shop_row.controls.append(ft.FloatingActionButton(text=f"${reroll_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_mahjongkers))
+        # shop_row.controls.append(ft.FloatingActionButton(text=f"${reroll_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_mahjongkers))
         # item_row.controls.append(ft.FloatingActionButton(text=f"${reroll_item_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_items))
         enable_hand_upgrade_buy()
         # refresh_shop_button.text = f"Refresh Shop Round {shop_round + 1}"
@@ -3510,7 +3510,7 @@ def main(page: ft.Page):
             )
             shop_info_column.controls.append(ft.Text(f"${mahjongker.cost} - {mahjongker.name} : {mahjongker.description}", color=ft.colors.WHITE, size=20))
             j += 1
-        shop_row.controls.append(ft.FloatingActionButton(text=f"${reroll_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_mahjongkers))
+        # shop_row.controls.append(ft.FloatingActionButton(text=f"${reroll_cost}", icon=ft.icons.REFRESH, on_click=reroll_shop_mahjongkers))
         page.update()
 
     def reroll_shop_items(e):
@@ -4871,22 +4871,23 @@ def main(page: ft.Page):
                 ft.Divider(),
                 ft.Row([
                     ft.Text("Mahjongkers", size=20, color=ft.colors.WHITE),
-                    ft.Text("Inventory", size=20, color=ft.colors.WHITE),
+                    # ft.Text("Inventory", size=20, color=ft.colors.WHITE),
                     ],
                     spacing=530
                 ),
                 ft.Row([
                     shop_row,
-                    my_mahjongkers_shop_row],
+                    # my_mahjongkers_shop_row
+                    ],
                     spacing=50
                 ),
                 ft.Row([
                     ft.Row([
                         ft.ElevatedButton(text="Buy", on_click=buy_mahjongker),
                         shop_mahjongker_text]),
-                    ft.Row([
-                        ft.ElevatedButton(text="Sell", on_click=sell_mahjongker),
-                        shop_sell_mahjongker_text]),
+                    # ft.Row([
+                    #     ft.ElevatedButton(text="Sell", on_click=sell_mahjongker),
+                    #     shop_sell_mahjongker_text]),
                     ],
                     spacing=565
                 ),
@@ -5446,7 +5447,7 @@ def main(page: ft.Page):
             initial_mahjongkers_row = ft.GridView(
                 # expand=1,
                 height=100,
-                width=600,
+                width=1100,
                 runs_count=1,
                 max_extent=95,
                 child_aspect_ratio=1.0,
@@ -5457,7 +5458,7 @@ def main(page: ft.Page):
             initial_mahjongker_info_column = ft.Column()
 
             # set up base row
-            for i in range(5):
+            for i in range(10):
                 initial_mahjongkers_row.controls.append(
                     ft.Container(
                         content=ft.Text("Empty", bgcolor="#000000",color=ft.colors.WHITE),
