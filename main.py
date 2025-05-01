@@ -158,6 +158,8 @@ my_mahjongkers_shop_row = []
 item_row = []
 item_pack_row = []
 my_items_shop_row = []
+item_pack_pickgker_pickgker_row = []
+item_pack_pickgker_info_column = []
 shop_zodiac_row = []
 shop_trigram_row = []
 shop_mahjongker_text = ""
@@ -2925,6 +2927,70 @@ def main(page: ft.Page):
         item_pack_row.controls.append(ft.FloatingActionButton(icon=ft.icons.CHECK, on_click=refresh_items))
         page.update()
 
+    # item roll pickgker
+    def refresh_items_pickgker(e):
+        global item_pack_pickgker_row
+        global item_pack_pickgker_info_column
+        item_pack_pickgker_row.controls.clear()
+        item_pack_pickgker_info_column.controls.clear()
+        i = 0
+        selected_i = []
+        borders = []
+        while i < 5:
+            rarity_roll = random.choices(ITEM_RARITIES, weights=ITEM_RARITY_PROBABILITY)[0]
+            print(rarity_roll)
+            item = roll_item(rarity_roll, selected_i)
+            selected_i.append(all_items_list.index(item))   
+            if rarity_roll == "piggy":
+                borders.append(ft.border.all(4, ft.colors.GREEN_600))
+            elif rarity_roll == "common":
+                borders.append(ft.border.all(4, ft.colors.BLUE_600))
+            elif rarity_roll == "uncommon":
+                borders.append(ft.border.all(4, ft.colors.PURPLE_600))
+            else:
+                borders.append(ft.border.all(4, ft.colors.RED_600))
+            i = i+1
+
+        j = 0
+        for i in selected_i:
+            item = all_items_list[i]
+            item_pack_pickgker_row.controls.append(
+                ft.Container(
+                        image=ft.DecorationImage(src=item.img_src, fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        content=ft.Text(f"{item.name}", bgcolor="#000000", color=ft.colors.WHITE),
+                        border=borders[j],
+                        ink=True,
+                        on_click=handle_add_shop_item_select,
+                        tooltip=ft.Tooltip(
+                            message=f"{item.description}",
+                            padding=20,
+                            border_radius=10,
+                            text_style=ft.TextStyle(size=20, color=ft.colors.WHITE),
+                            gradient=ft.LinearGradient(
+                                begin=ft.alignment.top_left,
+                                end=ft.alignment.Alignment(0.8, 1),
+                                colors=[
+                                    "0xff1f005c",
+                                    "0xff5b0060",
+                                    "0xff870160",
+                                    "0xffac255e",
+                                    "0xffca485c",
+                                    "0xffe16b5c",
+                                    "0xfff39060",
+                                    "0xffffb56b",
+                                ],
+                                tile_mode=ft.GradientTileMode.MIRROR,
+                            )
+                        )
+                    )
+            )
+            item_pack_pickgker_info_column.controls.append(ft.Text(f"{item.name} : {item.description}", color=ft.colors.WHITE, size=20))
+            j += 1
+
+        item_pack_pickgker_row.controls.append(ft.FloatingActionButton(icon=ft.icons.CHECK, on_click=refresh_items))
+        page.update()
+
+
     def handle_item_select(e):
         global item_text
         item_name = e.control.image.src.split("/")[2].split(".")[0]
@@ -4203,6 +4269,8 @@ def main(page: ft.Page):
         global my_items_shop_row
         global item_pack_row
         global item_pack_info_column
+        global item_pack_pickgker_row
+        global item_pack_pickgker_info_column
         global trigram_pack_info_column
         global shop_zodiac_row
         global shop_trigram_row
@@ -5214,6 +5282,48 @@ def main(page: ft.Page):
                 horizontal_alignment=ft.CrossAxisAlignment.START)])
 
             panel.controls.append(item_roll_panel)
+
+            # -------------------------------------------------------------
+            # item roll Pickgker tab 
+            # -------------------------------------------------------------
+            item_roll_pickgker_panel = ft.ExpansionPanel(
+                bgcolor=ft.colors.PURPLE_300,
+                header=ft.ListTile(title=ft.Text(f"Item Roll (Pickgker)")),
+                can_tap_header=True
+            )
+
+            item_pack_pickgker_row = ft.GridView(
+                # expand=1,
+                height=100,
+                width=600,
+                runs_count=1,
+                max_extent=95,
+                child_aspect_ratio=1.0,
+                spacing=5,
+                run_spacing=5,
+            )
+
+            item_pack_pickgker_info_column = ft.Column()
+
+            # set up base row
+            for i in range(5):
+                item_pack_pickgker_row.controls.append(
+                    ft.Container(
+                        content=ft.Text("Empty", bgcolor="#000000",color=ft.colors.WHITE),
+                        image=ft.DecorationImage(src="/tiles/empty.png", fit=ft.ImageFit.FILL, repeat=ft.ImageRepeat.NO_REPEAT),
+                        border_radius=ft.border_radius.all(5),
+                        ink=True,
+                        )
+                    )
+            item_pack_pickgker_row.controls.append(ft.FloatingActionButton(icon=ft.icons.REFRESH, on_click=refresh_items_pickgker))
+            item_roll_pickgker_text = ft.Text("", color=ft.colors.WHITE)
+            item_roll_pickgker_panel.content = ft.Row([ft.Column([
+                    item_pack_pickgker_row,
+                    item_pack_pickgker_info_column
+                ],
+                horizontal_alignment=ft.CrossAxisAlignment.START)])
+
+            panel.controls.append(item_roll_pickgker_panel)
 
             # -------------------------------------------------------------
             # free trigram tab 
