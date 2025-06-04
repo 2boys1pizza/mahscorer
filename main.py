@@ -2564,7 +2564,7 @@ def main(page: ft.Page):
                         # tooltip=MahjongkerTooltip(mahjongker=mahjongker)
                     )
             )
-            initial_mahjongker_info_column.controls.append(ft.Text(f"{mahjongker.name} : {mahjongker.description}", color=ft.colors.WHITE, size=20))
+            initial_mahjongker_info_column.controls.append(ft.Text(f"{mahjongker.name} --- {mahjongker.description}", color=ft.colors.WHITE, size=20))
         initial_mahjongkers_row.controls.append(ft.FloatingActionButton(icon=ft.icons.CHECK, on_click=refresh_initial_mahjongkers))
         page.update()
 

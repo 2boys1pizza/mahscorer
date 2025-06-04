@@ -235,7 +235,7 @@ class Mahjongker:
 # Bamonker
 class Bamonker(Mahjongker):
     name = "Bamonker"
-    description = "Reveal Bamboo meld: Invest +9 pts.\nActivate: Spend $2 to use Called Shot: Bamboo"
+    description = "Reveal Bamboo meld: Invest +10 pts.\nActivate: Spend $2 to use Called Shot: Bamboo"
     # priority = 2 
     # cost = COMMON_MAHJONGKER_COST
     # sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -267,7 +267,7 @@ class Bamonker(Mahjongker):
 # Donker
 class Donker(Mahjongker):
     name = "Donker"
-    description = "Reveal Dots meld: Invest +9 pts.\nActivate: Spend $2 to use Called Shot: Dots "
+    description = "Reveal Dots meld: Invest +10 pts.\nActivate: Spend $2 to use Called Shot: Dots "
     # priority = 2 
     # cost = COMMON_MAHJONGKER_COST
     # sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -300,7 +300,7 @@ class Donker(Mahjongker):
 # Chonker
 class Chonker(Mahjongker):
     name = "Chonker"
-    description = "Reveal Character meld: Invest +9 pts.\nActivate: Spend $2 to use Called Shot: Character"
+    description = "Reveal Character meld: Invest +10 pts.\nActivate: Spend $2 to use Called Shot: Character"
     # priority = 2 
     # cost = COMMON_MAHJONGKER_COST
     # sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -509,7 +509,7 @@ class Oddker(Mahjongker):
 # AYCker
 class AYCker(Mahjongker):
     name = "AYCker"
-    description = "Reveal Sequence meld: Invest +9 pts"
+    description = "Reveal Sequence meld: Invest +10 pts"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -522,7 +522,7 @@ class AYCker(Mahjongker):
 # Pingker
 class Pingker(Mahjongker):
     name = "Pingker"
-    description = "Reveal Set meld: Invest +9 pts"
+    description = "Reveal Set meld: Invest +10 pts"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -535,7 +535,7 @@ class Pingker(Mahjongker):
 # KingKongker
 class KingKongker(Mahjongker):
     name = "KingKongker"
-    description = "Reveal Quad meld: Invest +18 pts"
+    description = "Reveal Quad meld: Invest +20 pts"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -1251,7 +1251,7 @@ class Boomerangker(Mahjongker):
 # Doraker
 class Doraker(Mahjongker):
     name = "Doraker"
-    description = "A random tile is always selected from your hand. When you reveal that tile, invest +9 pts"
+    description = "A random tile is always selected from your hand. When you reveal that tile, invest +10 pts"
     priority = 6
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -1336,7 +1336,7 @@ class Straightker(Mahjongker):
 # Arthker
 class Arthker(Mahjongker):
     name = "Arthker"
-    description = "-1 max hand size.\nReveal meld: Invest +7 pts"
+    description = "-1 max hand size.\nReveal meld: Invest +8 pts"
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -1432,7 +1432,7 @@ class Buffettker(Mahjongker):
 # Fuckgker
 class Fuckgker(Mahjongker):
     name = "Fuckgker"
-    description = "When you take a tile from an opponent (chi, pong, kong do NOT count), Invest +11 points"
+    description = "When you take a tile from an opponent (chi, pong, kong do NOT count), Invest +13 points"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -1517,7 +1517,7 @@ class LarryEllisker(Mahjongker):
 # Suckgker
 class Suckgker(Mahjongker):
     name = "Suckgker"
-    description = "When you are targeted by another player, Invest +9 points"
+    description = "When you are targeted by another player, Invest +10 points"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -2040,7 +2040,7 @@ class Chanker(Mahjongker):
 # Miniker
 class Miniker(Mahjongker):
     name = "Miniker"
-    description = "Mahjong: Gain pts equal to 7x the rank of the lowest rank tile scored"
+    description = "Mahjong: Gain pts equal to 8x the rank of the lowest rank tile scored"
     priority = 5 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -2117,7 +2117,7 @@ class Eatker(Mahjongker):
 # Sameker
 class Sameker(Mahjongker):
     name = "Sameker"
-    description = "Mahjong: Gain +12 pts for each set meld"
+    description = "Mahjong: Gain +10 pts for each set meld"
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -2379,7 +2379,7 @@ class Recruitker(Mahjongker):
 # Squadker
 class Squadker(Mahjongker):
     name = "Squadker"
-    description = "Prelude: Gain up to 2 random common mahjongkers"
+    description = "Activate: Spend $2 and gain one random common mahjongker"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -2454,7 +2454,7 @@ class Jeaucoeur(Mahjongker):
 # Unbumungker
 class Unbumungker(Mahjongker):
     name = "Unbumungker"
-    description = "When you discard a Bamboo tile, Store +15 pts."
+    description = "When you discard a Bamboo tile, Store +20 pts."
     priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
@@ -2466,7 +2466,7 @@ class Unbumungker(Mahjongker):
 # Undungker
 class Undungker(Mahjongker):
     name = "Undungker"
-    description = "When you discard a Dots tile, Store +15 pts."
+    description = "When you discard a Dots tile, Store +20 pts."
     priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
@@ -2478,7 +2478,7 @@ class Undungker(Mahjongker):
 # Unchungker
 class Unchungker(Mahjongker):
     name = "Unchungker"
-    description = "When you discard a Characater tile, Store +15 pts."
+    description = "When you discard a Characater tile, Store +20 pts."
     priority = 6 
     cost = UNCOMMON_MAHJONGKER_COST
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
@@ -2490,7 +2490,7 @@ class Unchungker(Mahjongker):
 # Ranker
 class Ranker(Mahjongker):
     name = "Ranker"
-    description = "Mahjong: Gain +12 pts for each unique rank in your scored hand."
+    description = "Mahjong: Gain +13 pts for each unique rank in your scored hand."
     priority = 5 
     cost = UNCOMMON_MAHJONGKER_COST
     sell_value = UNCOMMON_MAHJONGKER_SELL_VALUE
@@ -2737,14 +2737,14 @@ class Fuseker(Mahjongker):
     def eval_score(self, my_mahjongkers):
         return (0, 0)
 
-# Saveker
-class Saveker(Mahjongker):
-    name = "Saveker"
+# BlackBlackgker
+class BlackBlackgker(Mahjongker):
+    name = "BlackBlackgker"
     description = "Counter starts at 0. For every tile you discard, the counter increases by the rank (honors 10). Gain $2 when it hits or exceeds 21. Then reset the counter."
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
-    img_src = "/jongker/saveker.jpg"
+    img_src = "/jongker/blackblackgkerker.jpg"
 
     def eval_score(self, my_mahjongkers):
         return (0, 0)
@@ -2836,7 +2836,7 @@ class Fourecloseker(Mahjongker):
 # Greedker
 class Greedker(Mahjongker):
     name = "Greedker"
-    description = "Mahjong: Gain +1 pt for each tile scored. +20 pts instead, for each tile past 12 scored tiles."
+    description = "Mahjong: Gain +1 pt for each tile scored. +25 pts instead, for each tile past 12 scored tiles."
     priority = 5 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -2875,7 +2875,7 @@ class Foursiker(Mahjongker):
 # Donkeyker
 class Donkeyker(Mahjongker):
     name = "Donkeyker"
-    description = "Mahjong: Gain +25 pts for each quad meld."
+    description = "Mahjong: Gain +30 pts for each quad meld."
     priority = 2 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -3036,7 +3036,7 @@ class TheHundredker(Mahjongker):
 # Obelisker
 class Obelisker(Mahjongker):
     name = "Obelisker"
-    description = "Whenever you use a different action from your last (Pong, Chi, Kong, Self-Reveal), Store +10 pts."
+    description = "Whenever you use a different action from your last (Pong, Chi, Kong, Self-Reveal), Store +15 pts."
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -3209,7 +3209,7 @@ class Purgeker(Mahjongker):
 # Cookgker
 class Cookgker(Mahjongker):
     name = "Cookgker"
-    description = "Any player can Chi tiles that you discard regardless of your position.  If they do, gain +15 pts"
+    description = "Any player can Chi tiles that you discard regardless of your position.  If they do, gain +20 pts"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -3245,7 +3245,7 @@ class IHWSHker(Mahjongker):
 # Eggker
 class Eggker(Mahjongker):
     name = "Eggker"
-    description = "Reveal meld: The sell value of this mahjongker increases by $1"
+    description = "Reveal meld: Gain $1"
     priority = 6 
     cost = COMMON_MAHJONGKER_COST
     sell_value = COMMON_MAHJONGKER_SELL_VALUE
@@ -3277,6 +3277,30 @@ class Grabker(Mahjongker):
 
     def eval_score(self, my_mahjongkers):
         return (0, 0)
+
+# Fevker
+class Fevker(Mahjongker):
+    name = "Fevker"
+    description = "Fever meld: Invest +15 pts\n Commit meld: Invest -5 pts"
+    priority = 6 
+    cost = 5
+    sell_value = 2
+    img_src = "/jongker/fevker.jpg"
+
+    def eval_score(self, my_mahjongkers):
+        return (0, 0)    
+
+# Everstormker
+class Everstormker(Mahjongker):
+    name = "Everstormker"
+    description = "Reveal wind meld: Add 1 of each wind tile to the deck. Invest +10 pts"
+    priority = 6 
+    cost = 5
+    sell_value = 2
+    img_src = "/jongker/everstormker.jpg"
+
+    def eval_score(self, my_mahjongkers):
+        return (0, 0)    
 
 # --------------------------------------------------------------------------------------
 # MAHJONGKER LIST
@@ -3440,7 +3464,7 @@ all_mahjongkers_list.append(Warrenker())
 # all_mahjongkers_list.append(Crescendker())
 # all_mahjongkers_list.append(DWker())
 # all_mahjongkers_list.append(Fuseker())
-all_mahjongkers_list.append(Saveker())
+all_mahjongkers_list.append(BlackBlackgker())
 all_mahjongkers_list.append(Arodker())
 # all_mahjongkers_list.append(Spaghettiker())
 all_mahjongkers_list.append(Tricker())
@@ -3479,6 +3503,8 @@ all_mahjongkers_list.append(IHWSHker())
 all_mahjongkers_list.append(Eggker())
 all_mahjongkers_list.append(Donaldker())
 all_mahjongkers_list.append(Grabker())
+all_mahjongkers_list.append(Fevker())
+all_mahjongkers_list.append(Everstormker())
 
 # --------------------------------------------------------------------------------------
 # MAHJONGKER DICT
@@ -3641,7 +3667,7 @@ all_mahjongkers_dict["warrenker"] = Warrenker()
 all_mahjongkers_dict["crescendker"] = Crescendker()
 all_mahjongkers_dict["dwker"] = DWker()
 all_mahjongkers_dict["fuseker"] = Fuseker()
-all_mahjongkers_dict["saveker"] = Saveker()
+all_mahjongkers_dict["blackblackgker"] = BlackBlackgker()
 all_mahjongkers_dict["arodker"] = Arodker()
 all_mahjongkers_dict["spaghettiker"] = Spaghettiker()
 all_mahjongkers_dict["tricker"] = Tricker()
@@ -3680,6 +3706,9 @@ all_mahjongkers_dict["IHWSHker"] = IHWSHker()
 all_mahjongkers_dict["eggker"] = Eggker()
 all_mahjongkers_dict["donaldker"] = Donaldker()
 all_mahjongkers_dict["grabker"] = Grabker()
+all_mahjongkers_dict["fevker"] = Fevker()
+all_mahjongkers_dict["everstormker"] = Everstormker()
+
 
 # ----------------------------------------------
 
@@ -3716,9 +3745,6 @@ initial_mahjongkers_list.append(Donker())
 initial_mahjongkers_list.append(Chonker())
 initial_mahjongkers_list.append(Evenker())
 initial_mahjongkers_list.append(Oddker())
-initial_mahjongkers_list.append(AYCker())
-initial_mahjongkers_list.append(Pingker())
-initial_mahjongkers_list.append(KingKongker())
 initial_mahjongkers_list.append(Dollker())
 initial_mahjongkers_list.append(Yenker())
 initial_mahjongkers_list.append(Falchionker())
@@ -3728,40 +3754,40 @@ initial_mahjongkers_list.append(WenGeker())
 initial_mahjongkers_list.append(Fourker())
 initial_mahjongkers_list.append(Doraker())
 initial_mahjongkers_list.append(Straightker())
+initial_mahjongkers_list.append(Arthker())
 initial_mahjongkers_list.append(DebtCollectker())
-initial_mahjongkers_list.append(Fuckgker())
-initial_mahjongkers_list.append(JosephJoesker())
 initial_mahjongkers_list.append(Fibonaccker())
+initial_mahjongkers_list.append(AYCker())
+initial_mahjongkers_list.append(Pingker())
+initial_mahjongkers_list.append(Fuckgker())
 initial_mahjongkers_list.append(Wokegker())
 initial_mahjongkers_list.append(Shardker())
 initial_mahjongkers_list.append(Ponorker())
 initial_mahjongkers_list.append(Sonorker())
 initial_mahjongkers_list.append(Blackjackgker())
 initial_mahjongkers_list.append(Huntker())
-initial_mahjongkers_list.append(Spoilker())
 initial_mahjongkers_list.append(Miniker())
 initial_mahjongkers_list.append(Honker())
 initial_mahjongkers_list.append(Eatker())
 initial_mahjongkers_list.append(Sameker())
 initial_mahjongkers_list.append(Odiumker())
-initial_mahjongkers_list.append(Tanavastker())
 initial_mahjongkers_list.append(Recykler())
-initial_mahjongkers_list.append(Doldrumker())
+initial_mahjongkers_list.append(Tanavastker())
 initial_mahjongkers_list.append(Pivotker())
-initial_mahjongkers_list.append(Spanker())
 initial_mahjongkers_list.append(JackBlackgker())
 initial_mahjongkers_list.append(Recruitker())
 initial_mahjongkers_list.append(Goalker())
 initial_mahjongkers_list.append(DoubDoubker())
 initial_mahjongkers_list.append(Jeaucoeur())
-initial_mahjongkers_list.append(Saveker())
+initial_mahjongkers_list.append(BlackBlackgker())
 initial_mahjongkers_list.append(Arodker())
 initial_mahjongkers_list.append(DEIKongker())
 initial_mahjongkers_list.append(GapKongker())
-initial_mahjongkers_list.append(Greedker())
 initial_mahjongkers_list.append(WageGapker())
 initial_mahjongkers_list.append(Phoenixker())
 initial_mahjongkers_list.append(Obelisker())
 initial_mahjongkers_list.append(MusicalChairker())
 initial_mahjongkers_list.append(Thermomeker())
 initial_mahjongkers_list.append(Eggker())
+initial_mahjongkers_list.append(Fevker())
+initial_mahjongkers_list.append(Everstormker())

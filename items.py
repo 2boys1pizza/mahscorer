@@ -159,7 +159,7 @@ class Item_Splitter(Item):
     name = "Splitter"
     description = "Split a ranked tile down the middle (9 bamboo -> 4 & 5 bamboo. You cannot split a 1)"
     cost = 4
-    rarity = "uncommon"
+    rarity = "rare"
     img_src = "/items/splitter.jpg"
 
 class Item_Stun_Gun(Item):
@@ -222,7 +222,7 @@ class Item_Black_Eyed_Peas(Item):
     name = "Black Eyed Peas"
     description = "Combine two tiles of the same suit. Then split them down the middle. (3+7 -> 5,5)"
     cost = 4
-    rarity = "uncommon"
+    rarity = "rare"
     img_src = "/items/black-eyed-peas.jpg"
 
 class Item_Mutually_Assured_Destruction(Item):
@@ -295,12 +295,12 @@ class Item_Geode(Item):
     rarity = "common"
     img_src = "/items/geode.jpg"
 
-class Item_Jade_Collector(Item):
-    name = "Jade Collector"
+class Item_Called_Shot_Jade(Item):
+    name = "Called Shot: Jade"
     description = "Choose a player and name a jade color.  If they have it, they must give it to you and give a tile in return"
     cost = 2
     rarity = "common"
-    img_src = "/items/jade-collector.jpg"
+    img_src = "/items/called-shot-jade.jpg"
 
 # --------------------------------------------------------------------------------------
 # ALL ITEMS LIST
@@ -321,7 +321,7 @@ all_items_list.append(Item_Dumpster_Diver())
 # all_items_list.append(Item_Golden_Compass())
 all_items_list.append(Item_Grave_Dig())
 all_items_list.append(Item_Literally_Gambling())
-all_items_list.append(Item_Mahjongkers_Dilemma())
+# all_items_list.append(Item_Mahjongkers_Dilemma())
 all_items_list.append(Item_Oracle())
 # all_items_list.append(Item_Perpendicularity())
 # all_items_list.append(Item_Power_Hour_Bamboo())
